@@ -1,20 +1,53 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link :to="{ name: 'main' }">Vue Recipes</router-link>|
-      <router-link :to="{ name: 'search' }">Search</router-link>|
-      {{ !$root.store.username }}
+
+      <!-- <router-link :to="{ name: 'main' }">Vue Recipes</router-link>| -->
+      <!-- <router-link :to="{ name: 'search' }">Search</router-link>| -->
+      <!-- {{ !$root.store.username }}
       <span v-if="!$root.store.username">
         Guest:
-        <router-link :to="{ name: 'register' }">Register</router-link>|
-        <router-link :to="{ name: 'login' }">Login</router-link>|
+        <router-link :to="{ name: 'register' }">Register</router-link>
+        <router-link :to="{ name: 'login' }">Login</router-link>
       </span>
       <span v-else>
-        {{ $root.store.username }}: <button @click="Logout">Logout</button>|
+        {{ $root.store.username }}: <button @click="Logout">Logout</button>
       </span>
     </div>
-    <router-view />
+    <router-view /> -->
+
+    <b-navbar type="light" variant="light">
+    <b-navbar-nav>
+      <b-nav-item href="#"><router-link :to="{ name: 'main' }">Vue Recipes</router-link></b-nav-item>
+      <b-nav-item href="#"><router-link :to="{ name: 'search' }">Search</router-link></b-nav-item>
+      <b-nav-item href="#">About</b-nav-item> <!-- need to route to a page with A marketing brief about the development team and the project with links to the previous exercises -->
+
+      <span v-if="!$root.store.username">
+        Guest:
+        <b-nav-item href="#"><router-link :to="{ name: 'register' }">Register</router-link></b-nav-item>
+        <b-nav-item href="#"><router-link :to="{ name: 'login' }">Login</router-link></b-nav-item>
+      </span>
+      <span v-else>
+        {{ $root.store.username }}: <button @click="Logout">Logout</button>
+        <b-nav-item-dropdown text="User" right>
+        <b-dropdown-item href="#">My favorite recipes</b-dropdown-item>
+        <b-dropdown-item href="#">my recipes</b-dropdown-item>
+        <b-dropdown-item href="#">my family recipes</b-dropdown-item>
+      </b-nav-item-dropdown>
+      </span>
+      <!-- Navbar dropdowns -->
+
+      
+    </b-navbar-nav>
+  </b-navbar>
   </div>
+  <router-view />
+</div>
+
+
+
+
+  
 </template>
 
 <script>
