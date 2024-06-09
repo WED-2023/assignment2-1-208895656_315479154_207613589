@@ -12,7 +12,23 @@ export function mockGetRecipesPreview(amount = 1) {
   return { data: { recipes: recipes } };
 }
 
-export function mockGetRecipeFullDetails(recipeId) {
-    return { data: { recipe: recipe_full_view } } ;
-  }
+// export function mockGetRecipeFullDetails(recipeId) {
+//     return { 
+//       data: { recipe: recipe_full_view }
+//      } ;
+//   }
   
+  export function mockGetRecipeFullDetails(recipeId) {
+    const recipeExists = recipe_preview.some(recipe => recipe.id === recipeId);
+    if (recipeExists) {
+      return {
+        status: 200,
+        data: { recipe: recipe_full_view }
+      };
+    } else {
+      return {
+        status: 404, // Or any other appropriate error status
+        error: 'Recipe not found'
+      };
+    }
+  }

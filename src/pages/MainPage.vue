@@ -1,22 +1,17 @@
 <template>
   <div class="container">
     <h1 class="title">Main Page</h1>
-    <div v-if="!$root.store.username" class="login-button">
-      <router-link to="/login" tag="button">You need to Login to view this</router-link>
-    </div>
-
-    <div class="row">
-      <div class="col-md-6">
-        <RecipePreviewList title="Random Recipes" class="RandomRecipes center" />
+    <div class="grid-container">
+      <div class="recipe-list">
+        <RecipePreviewList title="Random Recipes" class="center" />
       </div>
-      <div class="col-md-6">
+      <div v-if="!$root.store.username" class="login-form">
+        <LoginForm></LoginForm>
+      </div>
+      <div v-if="$root.store.username" class="last-viewed-recipes">
         <RecipePreviewList
           title="Last Viewed Recipes"
-          :class="{
-            RandomRecipes: true,
-            blur: !$root.store.username,
-            center: true
-          }"
+          class="center"
           disabled
         ></RecipePreviewList>
       </div>
@@ -26,30 +21,38 @@
 
 <script>
 import RecipePreviewList from "../components/RecipePreviewList";
+import LoginForm from "../components/LoginForm";
+
 export default {
   components: {
-    RecipePreviewList
+    RecipePreviewList,
+    LoginForm
   }
 };
 </script>
 
 <style lang="scss" scoped>
-.RandomRecipes {
-  margin: 10px 0 10px;
+.grid-container {
+  display: grid;
+  grid-template-columns: 3fr 3fr;
+  column-gap: 40px;
 }
 
-.blur {
-  -webkit-filter: blur(5px);
-  /* Safari 6.0 - 9.0 */
-  filter: blur(2px);
+.login-form {
+  grid-row: 1;
+  grid-column: 2;
+  // padding: 1px;
+  max-width: 400px;
+  margin: auto;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  background: #fff;
+  border-radius: 15px;
+
 }
 
-::v-deep .blur .recipe-preview {
-  pointer-events: none;
-  cursor: default;
+.recipe-list, .last-viewed-recipes {
+  grid-column: 1;
+  grid-row: 2;
 }
 
-.login-button {
-  margin-left: 610px; /* Adjust margin as needed */
-}
 </style>
