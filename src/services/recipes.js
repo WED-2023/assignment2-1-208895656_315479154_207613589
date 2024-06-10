@@ -14,7 +14,7 @@ export function mockGetRecipesPreview(amount = 1) {
 
 export function mockGetOtherRecipes(amount = 1) {
   let recipes = [];
-  for(let i = 0; i < amount; i++){
+  for(let i = 0; i < recipe_preview.length; i++){
     recipes.push(recipe_preview[i]);
   }
     // Fisher-Yates Shuffle Algorithm
