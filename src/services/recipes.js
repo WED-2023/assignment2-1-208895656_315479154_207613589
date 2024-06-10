@@ -6,7 +6,7 @@ import recipe_preview from "../assets/mocks/recipe_preview.json";
 export function mockGetRecipesPreview(amount = 1) {
   let recipes = [];
   for(let i = 0; i < amount; i++){
-    recipes.push(recipe_preview);
+    recipes.push(recipe_preview[i]);
   }
 
   return { data: { recipes: recipes } };

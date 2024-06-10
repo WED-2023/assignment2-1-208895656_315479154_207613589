@@ -191,7 +191,6 @@ export default {
         //     password: this.form.password
         //   }
         // );
-
         const userDetails = {
           username: this.form.username,
           password: this.form.password

@@ -1,11 +1,79 @@
-{
-    "id": 716429,
-    "image": "https://img.spoonacular.com/recipes/716429-556x370.jpg",
-    "title": "Pasta with Garlic, Scallions, Cauliflower & Breadcrumbs",
-    "readyInMinutes": 45,
-    "aggregateLikes": 209,
-    "vegetarian": false,
-    "vegan": false,
-    "glutenFree": false,
-    "summary": "You can never have too many main course recipes, so give Pasta with Garlic, Scallions, Cauliflower & Breadcrumbs a try. One serving contains <b>543 calories</b>, <b>17g of protein</b>, and <b>16g of fat</b>. For <b>$1.57 per serving</b>, this recipe <b>covers 22%</b> of your daily requirements of vitamins and minerals. This recipe serves 2. A mixture of butter, white wine, pasta, and a handful of other ingredients are all it takes to make this recipe so yummy. 209 people have tried and liked this recipe. It is brought to you by fullbellysisters.blogspot.com. From preparation to the plate, this recipe takes approximately <b>45 minutes</b>. Taking all factors into account, this recipe <b>earns a spoonacular score of 83%</b>, which is tremendous. If you like this recipe, take a look at these similar recipes: <a href=\"https://spoonacular.com/recipes/pasta-with-garlic-scallions-cauliflower-breadcrumbs-1230187\">Pasta with Garlic, Scallions, Cauliflower & Breadcrumbs</a>, <a href=\"https://spoonacular.com/recipes/pasta-with-garlic-scallions-cauliflower-breadcrumbs-1229807\">Pasta with Garlic, Scallions, Cauliflower & Breadcrumbs</a>, and <a href=\"https://spoonacular.com/recipes/pasta-with-garlic-scallions-cauliflower-breadcrumbs-1229669\">Pasta with Garlic, Scallions, Cauliflower & Breadcrumbs</a>."
-}
+[
+    {
+        "id": 716429,
+        "image": "https://img.spoonacular.com/recipes/716429-556x370.jpg",
+        "title": "Pasta with Garlic, Scallions, Cauliflower & Breadcrumbs",
+        "readyInMinutes": 45,
+        "aggregateLikes": 209,
+        "vegetarian": false,
+        "vegan": false,
+        "glutenFree": false,
+        "summary": "You can never have too many main course recipes, so give Pasta with Garlic, Scallions, Cauliflower & Breadcrumbs a try. One serving contains <b>543 calories</b>, <b>17g of protein</b>, and <b>16g of fat</b>. For <b>$1.57 per serving</b>, this recipe <b>covers 22%</b> of your daily requirements of vitamins and minerals. This recipe serves 2. A mixture of butter, white wine, pasta, and a handful of other ingredients are all it takes to make this recipe so yummy. 209 people have tried and liked this recipe. It is brought to you by fullbellysisters.blogspot.com. From preparation to the plate, this recipe takes approximately <b>45 minutes</b>. Taking all factors into account, this recipe <b>earns a spoonacular score of 83%</b>, which is tremendous. If you like this recipe, take a look at these similar recipes: <a href=\"https://spoonacular.com/recipes/pasta-with-garlic-scallions-cauliflower-breadcrumbs-1230187\">Pasta with Garlic, Scallions, Cauliflower & Breadcrumbs</a>, <a href=\"https://spoonacular.com/recipes/pasta-with-garlic-scallions-cauliflower-breadcrumbs-1229807\">Pasta with Garlic, Scallions, Cauliflower & Breadcrumbs</a>, and <a href=\"https://spoonacular.com/recipes/pasta-with-garlic-scallions-cauliflower-breadcrumbs-1229669\">Pasta with Garlic, Scallions, Cauliflower & Breadcrumbs</a>."
+    },
+    {
+        "id": 716430,
+        "image": "https://img.spoonacular.com/recipes/716430-556x370.jpg",
+        "title": "Chicken and Broccoli Stir-Fry",
+        "readyInMinutes": 30,
+        "aggregateLikes": 150,
+        "vegetarian": false,
+        "vegan": false,
+        "glutenFree": true,
+        "summary": "This Chicken and Broccoli Stir-Fry makes a solid main course. One serving contains <b>310 calories</b>, <b>35g of protein</b>, and <b>12g of fat</b>. For <b>$2.15 per serving</b>, this recipe <b>covers 30%</b> of your daily requirements of vitamins and minerals. This recipe serves 4. Ingredients include chicken breasts, broccoli, soy sauce, and a few others. It takes about <b>30 minutes</b> from start to finish. This recipe has a spoonacular score of <b>90%</b>. Similar dishes include <a href=\"https://spoonacular.com/recipes/chicken-and-broccoli-stir-fry-716430\">Chicken and Broccoli Stir-Fry</a>."
+    },
+    {
+        "id": 716431,
+        "image": "https://img.spoonacular.com/recipes/716431-556x370.jpg",
+        "title": "Spicy Shrimp Tacos with Garlic Cilantro Lime Slaw",
+        "readyInMinutes": 20,
+        "aggregateLikes": 272,
+        "vegetarian": false,
+        "vegan": false,
+        "glutenFree": true,
+        "summary": "Add some zest to your dinner routine with Spicy Shrimp Tacos with Garlic Cilantro Lime Slaw. This recipe makes 3 servings with <b>295 calories</b>, <b>23g of protein</b>, and <b>12g of fat</b> each. For about <b>$3.45 per serving</b>, it covers 25% of your daily requirements. A mix of lime juice, cilantro, cabbage slaw, and a handful of other ingredients are all it takes to make this dish so tasty. Ready in about <b>20 minutes</b>, this recipe scores <b>88%</b>. Fans of similar recipes might also like: <a href=\"https://spoonacular.com/recipes/spicy-shrimp-tacos-716431\">Spicy Shrimp Tacos</a>."
+    },
+    {
+        "id": 716432,
+        "image": "https://img.spoonacular.com/recipes/716432-556x370.jpg",
+        "title": "Creamy Tomato Basil Soup",
+        "readyInMinutes": 40,
+        "aggregateLikes": 98,
+        "vegetarian": true,
+        "vegan": false,
+        "glutenFree": false,
+        "summary": "Creamy Tomato Basil Soup is a comforting and hearty meal perfect for any day. Each serving contains <b>220 calories</b>, <b>6g of protein</b>, and <b>14g of fat</b>. Priced at around <b>$1.20 per serving</b>, this recipe serves 6. Ingredients like fresh basil, ripe tomatoes, and cream make this soup exceptionally delicious. From start to finish, it takes about <b>40 minutes</b>. With a spoonacular score of <b>81%</b>, it's a quality dish. Similar recipes include <a href=\"https://spoonacular.com/recipes/creamy-tomato-basil-soup-716432\">Creamy Tomato Basil Soup</a>."
+    },
+    {
+        "id": 716433,
+        "image": "https://img.spoonacular.com/recipes/716433-556x370.jpg",
+        "title": "Vegetarian Black Bean Chili",
+        "readyInMinutes": 55,
+        "aggregateLikes": 190,
+        "vegetarian": true,
+        "vegan": true,
+        "glutenFree": true,
+        "summary": "For a hearty and flavorful dinner, try this Vegetarian Black Bean Chili. One serving packs <b>245 calories</b>, <b>12g of protein</b>, and <b>3g of fat</b>. For just <b>$1.50 per serving</b>, this recipe covers 27% of your daily needs. This recipe makes 5 servings. Key ingredients include black beans, bell peppers, tomatoes, and spices. Total time is about <b>55 minutes</b>. This recipe has a spoonacular score of <b>78%</b>. For similar recipes, check out: <a href=\"https://spoonacular.com/recipes/vegetarian-black-bean-chili-716433\">Vegetarian Black Bean Chili</a>."
+    },
+    {
+        "id": 716434,
+        "image": "https://img.spoonacular.com/recipes/716434-556x370.jpg",
+        "title": "Roasted Vegetable Quinoa Salad",
+        "readyInMinutes": 50,
+        "aggregateLikes": 325,
+        "vegetarian": true,
+        "vegan": true,
+        "glutenFree": true,
+        "summary": "This Roasted Vegetable Quinoa Salad is a nutritious and satisfying dish. Each serving provides <b>330 calories</b>, <b>9g of protein</b>, and <b>15g of fat</b>. At a cost of <b>$2.00 per serving</b>, it makes 4 servings. Ingredients like quinoa, zucchini, bell peppers, and a rich dressing make it flavorful. It takes about <b>50 minutes</b> to prepare. This recipe has a spoonacular score of <b>85%</b>. Similar recipes can be found at: <a href=\"https://spoonacular.com/recipes/roasted-vegetable-quinoa-salad-716434\">Roasted Vegetable Quinoa Salad</a>."
+    },
+    {
+        "id": 716435,
+        "image": "https://img.spoonacular.com/recipes/716435-556x370.jpg",
+        "title": "Classic Beef Stew",
+        "readyInMinutes": 120,
+        "aggregateLikes": 177,
+        "vegetarian": false,
+        "vegan": false,
+        "glutenFree": false,
+        "summary": "Savor the rich flavors of this Classic Beef Stew. Each serving contains <b>360 calories</b>, <b>28g of protein</b>, and <b>22g of fat</b>. For <b>$3.75 per serving</b>, this recipe makes 6 servings. It features ingredients like beef chuck, carrots, potatoes, and a blend of herbs. It takes <b>120 minutes</b> to prepare. This dish has a spoonacular score of <b>86%</b>. For similar recipes, explore: <a href=\"https://spoonacular.com/recipes/classic-beef-stew-716435\">Classic Beef Stew</a>."
+    }
+]
