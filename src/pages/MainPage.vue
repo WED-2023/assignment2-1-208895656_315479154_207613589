@@ -50,8 +50,12 @@ export default {
 
 }
 
-.recipe-list, .last-viewed-recipes {
+.recipe-list{
   grid-column: 1;
+  grid-row: 2;
+}
+.last-viewed-recipes {
+  grid-column: 2;
   grid-row: 2;
 }
 

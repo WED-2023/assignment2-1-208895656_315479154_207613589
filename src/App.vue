@@ -9,18 +9,18 @@
 
       <b-navbar-nav>
         <template v-if="!$root.store.username">
+          <b-nav-text>hello guest</b-nav-text>
           <b-nav-item href="#"><router-link :to="{ name: 'register' }">Register</router-link></b-nav-item>
           <b-nav-item href="#"><router-link :to="{ name: 'login' }">Login</router-link></b-nav-item>
         </template>
         <template v-else>
-          <b-nav-item-dropdown right v-b-toggle.dropdown-1>
-            {{ $root.store.username }}: Logout
+          <b-nav-text id="nav-text">hello {{ $root.store.username }}</b-nav-text>
+          <b-nav-item href="#"><router-link :to="{ name: 'login' }">create a recipe</router-link></b-nav-item>
             <b-dropdown id="dropdown-1" text="User" variant="success">
               <b-dropdown-item href="#">My favorite recipes</b-dropdown-item>
               <b-dropdown-item href="#">My recipes</b-dropdown-item>
               <b-dropdown-item href="#">My family recipes</b-dropdown-item>
             </b-dropdown>
-          </b-nav-item-dropdown>
           <b-button @click="Logout" variant="danger">Logout</b-button>
         </template>
       </b-navbar-nav>
@@ -53,16 +53,28 @@ export default {
   min-height: 100vh;
 }
 
-#nav {
-  padding: 30px;
-}
-
 .b-navbar-nav {
   display: flex;
   align-items: center;
 }
 
 .b-nav-item, .b-button {
-  margin-right: 10px;
+  margin-right: 35px; // Standard margin to the right for nav items and buttons
+}
+
+.nav-text {
+  margin-right: 250px; // Increased margin to separate "hello" text more from the dropdown
+}
+
+.b-dropdown {
+  margin-right: 100px; // Consistent margin for the dropdown
+}
+
+.b-button {
+  margin-right: 50px; // Removes margin to the right of the Logout button
+}
+
+.b-navbar {
+  padding-left: 20px; // Reduced padding on the left if you want elements to shift leftwards
 }
 </style>
