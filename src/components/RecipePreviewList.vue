@@ -4,6 +4,7 @@
       {{ title }}:
       <slot></slot>
     </h3>
+    <b-button @click="shuffleRecipes" variant="info">Shuffle Recipes</b-button> <!-- Shuffle button -->
     <b-row>
       <b-col v-for="r in recipes" :key="r.id">
         <RecipePreview class="recipePreview" :recipe="r" />
@@ -14,7 +15,8 @@
 
 <script>
 import RecipePreview from "./RecipePreview.vue";
-import { mockGetRecipesPreview } from "../services/recipes.js";
+import { mockGetOtherRecipes, mockGetRecipesPreview } from "../services/recipes.js";
+
 export default {
   name: "RecipePreviewList",
   components: {
@@ -37,22 +39,22 @@ export default {
   methods: {
     async updateRecipes() {
       try {
-        // const response = await this.axios.get(
-        //   this.$root.store.server_domain + "/recipes/random",
-        // );
-
-        const amountToFetch = 3; // Set this to how many recipes you want to fetch
-        const response = mockGetRecipesPreview(amountToFetch);
-
-
-        console.log(response);
-        const recipes = response.data.recipes;
-        console.log(recipes);
-        this.recipes = [];
-        this.recipes.push(...recipes);
+        const amountToFetch = 3; // Fetch 3 new recipes
+        const response = await mockGetRecipesPreview(amountToFetch);
+        this.recipes = response.data.recipes;
       } catch (error) {
-        console.log(error);
+        console.error("Failed to fetch recipes:", error);
       }
+    },
+    async shuffleRecipes() {
+    try {
+        const amountToFetch = 3; // Fetch 3 new recipes
+        const response = await mockGetOtherRecipes(amountToFetch);
+        this.recipes = response.data.recipes;
+      } catch (error) {
+        console.error("Failed to fetch recipes:", error);
+      }
+      
     }
   }
 };

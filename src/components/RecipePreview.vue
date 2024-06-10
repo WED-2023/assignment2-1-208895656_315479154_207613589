@@ -2,7 +2,7 @@
   <router-link
     :to="{ name: 'recipe', params: { recipeId: recipe.id } }"
     class="recipe-preview"
-    :class="{ 'clicked': clicked }"
+    :class="{ 'clicked': this.clickedRecipes.has(recipe.id) }"
     @click="handleClick"
   >
     <div class="recipe-body">
@@ -28,7 +28,7 @@ export default {
   data() {
     return {
       image_load: true,
-      clicked: false
+      clickedRecipes: new Set()  // Use a Set to track clicked recipes
     };
   },
   props: {
@@ -39,7 +39,18 @@ export default {
   },
   methods: {
     handleClick() {
-      this.clicked = !this.clicked;
+      if (this.clickedRecipes.has(this.recipe.id)) {
+        this.clickedRecipes.delete(this.recipe.id);
+      } else {
+        this.clickedRecipes.add(this.recipe.id);
+      }
+      localStorage.setItem('clickedRecipes', JSON.stringify([...this.clickedRecipes]));
+    }
+  },
+  created() {
+    const storedClicks = JSON.parse(localStorage.getItem('clickedRecipes'));
+    if (storedClicks) {
+      this.clickedRecipes = new Set(storedClicks);
     }
   }
 };
@@ -58,6 +69,11 @@ export default {
   overflow: hidden; /* Ensures nothing spills out of the card */
   border-radius: 8px; /* Rounded corners for better aesthetics */
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+
+.clicked .recipe-title {
+  color: blue; /* Change text color when clicked */
 }
 
 .recipe-preview:hover {
