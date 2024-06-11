@@ -1,79 +1,72 @@
 [
     {
-        "id": 716429,
-        "image": "https://img.spoonacular.com/recipes/716429-556x370.jpg",
-        "title": "Pasta with Garlic, Scallions, Cauliflower & Breadcrumbs",
-        "readyInMinutes": 45,
-        "aggregateLikes": 209,
+        "id": 716436,
+        "image": "https://img.spoonacular.com/recipes/716436-556x370.jpg",
+        "title": "Grilled Salmon with Avocado Salsa",
+        "readyInMinutes": 25,
+        "aggregateLikes": 315,
         "vegetarian": false,
         "vegan": false,
-        "glutenFree": false,
-        "summary": "You can never have too many main course recipes, so give Pasta with Garlic, Scallions, Cauliflower & Breadcrumbs a try. One serving contains <b>543 calories</b>, <b>17g of protein</b>, and <b>16g of fat</b>. For <b>$1.57 per serving</b>, this recipe <b>covers 22%</b> of your daily requirements of vitamins and minerals. This recipe serves 2. A mixture of butter, white wine, pasta, and a handful of other ingredients are all it takes to make this recipe so yummy. 209 people have tried and liked this recipe. It is brought to you by fullbellysisters.blogspot.com. From preparation to the plate, this recipe takes approximately <b>45 minutes</b>. Taking all factors into account, this recipe <b>earns a spoonacular score of 83%</b>, which is tremendous. If you like this recipe, take a look at these similar recipes: <a href=\"https://spoonacular.com/recipes/pasta-with-garlic-scallions-cauliflower-breadcrumbs-1230187\">Pasta with Garlic, Scallions, Cauliflower & Breadcrumbs</a>, <a href=\"https://spoonacular.com/recipes/pasta-with-garlic-scallions-cauliflower-breadcrumbs-1229807\">Pasta with Garlic, Scallions, Cauliflower & Breadcrumbs</a>, and <a href=\"https://spoonacular.com/recipes/pasta-with-garlic-scallions-cauliflower-breadcrumbs-1229669\">Pasta with Garlic, Scallions, Cauliflower & Breadcrumbs</a>."
+        "glutenFree": true,
+        "summary": "This Grilled Salmon with Avocado Salsa is a delicious and healthy main course. Each serving provides <b>350 calories</b>, <b>30g of protein</b>, and <b>20g of fat</b>. For <b>$4.50 per serving</b>, this recipe covers 40% of your daily requirements of vitamins and minerals. It serves 2. The recipe includes ingredients such as salmon fillets, avocados, lime juice, and a few others. It takes approximately <b>25 minutes</b> from start to finish. This recipe scores a spoonacular score of <b>92%</b>. If you enjoy this recipe, you might also like: <a href=\"https://spoonacular.com/recipes/grilled-salmon-with-avocado-salsa-716436\">Grilled Salmon with Avocado Salsa</a>."
     },
     {
-        "id": 716430,
-        "image": "https://img.spoonacular.com/recipes/716430-556x370.jpg",
-        "title": "Chicken and Broccoli Stir-Fry",
+        "id": 716437,
+        "image": "https://img.spoonacular.com/recipes/716437-556x370.jpg",
+        "title": "Thai Green Curry with Vegetables",
+        "readyInMinutes": 35,
+        "aggregateLikes": 245,
+        "vegetarian": true,
+        "vegan": true,
+        "glutenFree": true,
+        "summary": "Thai Green Curry with Vegetables is a flavorful and nutritious dish. Each serving contains <b>300 calories</b>, <b>8g of protein</b>, and <b>15g of fat</b>. For <b>$2.25 per serving</b>, this recipe covers 30% of your daily requirements. This recipe serves 4. Key ingredients include green curry paste, coconut milk, and a variety of vegetables. It takes about <b>35 minutes</b> to prepare. This recipe has a spoonacular score of <b>87%</b>. For more like this, try: <a href=\"https://spoonacular.com/recipes/thai-green-curry-with-vegetables-716437\">Thai Green Curry with Vegetables</a>."
+    },
+    {
+        "id": 716439,
+        "image": "https://img.spoonacular.com/recipes/716439-556x370.jpg",
+        "title": "Quinoa Stuffed Peppers",
+        "readyInMinutes": 60,
+        "aggregateLikes": 285,
+        "vegetarian": true,
+        "vegan": true,
+        "glutenFree": true,
+        "summary": "Quinoa Stuffed Peppers make for a nutritious and filling meal. Each serving provides <b>320 calories</b>, <b>12g of protein</b>, and <b>10g of fat</b>. Priced at <b>$2.00 per serving</b>, this recipe serves 4. Ingredients include bell peppers, quinoa, black beans, and tomatoes. It takes about <b>60 minutes</b> from start to finish. This recipe has a spoonacular score of <b>89%</b>. Try similar recipes like: <a href=\"https://spoonacular.com/recipes/quinoa-stuffed-peppers-716439\">Quinoa Stuffed Peppers</a>."
+    },
+    {
+        "id": 716440,
+        "image": "https://img.spoonacular.com/recipes/716440-556x370.jpg",
+        "title": "Lemon Garlic Shrimp Pasta",
         "readyInMinutes": 30,
-        "aggregateLikes": 150,
+        "aggregateLikes": 232,
         "vegetarian": false,
         "vegan": false,
-        "glutenFree": true,
-        "summary": "This Chicken and Broccoli Stir-Fry makes a solid main course. One serving contains <b>310 calories</b>, <b>35g of protein</b>, and <b>12g of fat</b>. For <b>$2.15 per serving</b>, this recipe <b>covers 30%</b> of your daily requirements of vitamins and minerals. This recipe serves 4. Ingredients include chicken breasts, broccoli, soy sauce, and a few others. It takes about <b>30 minutes</b> from start to finish. This recipe has a spoonacular score of <b>90%</b>. Similar dishes include <a href=\"https://spoonacular.com/recipes/chicken-and-broccoli-stir-fry-716430\">Chicken and Broccoli Stir-Fry</a>."
+        "glutenFree": false,
+        "summary": "Lemon Garlic Shrimp Pasta is a quick and flavorful dish perfect for any night. Each serving contains <b>400 calories</b>, <b>28g of protein</b>, and <b>18g of fat</b>. For <b>$3.25 per serving</b>, this recipe covers 25% of your daily requirements. It serves 4. The recipe includes ingredients like shrimp, pasta, garlic, and lemon. It takes about <b>30 minutes</b> to prepare. This recipe scores a spoonacular score of <b>85%</b>. For similar dishes, explore: <a href=\"https://spoonacular.com/recipes/lemon-garlic-shrimp-pasta-716440\">Lemon Garlic Shrimp Pasta</a>."
     },
     {
-        "id": 716431,
-        "image": "https://img.spoonacular.com/recipes/716431-556x370.jpg",
-        "title": "Spicy Shrimp Tacos with Garlic Cilantro Lime Slaw",
+        "id": 716441,
+        "image": "https://img.spoonacular.com/recipes/716441-556x370.jpg",
+        "title": "BBQ Chicken Pizza",
+        "readyInMinutes": 35,
+        "aggregateLikes": 220,
+        "vegetarian": false,
+        "vegan": false,
+        "glutenFree": false,
+        "summary": "This BBQ Chicken Pizza is a delightful combination of sweet and savory flavors. Each serving contains <b>410 calories</b>, <b>20g of protein</b>, and <b>15g of fat</b>. For <b>$3.50 per serving</b>, this recipe covers 25% of your daily nutritional needs. It serves 4. Key ingredients include chicken breast, barbecue sauce, red onions, and mozzarella cheese. It takes approximately <b>35 minutes</b> from start to finish. This recipe has a spoonacular score of <b>88%</b>. Similar recipes include: <a href=\"https://spoonacular.com/recipes/bbq-chicken-pizza-716441\">BBQ Chicken Pizza</a>."
+    },
+    {
+        "id": 716442,
+        "image": "https://img.spoonacular.com/recipes/716442-556x370.jpg",
+        "title": "Vegetable Fried Rice",
         "readyInMinutes": 20,
-        "aggregateLikes": 272,
-        "vegetarian": false,
-        "vegan": false,
-        "glutenFree": true,
-        "summary": "Add some zest to your dinner routine with Spicy Shrimp Tacos with Garlic Cilantro Lime Slaw. This recipe makes 3 servings with <b>295 calories</b>, <b>23g of protein</b>, and <b>12g of fat</b> each. For about <b>$3.45 per serving</b>, it covers 25% of your daily requirements. A mix of lime juice, cilantro, cabbage slaw, and a handful of other ingredients are all it takes to make this dish so tasty. Ready in about <b>20 minutes</b>, this recipe scores <b>88%</b>. Fans of similar recipes might also like: <a href=\"https://spoonacular.com/recipes/spicy-shrimp-tacos-716431\">Spicy Shrimp Tacos</a>."
-    },
-    {
-        "id": 716432,
-        "image": "https://img.spoonacular.com/recipes/716432-556x370.jpg",
-        "title": "Creamy Tomato Basil Soup",
-        "readyInMinutes": 40,
-        "aggregateLikes": 98,
-        "vegetarian": true,
-        "vegan": false,
-        "glutenFree": false,
-        "summary": "Creamy Tomato Basil Soup is a comforting and hearty meal perfect for any day. Each serving contains <b>220 calories</b>, <b>6g of protein</b>, and <b>14g of fat</b>. Priced at around <b>$1.20 per serving</b>, this recipe serves 6. Ingredients like fresh basil, ripe tomatoes, and cream make this soup exceptionally delicious. From start to finish, it takes about <b>40 minutes</b>. With a spoonacular score of <b>81%</b>, it's a quality dish. Similar recipes include <a href=\"https://spoonacular.com/recipes/creamy-tomato-basil-soup-716432\">Creamy Tomato Basil Soup</a>."
-    },
-    {
-        "id": 716433,
-        "image": "https://img.spoonacular.com/recipes/716433-556x370.jpg",
-        "title": "Vegetarian Black Bean Chili",
-        "readyInMinutes": 55,
-        "aggregateLikes": 190,
+        "aggregateLikes": 300,
         "vegetarian": true,
         "vegan": true,
-        "glutenFree": true,
-        "summary": "For a hearty and flavorful dinner, try this Vegetarian Black Bean Chili. One serving packs <b>245 calories</b>, <b>12g of protein</b>, and <b>3g of fat</b>. For just <b>$1.50 per serving</b>, this recipe covers 27% of your daily needs. This recipe makes 5 servings. Key ingredients include black beans, bell peppers, tomatoes, and spices. Total time is about <b>55 minutes</b>. This recipe has a spoonacular score of <b>78%</b>. For similar recipes, check out: <a href=\"https://spoonacular.com/recipes/vegetarian-black-bean-chili-716433\">Vegetarian Black Bean Chili</a>."
-    },
-    {
-        "id": 716434,
-        "image": "https://img.spoonacular.com/recipes/716434-556x370.jpg",
-        "title": "Roasted Vegetable Quinoa Salad",
-        "readyInMinutes": 50,
-        "aggregateLikes": 325,
-        "vegetarian": true,
-        "vegan": true,
-        "glutenFree": true,
-        "summary": "This Roasted Vegetable Quinoa Salad is a nutritious and satisfying dish. Each serving provides <b>330 calories</b>, <b>9g of protein</b>, and <b>15g of fat</b>. At a cost of <b>$2.00 per serving</b>, it makes 4 servings. Ingredients like quinoa, zucchini, bell peppers, and a rich dressing make it flavorful. It takes about <b>50 minutes</b> to prepare. This recipe has a spoonacular score of <b>85%</b>. Similar recipes can be found at: <a href=\"https://spoonacular.com/recipes/roasted-vegetable-quinoa-salad-716434\">Roasted Vegetable Quinoa Salad</a>."
-    },
-    {
-        "id": 716435,
-        "image": "https://img.spoonacular.com/recipes/716435-556x370.jpg",
-        "title": "Classic Beef Stew",
-        "readyInMinutes": 120,
-        "aggregateLikes": 177,
-        "vegetarian": false,
-        "vegan": false,
         "glutenFree": false,
-        "summary": "Savor the rich flavors of this Classic Beef Stew. Each serving contains <b>360 calories</b>, <b>28g of protein</b>, and <b>22g of fat</b>. For <b>$3.75 per serving</b>, this recipe makes 6 servings. It features ingredients like beef chuck, carrots, potatoes, and a blend of herbs. It takes <b>120 minutes</b> to prepare. This dish has a spoonacular score of <b>86%</b>. For similar recipes, explore: <a href=\"https://spoonacular.com/recipes/classic-beef-stew-716435\">Classic Beef Stew</a>."
+        "summary": "Vegetable Fried Rice is a quick and easy meal that's packed with flavor. Each serving contains <b>290 calories</b>, <b>6g of protein</b>, and <b>10g of fat</b>. For <b>$1.75 per serving</b>, this recipe covers 18% of your daily requirements of vitamins and minerals. This recipe serves 4. Ingredients include cooked rice, mixed vegetables, soy sauce, and a few others. It takes about <b>20 minutes</b> to prepare. This recipe scores a spoonacular score of <b>83%</b>. For similar recipes, check out: <a href=\"https://spoonacular.com/recipes/vegetable-fried-rice-716442\">Vegetable Fried Rice</a>."
     }
+
+
+
+    
 ]
