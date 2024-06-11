@@ -4,13 +4,14 @@
     <h1 class="title">Everyday Cooking</h1>
     <div class="grid-container">
       <div class="recipe-list">
-        <RecipePreviewList title="Random Recipes" class="center" />
+        <RecipePreviewList :recipes="recipes" title="Random Recipes" class="center" />
       </div>
       <div v-if="!$root.store.username" class="login-form">
         <LoginForm></LoginForm>
       </div>
       <div v-if="$root.store.username" class="last-viewed-recipes">
         <RecipePreviewList
+          :recipes="recipes"
           title="Last Viewed Recipes"
           class="center"
           disabled
@@ -20,7 +21,6 @@
   </div>
 </template>
 
-
 <script>
 import RecipePreviewList from "../components/RecipePreviewList";
 import LoginForm from "../components/LoginForm";
@@ -29,7 +29,14 @@ export default {
   components: {
     RecipePreviewList,
     LoginForm
-  }
+  },
+  data() {
+    return {
+      recipes: [
+        // Populate this array with your recipes
+      ],
+    };
+  },
 };
 </script>
 

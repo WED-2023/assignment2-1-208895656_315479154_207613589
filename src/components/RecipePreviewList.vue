@@ -96,5 +96,11 @@ h3 {
 
 .recipePreview {
   text-align: left; /* Ensures text inside the recipe preview is aligned left */
+  border: 1px solid transparent; /* Default border, invisible */
+  transition: border-color 0.3s ease; /* Smooth transition for border color change */
+}
+
+.recipePreview[isClicked="true"] {
+  border-color: blue; /* Blue border when clicked */
 }
 </style>

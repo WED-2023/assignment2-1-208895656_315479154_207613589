@@ -4,7 +4,7 @@
       <b-navbar-nav class="mr-auto">
         <b-nav-item href="#"><router-link :to="{ name: 'main' }">Vue Recipes</router-link></b-nav-item>
         <b-nav-item href="#"><router-link :to="{ name: 'search' }">Search</router-link></b-nav-item>
-        <b-nav-item href="#">About</b-nav-item> <!-- Adjust the href or remove it as needed -->
+        <b-nav-item href="#"><router-link :to="{ name: 'about' }">About</router-link></b-nav-item>
       </b-navbar-nav>
 
       <b-navbar-nav>
