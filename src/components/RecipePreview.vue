@@ -68,6 +68,7 @@ export default {
   overflow: hidden; /* Ensures nothing spills out of the card */
   border-radius: 8px; /* Rounded corners for better aesthetics */
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  font-family: 'safary'
 }
 
 .clicked .recipe-title {
