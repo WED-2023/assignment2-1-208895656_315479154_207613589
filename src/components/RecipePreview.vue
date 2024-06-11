@@ -3,10 +3,10 @@
     :to="{ name: 'recipe', params: { recipeId: recipe.id } }"
     class="recipe-preview"
     :class="{ 'clicked': this.clickedRecipes.has(recipe.id) }"
-    @click="handleClick"
+    @click.prevent="handleClick"
   >
     <div class="recipe-body">
-      <img v-if="image_load" :src="recipe.image" alt="Recipe Image" class="recipe-image" />
+      <img v-if="image_load" :src="recipe.image" alt="Recipe Image" class="recipe-image" @error="image_load = false"/>
     </div>
     <div class="recipe-footer">
       <h3 :title="recipe.title" class="recipe-title">{{ recipe.title }}</h3>
@@ -45,13 +45,12 @@ export default {
         this.clickedRecipes.add(this.recipe.id);
       }
       localStorage.setItem('clickedRecipes', JSON.stringify([...this.clickedRecipes]));
+      this.$router.push({ name: 'recipe', params: { recipeId: this.recipe.id } });
     }
   },
   created() {
-    const storedClicks = JSON.parse(localStorage.getItem('clickedRecipes'));
-    if (storedClicks) {
-      this.clickedRecipes = new Set(storedClicks);
-    }
+    const storedClicks = JSON.parse(localStorage.getItem('clickedRecipes') || "[]");  // Default to an empty array if null
+    this.clickedRecipes = new Set(storedClicks);
   }
 };
 </script>
@@ -69,8 +68,8 @@ export default {
   overflow: hidden; /* Ensures nothing spills out of the card */
   border-radius: 8px; /* Rounded corners for better aesthetics */
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  font-family: 'safary'
 }
-
 
 .clicked .recipe-title {
   color: blue; /* Change text color when clicked */

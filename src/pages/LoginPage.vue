@@ -135,6 +135,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .container {
+  background-color: rgb(56, 211, 211);
   max-width: 400px;
 }
 </style>
