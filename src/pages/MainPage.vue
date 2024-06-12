@@ -9,13 +9,12 @@
       <div v-if="!$root.store.username" class="login-form">
         <LoginForm></LoginForm>
       </div>
-      <div v-if="$root.store.username" class="last-viewed-recipes">
-        <!-- Ensure :showButton="false" is directly on RecipePreviewList -->
+      <div v-if="$root.store.username" class="last-viewed-recipes" :showButton="false">
         <RecipePreviewList
           :recipes="recipes"
           title="Last Viewed Recipes"
           class="center"
-          :showButton="false"
+          disabled
         ></RecipePreviewList>
       </div>
     </div>

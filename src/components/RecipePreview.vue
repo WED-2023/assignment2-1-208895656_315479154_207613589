@@ -1,6 +1,11 @@
 <template>
   <div class="recipe-preview" :class="{ 'clicked': this.clickedRecipes.has(recipe.id) }">
     <!-- This wrapper is to position the Like button correctly and prevent it from triggering the router-link -->
+    <div class="like-button-container">
+      <button @click.stop="toggleLike(recipe.id)" :class="{'liked': likedRecipes.has(recipe.id)}" class="like-button">
+        {{ likedRecipes.has(recipe.id) ? '♥ Unlike' : '♥ Like' }}
+      </button>
+    </div>
     <router-link :to="{ name: 'recipe', params: { recipeId: recipe.id } }" class="link-area">
       <div class="recipe-body">
         <img v-if="image_load" :src="recipe.image" alt="Recipe Image" class="recipe-image" @error="image_load = false"/>
@@ -10,22 +15,17 @@
         <ul class="recipe-overview">
           <li>{{ recipe.readyInMinutes }} minutes</li>
           <li>{{ recipe.aggregateLikes }} likes</li>
-          <br>
           <li>{{ recipe.summary }}</li>
+          <br>
+          <br>
+          <br>
         </ul>
-        <br>
-        <br>
         <div class="recipe-icons">
           <img v-if="recipe.glutenFree" src="https://spoonacular.com/application/frontend/images/badges/gluten-free.svg" alt="Gluten-Free" class="icon"/>
           <img v-if="recipe.vegan" src="https://spoonacular.com/application/frontend/images/badges/vegan.svg" alt="Vegan" class="icon"/>
           <img v-if="recipe.vegetarian" src="https://spoonacular.com/application/frontend/images/badges/vegetarian.svg" alt="Vegetarian" class="icon"/>
         </div>
       </div>
-      <div class="like-button-container">
-      <button @click.stop="toggleLike(recipe.id)" :class="{'liked': likedRecipes.has(recipe.id)}" class="like-button">
-        {{ likedRecipes.has(recipe.id) ? '♥ Unlike' : '♥ Like' }}
-      </button>
-    </div>
     </router-link>
   </div>
 </template>
