@@ -24,7 +24,7 @@
             </ul>
           </div>
           <div class="wrapped">
-            <h3>Instructions:</h3>
+            <h3>Nutritional Highlights:</h3>
             <div v-html="recipe.summary"></div> <!-- Render HTML directly from summary -->
           </div>
         </div>
@@ -35,7 +35,6 @@
     </div>
   </div>
 </template>
-
 
 <script>
 import { mockGetRecipeFullDetails } from "../services/recipes.js";
@@ -58,8 +57,7 @@ export default {
         //   }
         // );
 
-        response = mockGetRecipeFullDetails(this.$route.params.recipeId);
-
+        response = await mockGetRecipeFullDetails(this.$route.params.recipeId);
         // console.log("response.status", response.status);
         if (response.status !== 200) this.$router.replace("/NotFound");
       } catch (error) {
@@ -75,7 +73,8 @@ export default {
         aggregateLikes,
         readyInMinutes,
         image,
-        title
+        title,
+        servings
       } = response.data.recipe;
 
       let _instructions = analyzedInstructions
@@ -93,7 +92,8 @@ export default {
         aggregateLikes,
         readyInMinutes,
         image,
-        title
+        title,
+        servings
       };
 
       this.recipe = _recipe;
@@ -139,8 +139,6 @@ export default {
   justify-content: space-between;
   margin-top: 20px;
 }
-
-
 
 .wrapped {
   flex: 1 1 300px; /* Each block takes at least 300px space */
@@ -208,3 +206,4 @@ li:hover {
   background-color: #f0f0f0;
 }
 </style>
+

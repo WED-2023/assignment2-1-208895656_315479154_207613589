@@ -33,20 +33,24 @@ export function mockGetOtherRecipes(amount = 1) {
 //   }
   
 export function mockGetRecipeFullDetails(recipeId) {
-  const recipeExists = recipe_preview.some(recipe => recipe.id === recipeId);
-  if (recipeExists) {
+  // Convert recipeId to Number if it's stored as a Number in your data
+  const id = Number(recipeId);  
+  const recipeIndex = recipe_preview.findIndex(recipe => recipe.id === id);
+
+  if (recipeIndex !== -1) {
+    // Assuming recipe_full_view is an array with the same index alignment as recipe_preview
+    const recipeDetails = recipe_full_view[recipeIndex];
     return {
       status: 200,
-      data: { recipe: recipe_full_view }
+      data: { recipe: recipeDetails }
     };
   } else {
     return {
-      status: 404, // Or any other appropriate error status
+      status: 404,
       error: 'Recipe not found'
     };
   }
 }
-    // need to implement this
 
 export function fetchRecipesByIds(ids) {
   let recipes = ids.map(id => recipe_preview.find(recipe => recipe.id === id)).filter(recipe => recipe !== undefined);
