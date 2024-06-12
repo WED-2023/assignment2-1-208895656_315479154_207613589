@@ -6,7 +6,7 @@
         <b-nav-item href="#"><router-link :to="{ name: 'search' }">Search</router-link></b-nav-item>
         <b-nav-item href="#"><router-link :to="{ name: 'about' }">About</router-link></b-nav-item>
       </b-navbar-nav>
-
+      
       <b-navbar-nav>
         <template v-if="!$root.store.username">
           <b-nav-text>hello guest</b-nav-text>
@@ -15,23 +15,35 @@
         </template>
         <template v-else>
           <b-nav-text id="nav-text">hello {{ $root.store.username }}</b-nav-text>
-          <b-nav-item href="#"><router-link :to="{ name: 'login' }">create a recipe</router-link></b-nav-item>
-            <b-dropdown id="dropdown-1" text="User" variant="success">
-              <b-dropdown-item href="#">My favorite recipes</b-dropdown-item>
-              <b-dropdown-item href="#">My recipes</b-dropdown-item>
-              <b-dropdown-item href="#">My family recipes</b-dropdown-item>
-            </b-dropdown>
+          <b-nav-item @click="showCreateRecipeModal = true">create a recipe</b-nav-item>
+          <b-dropdown id="dropdown-1" text="User" variant="success">
+            <b-dropdown-item href="#">My favorite recipes</b-dropdown-item>
+            <b-dropdown-item href="#">My recipes</b-dropdown-item>
+            <b-dropdown-item href="#">My family recipes</b-dropdown-item>
+          </b-dropdown>
           <b-button @click="Logout" variant="danger">Logout</b-button>
         </template>
       </b-navbar-nav>
     </b-navbar>
     <router-view />
+    
+    <CreateRecipeModal :isVisible.sync="showCreateRecipeModal" />
   </div>
 </template>
 
 <script>
+import CreateRecipeModal from './components/CreateRecipeModal.vue';
+
 export default {
   name: "App",
+  components: {
+    CreateRecipeModal
+  },
+  data() {
+    return {
+      showCreateRecipeModal: false
+    };
+  },
   methods: {
     Logout() {
       this.$root.store.logout();
