@@ -11,13 +11,6 @@
             <div class="mb-3">
               <div>Ready in {{ recipe.readyInMinutes }} minutes</div>
               <div>Likes: {{ recipe.aggregateLikes }} likes</div>
-              <div v-if="recipe.vegan">Vegan: Yes</div>
-              <div v-else>Vegan: No</div>
-              <div v-if="recipe.Vegetarian">Vegetarian: Yes</div>
-              <div v-else>Vegetarian: No</div>
-              <div v-if="recipe.glutenFree">Gluten-Free: Yes</div>
-              <div v-else>Gluten-Free: No</div>
-              <div>Servings: {{ recipe.servings }} </div>
             </div>
             Ingredients:
             <ul>
@@ -70,6 +63,7 @@ export default {
         // );
 
         response = mockGetRecipeFullDetails(this.$route.params.recipeId);
+
         // console.log("response.status", response.status);
         if (response.status !== 200) this.$router.replace("/NotFound");
       } catch (error) {
@@ -85,8 +79,7 @@ export default {
         aggregateLikes,
         readyInMinutes,
         image,
-        title,
-        servings
+        title
       } = response.data.recipe;
 
       let _instructions = analyzedInstructions
@@ -104,8 +97,7 @@ export default {
         aggregateLikes,
         readyInMinutes,
         image,
-        title,
-        servings
+        title
       };
 
       this.recipe = _recipe;

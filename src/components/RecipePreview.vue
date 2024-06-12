@@ -1,11 +1,12 @@
 <template>
   <div class="recipe-preview" :class="{ 'clicked': this.clickedRecipes.has(recipe.id) }">
-    <!-- This wrapper is to position the Like button correctly and prevent it from triggering the router-link -->
-    <div class="like-button-container">
-      <button @click.stop="toggleLike(recipe.id)" :class="{'liked': likedRecipes.has(recipe.id)}" class="like-button">
+    <!-- Like Button Container -->
+    <div class="like-button-container" @click.stop="toggleLike(recipe.id)">
+      <button :class="{'liked': likedRecipes.has(recipe.id)}" class="like-button">
         {{ likedRecipes.has(recipe.id) ? '♥ Unlike' : '♥ Like' }}
       </button>
     </div>
+    <!-- Router Link for Navigation -->
     <router-link :to="{ name: 'recipe', params: { recipeId: recipe.id } }" class="link-area">
       <div class="recipe-body">
         <img v-if="image_load" :src="recipe.image" alt="Recipe Image" class="recipe-image" @error="image_load = false"/>
@@ -17,9 +18,7 @@
           <li>{{ recipe.aggregateLikes }} likes</li>
           <br>
           <li>{{ recipe.summary }}</li>
-          <br>
-          <br>
-          <br>
+          <br><br><br>
         </ul>
         <div class="recipe-icons">
           <img v-if="recipe.glutenFree" src="https://spoonacular.com/application/frontend/images/badges/gluten-free.svg" alt="Gluten-Free" class="icon"/>
@@ -53,7 +52,11 @@ export default {
       this.likedRecipes.has(id) ? this.likedRecipes.delete(id) : this.likedRecipes.add(id);
       localStorage.setItem('likedRecipes', JSON.stringify([...this.likedRecipes]));
       this.$forceUpdate();  // Ensuring reactivity is maintained
-    }
+    },
+    handleClick() {
+    console.log('Recipe ID:', this.recipe.id); // Check what ID is being passed
+    this.$router.push({ name: 'recipe', params: { recipeId: this.recipe.id } });
+  }
   },
   mounted() {
     const storedLikes = JSON.parse(localStorage.getItem('likedRecipes') || "[]");
