@@ -45,9 +45,7 @@ export function mockGetOtherRecipes(amount = 1) {
         error: 'Recipe not found'
       };
     }
-  }
-
-  // need to implement this
+      // need to implement this
   export function fetchRecipesByIds(ids) {
     let recipes = ids.map(id => recipe_preview.find(recipe => recipe.id === id)).filter(recipe => recipe !== undefined);
     return { data: { recipes: recipes } };
@@ -60,4 +58,5 @@ export function mockGetOtherRecipes(amount = 1) {
   }
 
   return { data: { recipes: recipes } };
+  }
   }
