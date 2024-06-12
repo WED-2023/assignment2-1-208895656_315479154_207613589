@@ -4,12 +4,12 @@
     <h1 class="title">Everyday Cooking</h1>
     <div class="grid-container">
       <div class="recipe-list">
-        <RecipePreviewList :recipes="recipes" title="Random Recipes" class="center" />
+        <RecipePreviewList :recipes="recipes" title="Random Recipes" class="center" :showButton="true" />
       </div>
       <div v-if="!$root.store.username" class="login-form">
         <LoginForm></LoginForm>
       </div>
-      <div v-if="$root.store.username" class="last-viewed-recipes">
+      <div v-if="$root.store.username" class="last-viewed-recipes" :showButton="false">
         <RecipePreviewList
           :recipes="recipes"
           title="Last Viewed Recipes"
@@ -76,7 +76,7 @@ export default {
   max-width: 400px;
   margin: auto;
   box-shadow: 0 4px 8px rgba(32, 15, 15, 0.1);
-  background-color: #771616; /* Set background color to white */
+  background-color: #ffffff; /* Set background color to white */
   border-radius: 50px;
 }
 
@@ -84,15 +84,17 @@ export default {
   grid-column: 1;
 }
 
+
 .grid-container
 {
   background-color: #d8e27c;
+  
 }
 
 
 .last-viewed-recipes {
   grid-column: 2;
-  grid-row: 2;
+  grid-row: 1;
 }
 </style>
 

@@ -8,7 +8,8 @@
             {{ title }}:
             <slot></slot>
           </h3>
-          <b-button @click="shuffleRecipes" variant="info">Shuffle Recipes</b-button> <!-- Shuffle button -->
+          <!-- Shuffle button, conditionally rendered -->
+          <b-button v-if="showButton" @click="shuffleRecipes" variant="info">Shuffle Recipes</b-button>
         </div>
       </b-col>
     </b-row>
@@ -36,9 +37,9 @@ export default {
       type: String,
       required: true
     },
-    recipeIds: {  // Optional prop for recipe IDs
-      type: Array,
-      default: () => []
+    showButton: {
+      type: Boolean,
+      default: true  // By default, the button is shown
     }
   },
   data() {
