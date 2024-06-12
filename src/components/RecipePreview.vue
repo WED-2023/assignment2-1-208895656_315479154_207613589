@@ -1,34 +1,40 @@
 <template>
-  <router-link
-    :to="{ name: 'recipe', params: { recipeId: recipe.id } }"
-    class="recipe-preview"
-    :class="{ 'clicked': this.clickedRecipes.has(recipe.id) }"
-    @click.prevent="handleClick"
-  >
-    <div class="recipe-body">
-      <img v-if="image_load" :src="recipe.image" alt="Recipe Image" class="recipe-image" @error="image_load = false"/>
+  <div class="recipe-preview" :class="{ 'clicked': this.clickedRecipes.has(recipe.id) }">
+    <!-- This wrapper is to position the Like button correctly and prevent it from triggering the router-link -->
+    <div class="like-button-container">
+      <button @click.stop="toggleLike(recipe.id)" :class="{'liked': likedRecipes.has(recipe.id)}" class="like-button">
+        {{ likedRecipes.has(recipe.id) ? '♥ Unlike' : '♥ Like' }}
+      </button>
     </div>
-    <div class="recipe-footer">
-      <h3 :title="recipe.title" class="recipe-title">{{ recipe.title }}</h3>
-      <ul class="recipe-overview">
-        <li>{{ recipe.readyInMinutes }} minutes</li>
-        <li>{{ recipe.aggregateLikes }} likes</li>
-      </ul>
-      <div class="recipe-icons">
-        <img v-if="recipe.glutenFree" src="https://spoonacular.com/application/frontend/images/badges/gluten-free.svg" alt="Gluten-Free" class="icon"/>
-        <img v-if="recipe.vegan" src="https://spoonacular.com/application/frontend/images/badges/vegan.svg" alt="Vegan" class="icon"/>
-        <img v-if="recipe.vegetarian" src="https://spoonacular.com/application/frontend/images/badges/vegetarian.svg" alt="Vegetarian" class="icon"/>
+    <router-link :to="{ name: 'recipe', params: { recipeId: recipe.id } }" class="link-area">
+      <div class="recipe-body">
+        <img v-if="image_load" :src="recipe.image" alt="Recipe Image" class="recipe-image" @error="image_load = false"/>
       </div>
-    </div>
-  </router-link>
+      <div class="recipe-footer">
+        <h3 :title="recipe.title" class="recipe-title">{{ recipe.title }}</h3>
+        <ul class="recipe-overview">
+          <li>{{ recipe.readyInMinutes }} minutes</li>
+          <li>{{ recipe.aggregateLikes }} likes</li>
+        </ul>
+        <div class="recipe-icons">
+          <img v-if="recipe.glutenFree" src="https://spoonacular.com/application/frontend/images/badges/gluten-free.svg" alt="Gluten-Free" class="icon"/>
+          <img v-if="recipe.vegan" src="https://spoonacular.com/application/frontend/images/badges/vegan.svg" alt="Vegan" class="icon"/>
+          <img v-if="recipe.vegetarian" src="https://spoonacular.com/application/frontend/images/badges/vegetarian.svg" alt="Vegetarian" class="icon"/>
+        </div>
+      </div>
+    </router-link>
+  </div>
 </template>
+
+
 
 <script>
 export default {
   data() {
     return {
       image_load: true,
-      clickedRecipes: new Set()  // Use a Set to track clicked recipes
+      clickedRecipes: new Set(),
+      likedRecipes: new Set()
     };
   },
   props: {
@@ -38,19 +44,15 @@ export default {
     }
   },
   methods: {
-    handleClick() {
-      if (this.clickedRecipes.has(this.recipe.id)) {
-        this.clickedRecipes.delete(this.recipe.id);
-      } else {
-        this.clickedRecipes.add(this.recipe.id);
-      }
-      localStorage.setItem('clickedRecipes', JSON.stringify([...this.clickedRecipes]));
-      this.$router.push({ name: 'recipe', params: { recipeId: this.recipe.id } });
+    toggleLike(id) {
+      this.likedRecipes.has(id) ? this.likedRecipes.delete(id) : this.likedRecipes.add(id);
+      localStorage.setItem('likedRecipes', JSON.stringify([...this.likedRecipes]));
+      this.$forceUpdate();  // Ensuring reactivity is maintained
     }
   },
-  created() {
-    const storedClicks = JSON.parse(localStorage.getItem('clickedRecipes') || "[]");  // Default to an empty array if null
-    this.clickedRecipes = new Set(storedClicks);
+  mounted() {
+    const storedLikes = JSON.parse(localStorage.getItem('likedRecipes') || "[]");
+    this.likedRecipes = new Set(storedLikes);
   }
 };
 </script>
@@ -58,21 +60,17 @@ export default {
 <style scoped>
 .recipe-preview {
   display: block;
-  width: 300px; /* Fixed width for uniform card size */
+  width: 300px;
   border: 1px solid #ccc;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   margin: 10px;
   text-decoration: none;
   color: inherit;
   position: relative;
-  overflow: hidden; /* Ensures nothing spills out of the card */
-  border-radius: 8px; /* Rounded corners for better aesthetics */
+  overflow: hidden;
+  border-radius: 8px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  font-family: 'safary'
-}
-
-.clicked .recipe-title {
-  color: blue; /* Change text color when clicked */
+  font-family: 'safary';
 }
 
 .recipe-preview:hover {
@@ -85,10 +83,33 @@ export default {
   height: auto;
 }
 
+.like-button-container {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+}
+
 .recipe-image {
   width: 100%;
   height: auto;
   display: block;
+}
+
+.like-button {
+  background-color: #24ca0e; /* Green background for 'Like' */
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  font-size: 11px;
+  cursor: pointer;
+  border-radius: 5px;
+  position: absolute;
+  bottom: 10px;
+  left: 10px; /* Position to bottom-left */
+}
+
+.liked {
+  background-color: #ff4444; /* Red background for liked state */
 }
 
 .recipe-footer {
@@ -115,7 +136,7 @@ export default {
 }
 
 .icon {
-  width: 40px; /* Uniform size for all icons */
+  width: 40px;
   height: 40px;
   margin-left: 5px;
   margin-bottom: 15px;
