@@ -47,7 +47,7 @@ export default {
   methods: {
     async updateRecipes() {
       try {
-        const amountToFetch = 3; // Fetch 3 new recipes
+        const amountToFetch = 4; // Fetch 3 new recipes
         const response = await mockGetRecipesPreview(amountToFetch);
         this.recipes = response.data.recipes.map(recipe => ({
           ...recipe,
@@ -59,7 +59,7 @@ export default {
     },
     async shuffleRecipes() {
       try {
-        const amountToFetch = 3; // Fetch 3 new recipes
+        const amountToFetch = 4; // Fetch 3 new recipes
         const response = await mockGetOtherRecipes(amountToFetch);
         this.recipes = response.data.recipes.map(recipe => ({
           ...recipe,
