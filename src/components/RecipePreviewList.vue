@@ -8,8 +8,6 @@
             {{ title }}:
             <slot></slot>
           </h3>
-          <!-- Shuffle button, conditionally rendered -->
-          <b-button v-if="showButton" @click="shuffleRecipes" variant="info">Shuffle Recipes</b-button>
         </div>
       </b-col>
     </b-row>
@@ -19,9 +17,12 @@
         <RecipePreview class="recipePreview" :recipe="r" :isClicked="r.clicked" />
       </b-col>
     </b-row>
+ 
+      <!-- Shuffle button, conditionally rendered in its own row -->
+        <b-button v-if="showButton" @click="shuffleRecipes" variant="info">Shuffle Recipes</b-button>
+
   </b-container>
 </template>
-
 
 <script>
 import RecipePreview from "./RecipePreview.vue";
@@ -39,7 +40,7 @@ export default {
     },
     showButton: {
       type: Boolean,
-      default: true  // By default, the button is shown
+      default: false  // By default, the button is shown
     }
   },
   data() {
@@ -107,12 +108,11 @@ export default {
 };
 </script>
 
-
-
 <style lang="scss" scoped>
 .container {
   min-height: 400px;
 }
+
 .title-button-container {
   display: flex;
   flex-direction: column;
@@ -121,10 +121,6 @@ export default {
 
 h3 {
   margin-bottom: 0; /* Removes the bottom margin to reduce the space between the title and the button */
-}
-
-.b-button {
-  margin-top: 10px; /* Adds some space above the button */
 }
 
 .recipePreview {
@@ -136,5 +132,8 @@ h3 {
 .recipePreview[isClicked="true"] {
   border-color: blue; /* Blue border when clicked */
 }
-</style>
 
+.b-button {
+  margin-left: 20px;
+}
+</style>

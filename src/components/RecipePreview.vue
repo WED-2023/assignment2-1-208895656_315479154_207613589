@@ -1,5 +1,5 @@
 <template>
-  <div class="recipe-preview" :class="{ 'clicked': this.clickedRecipes.has(recipe.id) }">
+  <div class="recipe-preview" :class="{ 'clicked': clickedRecipes.has(recipe.id) }">
     <!-- Like Button Container -->
     <div class="like-button-container" @click.stop="toggleLike(recipe.id)">
       <button :class="{'liked': likedRecipes.has(recipe.id)}" class="like-button">
@@ -7,9 +7,9 @@
       </button>
     </div>
     <!-- Router Link for Navigation -->
-    <router-link :to="{ name: 'recipe', params: { recipeId: recipe.id } }" class="link-area">
+    <router-link @click.native="handleClick" :to="{ name: 'recipe', params: { recipeId: recipe.id } }" class="link-area">
       <div class="recipe-body">
-        <img v-if="image_load" :src="recipe.image" alt="Recipe Image" class="recipe-image" @error="image_load = false"/>
+        <img :src="recipe.image" alt="Recipe Image" class="recipe-image" @error="image_load = false" :class="{ 'darkened': clickedRecipes.has(recipe.id) }"/>
       </div>
       <div class="recipe-footer">
         <h3 :title="recipe.title" class="recipe-title">{{ recipe.title }}</h3>
@@ -29,8 +29,6 @@
     </router-link>
   </div>
 </template>
-
-
 
 <script>
 export default {
@@ -54,13 +52,16 @@ export default {
       this.$forceUpdate();  // Ensuring reactivity is maintained
     },
     handleClick() {
-    console.log('Recipe ID:', this.recipe.id); // Check what ID is being passed
-    this.$router.push({ name: 'recipe', params: { recipeId: this.recipe.id } });
-  }
+      this.clickedRecipes.add(this.recipe.id);
+      localStorage.setItem('clickedRecipes', JSON.stringify([...this.clickedRecipes]));
+    },
   },
   mounted() {
     const storedLikes = JSON.parse(localStorage.getItem('likedRecipes') || "[]");
     this.likedRecipes = new Set(storedLikes);
+    
+    const storedClicks = JSON.parse(localStorage.getItem('clickedRecipes') || "[]");
+    this.clickedRecipes = new Set(storedClicks);
   }
 };
 </script>
@@ -101,6 +102,11 @@ export default {
   width: 100%;
   height: auto;
   display: block;
+  transition: filter 0.3s ease;
+}
+
+.recipe-image.darkened {
+  filter: brightness(0.5);
 }
 
 .like-button {

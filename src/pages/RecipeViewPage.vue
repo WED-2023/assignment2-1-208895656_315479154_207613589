@@ -28,6 +28,14 @@
             <div v-html="recipe.summary"></div> <!-- Render HTML directly from summary -->
           </div>
         </div>
+        <div class="instructions wrapped">
+          <h3>Instructions:</h3>
+          <ol>
+            <li v-for="(instruction, index) in recipe._instructions" :key="index">
+              {{ instruction.step }}
+            </li>
+          </ol>
+        </div>
       </div>
     </div>
     <div v-else>
@@ -47,18 +55,9 @@ export default {
   async created() {
     try {
       let response;
-      // response = this.$route.params.response;
 
       try {
-        // response = await this.axios.get(
-        //   this.$root.store.server_domain + "/recipes/" + this.$route.params.recipeId,
-        //   {
-        //     withCredentials: true
-        //   }
-        // );
-
         response = await mockGetRecipeFullDetails(this.$route.params.recipeId);
-        // console.log("response.status", response.status);
         if (response.status !== 200) this.$router.replace("/NotFound");
       } catch (error) {
         console.log("error.response.status", error.response.status);
@@ -206,4 +205,3 @@ li:hover {
   background-color: #f0f0f0;
 }
 </style>
-
