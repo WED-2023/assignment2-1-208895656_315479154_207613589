@@ -25,7 +25,7 @@
 
 <script>
 import RecipePreview from "./RecipePreview.vue";
-import { mockGetOtherRecipes, mockGetRecipesPreview } from "../services/recipes.js";
+import { fetchRecipesByIds, mockGetOtherRecipes, mockGetRecipesPreview } from "../services/recipes.js";
 
 export default {
   name: "RecipePreviewList",
@@ -50,17 +50,42 @@ export default {
   mounted() {
     this.updateRecipes();
   },
+  watch: {
+    recipeIds: {
+      immediate: true,
+      handler(newIds) {
+        if (newIds.length) {
+          this.updateRecipes(newIds);
+        } else {
+          this.updateRecipes();
+        }
+      }
+    }
+  },
   methods: {
-    async updateRecipes() {
-      try {
-        const amountToFetch = 3; // Fetch 3 new recipes
-        const response = await mockGetRecipesPreview(amountToFetch);
-        this.recipes = response.data.recipes.map(recipe => ({
-          ...recipe,
-          clicked: false  // Initialize the clicked property
-        }));
-      } catch (error) {
-        console.error("Failed to fetch recipes:", error);
+    async updateRecipes(ids = null) {
+      if (ids) {
+        try {
+          const amountToFetch = 3; // Default fetch 3 new recipes
+          const response = await mockGetRecipesPreview(amountToFetch);
+          this.recipes = response.data.recipes.map(recipe => ({
+            ...recipe,
+            clicked: false  // Initialize the clicked property
+          }));
+        } catch (error) {
+          console.error("Failed to fetch recipes:", error);
+        }
+      } else {
+        try {
+          const amountToFetch = 3; // Default fetch 3 new recipes
+          const response = await mockGetRecipesPreview(amountToFetch);
+          this.recipes = response.data.recipes.map(recipe => ({
+            ...recipe,
+            clicked: false  // Initialize the clicked property
+          }));
+        } catch (error) {
+          console.error("Failed to fetch recipes:", error);
+        }
       }
     },
     async shuffleRecipes() {
@@ -81,6 +106,8 @@ export default {
   }
 };
 </script>
+
+
 
 <style lang="scss" scoped>
 .container {
@@ -110,3 +137,4 @@ h3 {
   border-color: blue; /* Blue border when clicked */
 }
 </style>
+
