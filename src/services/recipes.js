@@ -46,3 +46,18 @@ export function mockGetOtherRecipes(amount = 1) {
       };
     }
   }
+
+  // need to implement this
+  export function fetchRecipesByIds(ids) {
+    let recipes = ids.map(id => recipe_preview.find(recipe => recipe.id === id)).filter(recipe => recipe !== undefined);
+    return { data: { recipes: recipes } };
+  }
+
+  export function mockGetRecipesByQueryAndFilters( searchQuery, resultsCount, selectedFilters, selectedDiet, selectedCuisine, sortOption ){
+    let recipes = [];
+  for(let i = 0; i < resultsCount/5; i++){
+    recipes.push(recipe_preview[i]);
+  }
+
+  return { data: { recipes: recipes } };
+  }
