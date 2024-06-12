@@ -15,6 +15,7 @@
         <ul class="recipe-overview">
           <li>{{ recipe.readyInMinutes }} minutes</li>
           <li>{{ recipe.aggregateLikes }} likes</li>
+          <li>{{ recipe.summary }}</li>
         </ul>
         <div class="recipe-icons">
           <img v-if="recipe.glutenFree" src="https://spoonacular.com/application/frontend/images/badges/gluten-free.svg" alt="Gluten-Free" class="icon"/>
