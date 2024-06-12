@@ -32,31 +32,33 @@ export function mockGetOtherRecipes(amount = 1) {
 //      } ;
 //   }
   
-  export function mockGetRecipeFullDetails(recipeId) {
-    const recipeExists = recipe_preview.some(recipe => recipe.id === recipeId);
-    if (recipeExists) {
-      return {
-        status: 200,
-        data: { recipe: recipe_full_view }
-      };
-    } else {
-      return {
-        status: 404, // Or any other appropriate error status
-        error: 'Recipe not found'
-      };
-    }
-      // need to implement this
-  export function fetchRecipesByIds(ids) {
-    let recipes = ids.map(id => recipe_preview.find(recipe => recipe.id === id)).filter(recipe => recipe !== undefined);
-    return { data: { recipes: recipes } };
+export function mockGetRecipeFullDetails(recipeId) {
+  const recipeExists = recipe_preview.some(recipe => recipe.id === recipeId);
+  if (recipeExists) {
+    return {
+      status: 200,
+      data: { recipe: recipe_full_view }
+    };
+  } else {
+    return {
+      status: 404, // Or any other appropriate error status
+      error: 'Recipe not found'
+    };
   }
+}
+    // need to implement this
 
-  export function mockGetRecipesByQueryAndFilters( searchQuery, resultsCount, selectedFilters, selectedDiet, selectedCuisine, sortOption ){
-    let recipes = [];
+export function fetchRecipesByIds(ids) {
+  let recipes = ids.map(id => recipe_preview.find(recipe => recipe.id === id)).filter(recipe => recipe !== undefined);
+  return { data: { recipes: recipes } };
+}
+
+export function mockGetRecipesByQueryAndFilters( searchQuery, resultsCount, selectedFilters, selectedDiet, selectedCuisine, sortOption ){
+  let recipes = [];
   for(let i = 0; i < resultsCount/5; i++){
-    recipes.push(recipe_preview[i]);
-  }
+  recipes.push(recipe_preview[i]);
+}
 
   return { data: { recipes: recipes } };
-  }
-  }
+}
+  
