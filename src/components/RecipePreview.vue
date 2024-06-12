@@ -15,6 +15,7 @@
         <ul class="recipe-overview">
           <li>{{ recipe.readyInMinutes }} minutes</li>
           <li>{{ recipe.aggregateLikes }} likes</li>
+          <br>
           <li>{{ recipe.summary }}</li>
           <br>
           <br>
