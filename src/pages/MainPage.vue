@@ -4,17 +4,18 @@
     <h1 class="title">Everyday Cooking</h1>
     <div class="grid-container">
       <div class="recipe-list">
-        <RecipePreviewList :recipes="recipes" title="Random Recipes" class="center" />
+        <RecipePreviewList :recipes="recipes" title="Random Recipes" class="center" :showButton="true" />
       </div>
       <div v-if="!$root.store.username" class="login-form">
         <LoginForm></LoginForm>
       </div>
       <div v-if="$root.store.username" class="last-viewed-recipes">
+        <!-- Ensure :showButton="false" is directly on RecipePreviewList -->
         <RecipePreviewList
           :recipes="recipes"
           title="Last Viewed Recipes"
           class="center"
-          disabled
+          :showButton="false"
         ></RecipePreviewList>
       </div>
     </div>

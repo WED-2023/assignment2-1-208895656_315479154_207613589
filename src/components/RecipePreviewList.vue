@@ -8,7 +8,8 @@
             {{ title }}:
             <slot></slot>
           </h3>
-          <b-button @click="shuffleRecipes" variant="info">Shuffle Recipes</b-button> <!-- Shuffle button -->
+          <!-- Shuffle button, conditionally rendered -->
+          <b-button v-if="showButton" @click="shuffleRecipes" variant="info">Shuffle Recipes</b-button>
         </div>
       </b-col>
     </b-row>
@@ -20,6 +21,7 @@
     </b-row>
   </b-container>
 </template>
+
 
 <script>
 import RecipePreview from "./RecipePreview.vue";
@@ -34,6 +36,10 @@ export default {
     title: {
       type: String,
       required: true
+    },
+    showButton: {
+      type: Boolean,
+      default: true  // By default, the button is shown
     }
   },
   data() {
