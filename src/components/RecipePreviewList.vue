@@ -13,25 +13,25 @@
     </b-row>
     <b-row>
       <!-- Recipes in their own row -->
-      <b-col v-for="r in recipes" :key="r.id" @click="toggleRecipeClicked(r)">
-        <RecipePreview class="recipePreview" :recipe="r" :isClicked="r.clicked" />
+      <b-col v-for="r in recipes" :key="r.id">
+        <component :is="recipeComponent" class="recipePreview" :recipe="r" :isClicked="r.clicked" @click.native.stop="toggleRecipeClicked(r)" />
       </b-col>
     </b-row>
- 
-      <!-- Shuffle button, conditionally rendered in its own row -->
-        <b-button v-if="showButton" @click="shuffleRecipes" variant="info">Shuffle Recipes</b-button>
-
+    <!-- Shuffle button, conditionally rendered in its own row -->
+    <b-button v-if="showButton" @click="shuffleRecipes" variant="info">Shuffle Recipes</b-button>
   </b-container>
 </template>
 
 <script>
 import RecipePreview from "./RecipePreview.vue";
-import { fetchRecipesByIds, mockGetOtherRecipes, mockGetRecipesPreview } from "../services/recipes.js";
+import FamilyRecipePreview from "./FamilyRecipePreview.vue"; // Assuming you'll create this component
+import { mockGetOtherRecipes, mockGetRecipesPreview, mockGetRecipesPreviewSortByLikes, mockGetRecipesPreviewSortByTime } from "../services/recipes.js";
 
 export default {
   name: "RecipePreviewList",
   components: {
-    RecipePreview
+    RecipePreview,
+    FamilyRecipePreview,
   },
   props: {
     title: {
@@ -40,7 +40,19 @@ export default {
     },
     showButton: {
       type: Boolean,
-      default: false  // By default, the button is shown
+      default: false
+    },
+    amountToFetch: {
+      type: Number,
+      default: 3
+    },
+    useFamilyRecipePreview: {
+      type: Boolean,
+      default: false
+    },
+    sortOption: {
+      type: String,
+      default: null
     }
   },
   data() {
@@ -48,61 +60,50 @@ export default {
       recipes: []
     };
   },
+  computed: {
+    recipeComponent() {
+      return this.useFamilyRecipePreview ? 'FamilyRecipePreview' : 'RecipePreview';
+    }
+  },
   mounted() {
     this.updateRecipes();
   },
   watch: {
-    recipeIds: {
-      immediate: true,
-      handler(newIds) {
-        if (newIds.length) {
-          this.updateRecipes(newIds);
-        } else {
-          this.updateRecipes();
-        }
-      }
-    }
+    amountToFetch: 'updateRecipes',
+    sortOption: 'updateRecipes'
   },
   methods: {
     async updateRecipes(ids = null) {
-      if (ids) {
-        try {
-          const amountToFetch = 3; // Default fetch 3 new recipes
-          const response = await mockGetRecipesPreview(amountToFetch);
-          this.recipes = response.data.recipes.map(recipe => ({
-            ...recipe,
-            clicked: false  // Initialize the clicked property
-          }));
-        } catch (error) {
-          console.error("Failed to fetch recipes:", error);
+      try {
+        let response;
+        if (this.sortOption === 'likes') {
+          response = await mockGetRecipesPreviewSortByLikes(this.amountToFetch);
+        } else if (this.sortOption === 'preparation_time') {
+          response = await mockGetRecipesPreviewSortByTime(this.amountToFetch);
+        } else {
+          response = await mockGetRecipesPreview(this.amountToFetch);
         }
-      } else {
-        try {
-          const amountToFetch = 3; // Default fetch 3 new recipes
-          const response = await mockGetRecipesPreview(amountToFetch);
-          this.recipes = response.data.recipes.map(recipe => ({
-            ...recipe,
-            clicked: false  // Initialize the clicked property
-          }));
-        } catch (error) {
-          console.error("Failed to fetch recipes:", error);
-        }
+        this.recipes = response.data.recipes.map(recipe => ({
+          ...recipe,
+          clicked: false
+        }));
+      } catch (error) {
+        console.error("Failed to fetch recipes:", error);
       }
     },
     async shuffleRecipes() {
       try {
-        const amountToFetch = 3; // Fetch 3 new recipes
-        const response = await mockGetOtherRecipes(amountToFetch);
+        const response = await mockGetOtherRecipes(this.amountToFetch);
         this.recipes = response.data.recipes.map(recipe => ({
           ...recipe,
-          clicked: false  // Reset the clicked property when shuffling
+          clicked: false
         }));
       } catch (error) {
         console.error("Failed to fetch recipes:", error);
       }
     },
     toggleRecipeClicked(recipe) {
-      recipe.clicked = !recipe.clicked; // Toggle the clicked state
+      recipe.clicked = !recipe.clicked;
     }
   }
 };
@@ -116,21 +117,29 @@ export default {
 .title-button-container {
   display: flex;
   flex-direction: column;
-  align-items: flex-start; /* Aligns items to the left */
+  align-items: flex-start;
 }
 
 h3 {
-  margin-bottom: 0; /* Removes the bottom margin to reduce the space between the title and the button */
+  margin-bottom: 0;
 }
 
 .recipePreview {
-  text-align: left; /* Ensures text inside the recipe preview is aligned left */
-  border: 1px solid transparent; /* Default border, invisible */
-  transition: border-color 0.3s ease; /* Smooth transition for border color change */
+  text-align: left;
+  border: 1px solid transparent;
+  transition: border-color 0.3s ease;
+  height: 500px; /* Adjust height as needed */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden; /* Ensure overflow content is hidden */
+  padding: 15px; /* Add padding to ensure content is not touching the edges */
+  margin-bottom: 15px; /* Add margin to separate cards */
+  background-color: #fff; /* Set a consistent background color */
 }
 
 .recipePreview[isClicked="true"] {
-  border-color: blue; /* Blue border when clicked */
+  border-color: blue;
 }
 
 .b-button {

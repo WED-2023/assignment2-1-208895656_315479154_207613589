@@ -131,6 +131,7 @@
           bvModalEvt.preventDefault();
         } else {
           // Handle the creation of the recipe with the newRecipe data
+          // some mock function to create recipe.
           console.log('Recipe created:', this.newRecipe);
           this.$emit('update:isVisible', false);
           this.resetForm();

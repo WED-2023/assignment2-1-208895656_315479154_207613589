@@ -9,7 +9,28 @@
         "vegan": false,
         "glutenFree": true,
         "summary": "This Grilled Salmon with Avocado Salsa is a delicious and healthy main course. Each serving provides <b>350 calories</b>, <b>30g of protein</b>, and <b>20g of fat</b>. For <b>$4.50 per serving</b>, this recipe covers 40% of your daily requirements of vitamins and minerals. It serves 2. The recipe includes ingredients such as salmon fillets, avocados, lime juice, and a few others. It takes approximately <b>25 minutes</b> from start to finish. This recipe scores a spoonacular score of <b>92%</b>. If you enjoy this recipe, you might also like: <a href=\"https://spoonacular.com/recipes/grilled-salmon-with-avocado-salsa-716436\">Grilled Salmon with Avocado Salsa</a>.",
-        "analyzedInstructions": [],
+        "analyzedInstructions": [
+            {
+                "name": "Preparation",
+                "steps": [
+                    { "number": 1, "step": "Preheat the grill to medium-high heat." },
+                    { "number": 2, "step": "Season the salmon fillets with salt and pepper." }
+                ]
+            },
+            {
+                "name": "Cooking",
+                "steps": [
+                    { "number": 3, "step": "Grill the salmon for 4-5 minutes per side, or until cooked through." },
+                    { "number": 4, "step": "In a bowl, combine diced avocado, lime juice, and chopped cilantro." }
+                ]
+            },
+            {
+                "name": "Finishing",
+                "steps": [
+                    { "number": 5, "step": "Serve the grilled salmon topped with avocado salsa." }
+                ]
+            }
+        ],
         "instructions": "chop chop and make it!",
         "extendedIngredients": [
             {
@@ -198,6 +219,7 @@
         ],
         "servings": 2
     },
+    
     {
         "id": 716437,
         "image": "https://img.spoonacular.com/recipes/716437-556x370.jpg",

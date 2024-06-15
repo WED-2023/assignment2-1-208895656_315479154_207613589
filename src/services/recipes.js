@@ -12,6 +12,30 @@ export function mockGetRecipesPreview(amount = 1) {
   return { data: { recipes: recipes } };
 }
 
+export function mockGetRecipesPreviewSortByLikes(amount = 1) {
+  let recipes_not_sorted = [];
+  for(let i = 0; i < amount; i++){
+    recipes_not_sorted.push(recipe_preview[i]);
+  }
+
+  // Sort by aggregateLikes in descending order
+  const recipes_sorted_by_likes = recipes_not_sorted.sort((a, b) => b.aggregateLikes - a.aggregateLikes);
+  
+  return { data: { recipes: recipes_sorted_by_likes } };
+}
+
+export function mockGetRecipesPreviewSortByTime(amount = 1) {
+  let recipes_not_sorted = [];
+  for(let i = 0; i < amount; i++){
+    recipes_not_sorted.push(recipe_preview[i]);
+  }
+
+  // Sort by readyInMinutes in ascending order
+  const recipes_sorted_by_time = recipes_not_sorted.sort((a, b) => a.readyInMinutes - b.readyInMinutes);
+  
+  return { data: { recipes: recipes_sorted_by_time } };
+}
+
 export function mockGetOtherRecipes(amount = 1) {
   let recipes = [];
   for(let i = 0; i < recipe_preview.length; i++){

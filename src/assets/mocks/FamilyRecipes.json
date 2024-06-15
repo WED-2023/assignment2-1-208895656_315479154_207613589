@@ -1,0 +1,38 @@
+[
+    {
+        "id": 100000,
+        "food_image": "https://img.spoonacular.com/recipes/716436-556x370.jpg",
+        "instruction_image1": "https://img.spoonacular.com/recipes/716436-556x370.jpg",
+        "instruction_image2": "https://img.spoonacular.com/recipes/716436-556x370.jpg",
+        "title": "Grilled Salmon with Avocado Salsa",
+        "family_chef": "Miryam Kamer (Gal's granmother)",
+        "readyInMinutes": 25,
+        "vegetarian": false,
+        "vegan": false,
+        "glutenFree": true,
+        "summary": "This Grilled Salmon with Avocado Salsa is a delicious and healthy main course."
+    },
+    {
+        "id": 100001,
+        "image": "https://img.spoonacular.com/recipes/716437-556x370.jpg",
+        "title": "Thai Green Curry with Vegetables",
+        "readyInMinutes": 35,
+        "aggregateLikes": 245,
+        "vegetarian": true,
+        "vegan": true,
+        "glutenFree": true,
+        "summary": "Thai Green Curry with Vegetables is a flavorful and nutritious dish."
+    },
+    {
+        "id": 100002,
+        "image": "https://img.spoonacular.com/recipes/716439-556x370.jpg",
+        "title": "Quinoa Stuffed Peppers",
+        "readyInMinutes": 60,
+        "aggregateLikes": 285,
+        "vegetarian": true,
+        "vegan": true,
+        "glutenFree": true,
+        "summary": "Quinoa Stuffed Peppers make for a nutritious and filling meal."
+    }
+    
+]

@@ -40,14 +40,14 @@
     </b-form>
 
     <!-- RecipePreviewList Component to display search results -->
-    <RecipePreviewList v-if="showResults" :title="'Search Results'" :recipeIds="recipeIds" />
+    <RecipePreviewList v-if="showResults" :title="'Search Results'" :recipeIds="recipeIds" :amountToFetch="resultsCount" :sortOption="sortOption" />
   </div>
 </template>
 
 <script>
 import { BForm, BFormGroup, BFormInput, BInputGroup, BInputGroupAppend, BButton, BFormSelect, BFormCheckboxGroup, BAlert } from 'bootstrap-vue';
 import RecipePreviewList from "../components/RecipePreviewList";
-import { fetchRecipesByIds, mockGetRecipesPreview, mockGetOtherRecipes, mockGetRecipesByQueryAndFilters } from '../services/recipes.js'; // Import your service functions
+import { mockGetRecipesByQueryAndFilters } from '../services/recipes.js'; // Import your service functions
 
 export default {
   components: {
@@ -143,6 +143,13 @@ export default {
       recipeIds: []  // Array to hold the recipe IDs
     };
   },
+  watch: {
+    sortOption(newVal) {
+      if (this.showResults) {
+        this.onSubmit(); // Fetch results again if the user changes the sort option
+      }
+    }
+  },
   methods: {
     async onSubmit() { // Mocking fetching recipe IDs according to the given filters and query
       if (!this.searchQuery || !this.sortOption) {
@@ -176,7 +183,6 @@ export default {
   }
 };
 </script>
-
 
 <style>
 .container {
