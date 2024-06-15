@@ -40,7 +40,7 @@
     </b-form>
 
     <!-- RecipePreviewList Component to display search results -->
-    <RecipePreviewList v-if="showResults" :title="'Search Results'" :recipeIds="recipeIds" :amountToFetch="resultsCount" :sortOption="sortOption" />
+    <RecipePreviewList v-if="showResults" :title="'Search Results'" :recipeIds="recipeIds" :amountToFetch="5" :sortOption="sortOption" />
   </div>
 </template>
 

@@ -19,7 +19,7 @@
           <b-dropdown id="dropdown-1" text="User" variant="success">
             <b-dropdown-item href="#"><router-link :to="{ name: 'favorites' }">My favorite recipes</router-link></b-dropdown-item>
             <b-dropdown-item href="#"><router-link :to="{ name: 'my-recipes' }">My recipes</router-link></b-dropdown-item>
-            <b-dropdown-item href="#"><router-link :to="{ name: 'my-recipes' }">My recipes</router-link></b-dropdown-item>
+            <b-dropdown-item href="#"><router-link :to="{ name: 'family-recipes' }">My family recipes</router-link></b-dropdown-item>
           </b-dropdown>
           <b-button @click="Logout" variant="danger">Logout</b-button>
         </template>

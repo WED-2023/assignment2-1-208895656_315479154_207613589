@@ -1,6 +1,7 @@
 // src/services/recipes.js
 import recipe_full_view from "../assets/mocks/recipe_full_view.json";
 import recipe_preview from "../assets/mocks/recipe_preview.json";
+import FamilyRecipes from "../assets/mocks/FamilyRecipes.json"
 
 
 export function mockGetRecipesPreview(amount = 1) {
@@ -35,6 +36,8 @@ export function mockGetRecipesPreviewSortByTime(amount = 1) {
   
   return { data: { recipes: recipes_sorted_by_time } };
 }
+
+
 
 export function mockGetOtherRecipes(amount = 1) {
   let recipes = [];
@@ -90,3 +93,12 @@ export function mockGetRecipesByQueryAndFilters( searchQuery, resultsCount, sele
   return { data: { recipes: recipes } };
 }
   
+
+export function mockGetFamilyRecipesPreview() {
+  let recipes = [];
+  for(let i = 0; i < 1; i++){
+    recipes.push(FamilyRecipes[i]);
+  }
+
+  return { data: { recipes: recipes } };
+}

@@ -14,7 +14,13 @@
     <b-row>
       <!-- Recipes in their own row -->
       <b-col v-for="r in recipes" :key="r.id">
-        <component :is="recipeComponent" class="recipePreview" :recipe="r" :isClicked="r.clicked" @click.native.stop="toggleRecipeClicked(r)" />
+        <component 
+          :is="recipeComponent" 
+          :class="{'recipePreview': !useFamilyRecipePreview, 'familyRecipePreview': useFamilyRecipePreview}"
+          :recipe="r" 
+          :isClicked="r.clicked" 
+          @click.native.stop="toggleRecipeClicked(r)" 
+        />
       </b-col>
     </b-row>
     <!-- Shuffle button, conditionally rendered in its own row -->
@@ -25,7 +31,7 @@
 <script>
 import RecipePreview from "./RecipePreview.vue";
 import FamilyRecipePreview from "./FamilyRecipePreview.vue"; // Assuming you'll create this component
-import { mockGetOtherRecipes, mockGetRecipesPreview, mockGetRecipesPreviewSortByLikes, mockGetRecipesPreviewSortByTime } from "../services/recipes.js";
+import { mockGetOtherRecipes, mockGetRecipesPreview, mockGetRecipesPreviewSortByLikes, mockGetRecipesPreviewSortByTime, mockGetFamilyRecipesPreview } from "../services/recipes.js";
 
 export default {
   name: "RecipePreviewList",
@@ -73,10 +79,12 @@ export default {
     sortOption: 'updateRecipes'
   },
   methods: {
-    async updateRecipes(ids = null) {
+    async updateRecipes() {
       try {
         let response;
-        if (this.sortOption === 'likes') {
+        if (this.useFamilyRecipePreview) {
+          response = await mockGetFamilyRecipesPreview();
+        }else if (this.sortOption === 'likes') {
           response = await mockGetRecipesPreviewSortByLikes(this.amountToFetch);
         } else if (this.sortOption === 'preparation_time') {
           response = await mockGetRecipesPreviewSortByTime(this.amountToFetch);
@@ -138,7 +146,23 @@ h3 {
   background-color: #fff; /* Set a consistent background color */
 }
 
-.recipePreview[isClicked="true"] {
+.familyRecipePreview {
+  /* Add styles specific to FamilyRecipePreview here */
+  text-align: left;
+  border: 1px solid transparent;
+  transition: border-color 0.3s ease;
+  height: 800; /* Adjust height as needed */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden; /* Ensure overflow content is hidden */
+  padding: 15px; /* Add padding to ensure content is not touching the edges */
+  margin-bottom: 15px; /* Add margin to separate cards */
+  background-color: #fff; /* Set a consistent background color */
+}
+
+.recipePreview[isClicked="true"],
+.familyRecipePreview[isClicked="true"] {
   border-color: blue;
 }
 
