@@ -9,7 +9,7 @@
     <!-- Router Link for Navigation -->
     <router-link @click.native="handleClick" :to="{ name: 'recipe', params: { recipeId: recipe.id } }" class="link-area">
       <div class="recipe-body">
-        <img :src="recipe.image" alt="Recipe Image" class="recipe-image" @error="image_load = false" :class="{ 'darkened': clickedRecipes.has(recipe.id) }"/>
+        <img :src="recipe.image" alt="Recipe Image" class="recipe-image" @error="image_load = false"/>
       </div>
       <div class="recipe-footer">
         <h3 :title="recipe.title" class="recipe-title">{{ recipe.title }}</h3>
@@ -102,11 +102,6 @@ export default {
   width: 100%;
   height: auto;
   display: block;
-  transition: filter 0.3s ease;
-}
-
-.recipe-image.darkened {
-  filter: brightness(0.5);
 }
 
 .like-button {

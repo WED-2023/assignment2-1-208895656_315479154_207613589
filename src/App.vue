@@ -17,9 +17,9 @@
           <b-nav-text id="nav-text">hello {{ $root.store.username }}</b-nav-text>
           <b-nav-item @click="showCreateRecipeModal = true">create a recipe</b-nav-item>
           <b-dropdown id="dropdown-1" text="User" variant="success">
-            <b-dropdown-item href="#">My favorite recipes</b-dropdown-item>
-            <b-dropdown-item href="#">My recipes</b-dropdown-item>
-            <b-dropdown-item href="#">My family recipes</b-dropdown-item>
+            <b-dropdown-item href="#"><router-link :to="{ name: 'favorites' }">My favorite recipes</router-link></b-dropdown-item>
+            <b-dropdown-item href="#"><router-link :to="{ name: 'my-recipes' }">My recipes</router-link></b-dropdown-item>
+            <b-dropdown-item href="#"><router-link :to="{ name: 'my-recipes' }">My recipes</router-link></b-dropdown-item>
           </b-dropdown>
           <b-button @click="Logout" variant="danger">Logout</b-button>
         </template>
