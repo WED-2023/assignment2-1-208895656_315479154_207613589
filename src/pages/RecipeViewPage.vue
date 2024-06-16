@@ -26,11 +26,15 @@
           </div>
           <div class="wrapped">
             <h3>Instructions:</h3>
-            <ol>
-              <li v-for="(instruction, index) in recipe._instructions" :key="index">
-                {{ instruction.step }}
-              </li>
-            </ol>
+            <div v-for="(instructionGroup, index) in recipe.analyzedInstructions" :key="index">
+              <h4>{{ instructionGroup.name }}</h4>
+              <ol>
+                <li v-for="(step, stepIndex) in instructionGroup.steps" :key="stepIndex">
+                  <span v-if="stepIndex === 0">{{ step.step.split(':')[1].trim() }}</span>
+                  <span v-else>{{ step.step }}</span>
+                </li>
+              </ol>
+            </div>
           </div>
         </div>
       </div>

@@ -31,12 +31,16 @@
           </div>
           <div class="wrapped">
             <h3>Instructions:</h3>
-            <ol>
-              <li v-for="(instruction, index) in recipe._instructions" :key="index">
-                <input type="checkbox" v-model="instruction.completed" />
-                <span :class="{ completed: instruction.completed }">{{ instruction.step }}</span>
-              </li>
-            </ol>
+            <div v-for="(instructionGroup, index) in recipe.analyzedInstructions" :key="index">
+              <h4>{{ instructionGroup.name }}</h4>
+              <ol>
+                <li v-for="(step, stepIndex) in instructionGroup.steps" :key="stepIndex">
+                  <input type="checkbox" v-model="completed" />
+                  <span v-if="stepIndex === 0">{{ step.step.split(':')[1].trim() }}</span>
+                  <span v-else>{{ step.step }}</span>
+                </li>
+              </ol>
+            </div>
           </div>
         </div>
       </div>
@@ -73,10 +77,15 @@ export default {
         params: { recipeId: this.$route.params.recipeId },
       });
     },
+    updateServings() {
+      this.updatedIngredients;
+    }
   },
   async created() {
     try {
       const response = await mockGetRecipeFullDetails(this.$route.params.recipeId);
+      console.log("API response:", response);
+
       if (response.status !== 200) {
         this.$router.replace("/NotFound");
         return;
@@ -92,14 +101,8 @@ export default {
         servings,
       } = response.data.recipe;
 
-      const _instructions = analyzedInstructions
-        .flatMap((fstep) => fstep.steps.map((step) => ({
-          step: fstep.name + step.step,
-          completed: false,
-        })));
-
       this.recipe = {
-        _instructions,
+        analyzedInstructions,
         extendedIngredients,
         aggregateLikes,
         readyInMinutes,
@@ -107,11 +110,9 @@ export default {
         title,
         servings,
       };
-      
-      this.initialServings = servings; // Store the initial servings to correctly calculate the updated amounts
 
     } catch (error) {
-      console.log(error);
+      console.error("Error fetching recipe details:", error);
       this.$router.replace("/NotFound");
     }
   },
