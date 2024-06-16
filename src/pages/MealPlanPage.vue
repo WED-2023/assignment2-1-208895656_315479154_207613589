@@ -45,6 +45,7 @@ export default {
     },
     goToPreparation(recipeID) {
       // need to add a function that adding the recipe to the Meal list
+      
       this.$router.push({ name: 'preperation', params: { recipeId: recipeID } });
     },
     async removeRecipe(recipeId) {

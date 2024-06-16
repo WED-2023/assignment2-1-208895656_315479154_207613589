@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-      <h1 class="title">My Recipes</h1>
+      <!-- <h1 class="title">My Recipes</h1> -->
       <div class="recipe-container">
         <RecipePreviewList :recipes="recipes" title="My Recipes" class="center" :showButton="false" />
       </div>
@@ -44,7 +44,7 @@
   }
   
   .recipe-container {
-    max-width: 600px; /* Limit the width of the recipe container */
+    max-width: 400px; /* Limit the width of the recipe container */
     width: 100%; /* Ensure it takes full width up to the max-width */
     background-color: rgba(255, 255, 255, 0.8); /* Slightly transparent white background */
     padding: 20px; /* Padding inside the recipe container */
