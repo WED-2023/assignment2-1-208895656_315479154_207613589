@@ -18,11 +18,12 @@
             </div>
             Ingredients:
             <ul>
-              <li v-for="(ingredient, index) in recipe.extendedIngredients" :key="index + '_' + ingredient.id">
-                {{ ingredient.original }}
+              <li v-for="(ingredient, index) in updatedIngredients" :key="index + '_' + ingredient.id">
+                {{ (ingredient.amount).toFixed(1) }} {{ ingredient.unit }} {{ ingredient.name }}
               </li>
             </ul>
-            <button @click="goToPreparation">Prepare this recipe</button>
+            <button @click="goToPreparation" class="mb-2">Prepare this recipe</button> <!-- Added class for margin -->
+            <button @click="addToMeal">Add to Meal</button> <!-- New Button -->
           </div>
           <div class="wrapped">
             <h3>Instructions:</h3>
@@ -47,15 +48,33 @@
 
 <script>
 import { mockGetRecipeFullDetails } from "../services/recipes.js";
+import { store } from "../store.js"; // Import the store
+
 export default {
   data() {
     return {
-      recipe: null
+      recipe: null,
+      servingsMultiplier: 1,
+      initialServings: 1
     };
+  },
+  computed: {
+    updatedIngredients() {
+      return this.recipe.extendedIngredients.map((ingredient) => ({
+        ...ingredient,
+        amount: ingredient.amount * this.servingsMultiplier
+      }));
+    },
   },
   methods: {
     goToPreparation() {
+      store.incrementMealCount();
+      // need to add a function that adding the recipe to the Meal list
       this.$router.push({ name: 'preperation', params: { recipeId: this.$route.params.recipeId } });
+    },
+    addToMeal() {
+      // need to add a function that adding the recipe to the Meal list
+      store.incrementMealCount(); // Increment the counter
     }
   },
   async created() {
@@ -214,6 +233,7 @@ li:hover {
 button {
   display: inline-block;
   margin-top: 10px;
+  margin-right: 10px; /* Ensure space between buttons */
   padding: 10px 20px;
   font-size: 16px;
   color: #fff;

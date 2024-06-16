@@ -4,5 +4,13 @@ const state = {
 
     // server_domain: "http://132.72.65.211/",
     
-
+    
 };
+import { reactive } from 'vue';
+
+export const store = reactive({
+  mealCount: 0,
+  incrementMealCount() {
+    this.mealCount++;
+  }
+});

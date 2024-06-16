@@ -1,7 +1,8 @@
 // src/services/recipes.js
 import recipe_full_view from "../assets/mocks/recipe_full_view.json";
 import recipe_preview from "../assets/mocks/recipe_preview.json";
-import FamilyRecipes from "../assets/mocks/FamilyRecipes.json"
+import FamilyRecipes from "../assets/mocks/FamilyRecipes.json";
+import MyMeals from "../assets/mocks/MyMeals.json";
 
 
 export function mockGetRecipesPreview(amount = 1) {
@@ -53,6 +54,16 @@ export function mockGetOtherRecipes(amount = 1) {
     return { data: { recipes: recipes.slice(0, amount) } };
 }
 
+
+export function mockGetMyMealsRecipesPreview() {
+  let recipes = [];
+  for(let i = 0; i < MyMeals.length; i++){
+    recipes.push(MyMeals[i]);
+  }
+
+  return { data: { recipes: recipes } };
+}
+
 // export function mockGetRecipeFullDetails(recipeId) {
 //     return { 
 //       data: { recipe: recipe_full_view }
@@ -101,4 +112,15 @@ export function mockGetFamilyRecipesPreview() {
   }
 
   return { data: { recipes: recipes } };
+}
+
+export function removeFromMyMealsById(recipeId) {
+  const index = MyMeals.findIndex(recipe => recipe.id === recipeId);
+  if (index !== -1) {
+    MyMeals.splice(index, 1); // Remove 1 item at the found index
+    // Optionally, you can save the updated MyMeals array back to storage or perform any other operations needed
+    return { success: true };
+  } else {
+    return { success: false, error: 'Recipe not found in MyMeals' };
+  }
 }

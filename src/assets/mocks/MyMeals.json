@@ -1,0 +1,69 @@
+[
+    {
+        "id": 716436,
+        "image": "https://img.spoonacular.com/recipes/716436-556x370.jpg",
+        "title": "Grilled Salmon with Avocado Salsa",
+        "readyInMinutes": 25,
+        "aggregateLikes": 315,
+        "vegetarian": false,
+        "vegan": false,
+        "glutenFree": true,
+        "summary": "This Grilled Salmon with Avocado Salsa is a delicious and healthy main course."
+    },
+    {
+        "id": 716437,
+        "image": "https://img.spoonacular.com/recipes/716437-556x370.jpg",
+        "title": "Thai Green Curry with Vegetables",
+        "readyInMinutes": 35,
+        "aggregateLikes": 245,
+        "vegetarian": true,
+        "vegan": true,
+        "glutenFree": true,
+        "summary": "Thai Green Curry with Vegetables is a flavorful and nutritious dish."
+    },
+    {
+        "id": 716439,
+        "image": "https://img.spoonacular.com/recipes/716439-556x370.jpg",
+        "title": "Quinoa Stuffed Peppers",
+        "readyInMinutes": 60,
+        "aggregateLikes": 285,
+        "vegetarian": true,
+        "vegan": true,
+        "glutenFree": true,
+        "summary": "Quinoa Stuffed Peppers make for a nutritious and filling meal."
+    },
+    {
+        "id": 716440,
+        "image": "https://img.spoonacular.com/recipes/716440-556x370.jpg",
+        "title": "Lemon Garlic Shrimp Pasta",
+        "readyInMinutes": 30,
+        "aggregateLikes": 232,
+        "vegetarian": false,
+        "vegan": false,
+        "glutenFree": false,
+        "summary": "Lemon Garlic Shrimp Pasta is a quick and flavorful dish perfect for any night."
+    },
+    {
+        "id": 716441,
+        "image": "https://img.spoonacular.com/recipes/716441-556x370.jpg",
+        "title": "BBQ Chicken Pizza",
+        "readyInMinutes": 35,
+        "aggregateLikes": 220,
+        "vegetarian": false,
+        "vegan": false,
+        "glutenFree": false,
+        "summary": "This BBQ Chicken Pizza is a delightful combination of sweet and savory flavors."
+    },
+    {
+        "id": 716442,
+        "image": "https://img.spoonacular.com/recipes/716442-556x370.jpg",
+        "title": "Vegetable Fried Rice",
+        "readyInMinutes": 20,
+        "aggregateLikes": 300,
+        "vegetarian": true,
+        "vegan": true,
+        "glutenFree": false,
+        "summary": "Vegetable Fried Rice is a quick and easy meal that's packed with flavor."
+    }
+
+]

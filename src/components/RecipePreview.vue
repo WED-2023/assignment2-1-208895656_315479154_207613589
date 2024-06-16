@@ -27,26 +27,46 @@
         </div>
       </div>
     </router-link>
+    <!-- Progress Bar Container -->
+    <div v-if="progress_bar" class="progress-bar-container">
+      <b-progress :value="progress_value" variant="success" striped :animated="animate"></b-progress>
+    </div>
   </div>
 </template>
 
 <script>
+import { BProgress } from 'bootstrap-vue';
+import { integer } from 'vuelidate/lib/validators';
+
 export default {
+  components: {
+    BProgress
+  },
   data() {
     return {
       image_load: true,
       clickedRecipes: new Set(),
-      likedRecipes: new Set()
+      likedRecipes: new Set(),
+      animate: true // Animation for the progress bar
     };
   },
   props: {
     recipe: {
       type: Object,
       required: true
+    },
+    progress_bar: {
+      type: Boolean, 
+      default: false
+    },
+    progress_value:{
+      type: integer,
+      default: 50
     }
   },
   methods: {
     toggleLike(id) {
+      mockAddFavorite(id)
       this.likedRecipes.has(id) ? this.likedRecipes.delete(id) : this.likedRecipes.add(id);
       localStorage.setItem('likedRecipes', JSON.stringify([...this.likedRecipes]));
       this.$forceUpdate();  // Ensuring reactivity is maintained
@@ -54,7 +74,7 @@ export default {
     handleClick() {
       this.clickedRecipes.add(this.recipe.id);
       localStorage.setItem('clickedRecipes', JSON.stringify([...this.clickedRecipes]));
-    },
+    }
   },
   mounted() {
     const storedLikes = JSON.parse(localStorage.getItem('likedRecipes') || "[]");
@@ -149,5 +169,16 @@ export default {
   height: 40px;
   margin-left: 5px;
   margin-bottom: 15px;
+}
+
+.progress-bar-container {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.progress-bar {
+  width: 100%;
 }
 </style>

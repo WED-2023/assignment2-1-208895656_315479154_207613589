@@ -34,15 +34,30 @@
           </b-nav-item>
         </template>
       </b-navbar-nav>
+
+      <!-- Display meal counter with an icon -->
+      <b-navbar-nav>
+        <b-nav-item class="meal-counter">
+          <router-link :to="{ name: 'meal' }">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnW-w8lH3R_fAVK-RkKMvmbefRFYG0isntsQ&s" alt="Plate Icon" class="meal-icon" />
+            <span class="meal-count">{{ mealCount }}</span>
+            <span class="meal-label">My Meal</span>
+          </router-link>
+        </b-nav-item>
+      </b-navbar-nav>
     </b-navbar>
+    
+    <!-- Router View for Content -->
     <router-view />
 
+    <!-- Create Recipe Modal Component -->
     <CreateRecipeModal :isVisible.sync="showCreateRecipeModal" />
   </div>
 </template>
 
 <script>
 import CreateRecipeModal from './components/CreateRecipeModal.vue';
+import { store } from './store.js';
 
 export default {
   name: 'App',
@@ -54,6 +69,11 @@ export default {
       showCreateRecipeModal: false,
     };
   },
+  computed: {
+    mealCount() {
+      return store.mealCount;
+    }
+  },
   methods: {
     Logout() {
       this.$root.store.logout();
@@ -63,6 +83,11 @@ export default {
       });
     },
   },
+  provide() {
+    return {
+      store
+    };
+  }
 };
 </script>
 
@@ -75,42 +100,39 @@ export default {
   min-height: 100vh;
 }
 
-.b-navbar-nav {
+.meal-counter {
   display: flex;
   align-items: center;
+  text-decoration: none;
+  color: inherit;
+  position: relative; /* Ensure relative positioning for absolute child */
 }
 
-.b-nav-item,
-.b-button {
-  margin-right: 15px; // Standard margin to the right for nav items and buttons
+.meal-icon {
+  width: 50px; /* Adjust icon size */
+  height: auto;
+  margin-right: 5px; /* Adjust margin between icon and counter */
 }
 
-.nav-text {
-  margin-right: 20px; // Margin for the "hello" text
+.meal-count {
+  position: absolute;
+  top: 50%;
+  left: 47%; /* Adjust left position as needed */
+  transform: translate(-50%, -50%);
+  font-weight: bold; /* Optionally adjust font properties */
+  color: rgb(8, 8, 8); /* Optionally adjust text color */
+  font-size: 14px; /* Optionally adjust font size */
+  padding: 5px 10px; /* Optionally adjust padding */
+  border-radius: 5px; /* Optionally add border radius */
 }
 
-.b-dropdown {
-  margin-right: 15px; // Consistent margin for the dropdown
-}
-
-.b-navbar {
-  padding-left: 20px; // Reduced padding on the left if you want elements to shift leftwards
-}
-
-.b-dropdown .dropdown-toggle {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #28a745 !important; // Ensure it has the same background color
-  border-color: #28a745 !important; // Ensure it has the same border color
-  color: #fff !important; // Ensure the text color is white
-  padding: 0.375rem 0.75rem; // Same padding as the other buttons
-  font-size: 1rem;
-  line-height: 1.5;
-  border-radius: 0.25rem;
-}
-
-.b-dropdown .dropdown-toggle b-icon {
-  margin-left: 5px; // Small margin to the left of the arrow
+.meal-label {
+  position: absolute;
+  top: calc(76% + 5px); /* Position directly under meal-count */
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 14px; /* Adjust label font size */
+  color: #0e0101; /* Adjust label text color */
+  white-space: nowrap; /* Prevent label from breaking into multiple lines */
 }
 </style>
