@@ -14,21 +14,27 @@
               <div>{{ recipe.vegan ? 'Vegan: Yes' : 'Vegan: No' }}</div>
               <div>{{ recipe.vegetarian ? 'Vegetarian: Yes' : 'Vegetarian: No' }}</div>
               <div>{{ recipe.glutenFree ? 'Gluten-Free: Yes' : 'Gluten-Free: No' }}</div>
-              <div>Servings: {{ recipe.servings }}</div>
+              <div>
+                Servings:
+                <select v-model="servingsMultiplier" @change="updateServings">
+                  <option v-for="n in 10" :key="n" :value="n">{{ n }}</option>
+                </select>
+                (multiplier)
+              </div>
             </div>
             Ingredients:
             <ul>
-              <li v-for="(ingredient, index) in recipe.extendedIngredients" :key="index + '_' + ingredient.id">
-                {{ ingredient.original }}
+              <li v-for="(ingredient, index) in updatedIngredients" :key="index + '_' + ingredient.id">
+                {{ (ingredient.amount).toFixed(1) }} {{ ingredient.unit }} {{ ingredient.name }}
               </li>
             </ul>
-            <button @click="goToPreparation">Prepare this recipe</button>
           </div>
           <div class="wrapped">
             <h3>Instructions:</h3>
             <ol>
               <li v-for="(instruction, index) in recipe._instructions" :key="index">
-                {{ instruction.step }}
+                <input type="checkbox" v-model="instruction.completed" />
+                <span :class="{ completed: instruction.completed }">{{ instruction.step }}</span>
               </li>
             </ol>
           </div>
@@ -43,65 +49,72 @@
 
 <script>
 import { mockGetRecipeFullDetails } from "../services/recipes.js";
+
 export default {
   data() {
     return {
-      recipe: null
+      recipe: null,
+      servingsMultiplier: 1,
+      initialServings: 1
     };
+  },
+  computed: {
+    updatedIngredients() {
+      return this.recipe.extendedIngredients.map((ingredient) => ({
+        ...ingredient,
+        amount: ingredient.amount * this.servingsMultiplier
+      }));
+    },
   },
   methods: {
     goToPreparation() {
-      this.$router.push({ name: 'preperation', params: { recipeId: this.$route.params.recipeId } });
-    }
+      this.$router.push({
+        name: 'preparation',
+        params: { recipeId: this.$route.params.recipeId },
+      });
+    },
   },
   async created() {
     try {
-      let response;
-
-      try {
-        response = await mockGetRecipeFullDetails(this.$route.params.recipeId);
-        if (response.status !== 200) this.$router.replace("/NotFound");
-      } catch (error) {
-        console.log("error.response.status", error.response.status);
+      const response = await mockGetRecipeFullDetails(this.$route.params.recipeId);
+      if (response.status !== 200) {
         this.$router.replace("/NotFound");
         return;
       }
 
-      let {
+      const {
         analyzedInstructions,
-        instructions,
         extendedIngredients,
         aggregateLikes,
         readyInMinutes,
         image,
         title,
-        servings
+        servings,
       } = response.data.recipe;
 
-      let _instructions = analyzedInstructions
-        .map((fstep) => {
-          fstep.steps[0].step = fstep.name + fstep.steps[0].step;
-          return fstep.steps;
-        })
-        .reduce((a, b) => [...a, ...b], []);
+      const _instructions = analyzedInstructions
+        .flatMap((fstep) => fstep.steps.map((step) => ({
+          step: fstep.name + step.step,
+          completed: false,
+        })));
 
-      let _recipe = {
-        instructions,
+      this.recipe = {
         _instructions,
-        analyzedInstructions,
         extendedIngredients,
         aggregateLikes,
         readyInMinutes,
         image,
         title,
-        servings
+        servings,
       };
+      
+      this.initialServings = servings; // Store the initial servings to correctly calculate the updated amounts
 
-      this.recipe = _recipe;
     } catch (error) {
       console.log(error);
+      this.$router.replace("/NotFound");
     }
-  }
+  },
 };
 </script>
 
@@ -185,12 +198,15 @@ ol li {
   counter-increment: step-counter;
   padding: 8px 0;
   border-bottom: 1px solid #eee;
+  display: flex;
+  align-items: center;
 }
 
 ol li:before {
   content: counter(step-counter) ". ";
   font-weight: bold;
   color: #555;
+  margin-right: 8px;
 }
 
 ol li:last-child {
@@ -200,6 +216,10 @@ ol li:last-child {
 .instructions {
   color: #444;
   font-size: 14px;
+}
+
+.instructions .completed {
+  text-decoration: line-through;
 }
 
 /* Adding a subtle hover effect to ingredients and instructions for better interactivity */
@@ -221,5 +241,9 @@ button {
 
 button:hover {
   background-color: #0056b3;
+}
+
+input[type='checkbox'] {
+  margin-right: 10px;
 }
 </style>
