@@ -11,12 +11,16 @@
         </div>
       </b-col>
     </b-row>
-    <b-row>
+    <b-row class="justify-content-center align-items-center">
       <!-- Recipes in their own row -->
-      <b-col v-for="r in recipes" :key="r.id">
+      <b-col v-for="r in recipes" :key="r.id" class="d-flex justify-content-center align-items-center">
         <component 
           :is="recipeComponent" 
-          :class="{'recipePreview': !useFamilyRecipePreview, 'familyRecipePreview': useFamilyRecipePreview, 'transparent-light-green': true}"
+          :class="{
+            'recipePreview': !useFamilyRecipePreview, 
+            'familyRecipePreview': useFamilyRecipePreview,
+            'transparent-light-green': true
+          }"
           :recipe="r" 
           :isClicked="r.clicked" 
           @click.native.stop="toggleRecipeClicked(r)" 
@@ -24,7 +28,9 @@
       </b-col>
     </b-row>
     <!-- Shuffle button, conditionally rendered in its own row -->
-    <b-button v-if="showButton" @click="shuffleRecipes" variant="info">Shuffle Recipes</b-button>
+    <b-row class="justify-content-center">
+      <b-button v-if="showButton" @click="shuffleRecipes" variant="info">Shuffle Recipes</b-button>
+    </b-row>
   </b-container>
 </template>
 
@@ -150,7 +156,8 @@ h3 {
   height: 500px; /* Adjust height as needed */
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center; /* Center content vertically */
+  align-items: center; /* Center content horizontally */
   overflow: hidden; /* Ensure overflow content is hidden */
   padding: 15px; /* Add padding to ensure content is not touching the edges */
   margin-bottom: 15px; /* Add margin to separate cards */

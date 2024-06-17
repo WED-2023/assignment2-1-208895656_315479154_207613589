@@ -1,5 +1,5 @@
 <template>
-  <div :class="['container', containerClass]">
+  <div class="login-form-container">
     <h1 class="title">Login</h1>
     <b-form @submit.prevent="onLogin">
       <b-form-group
@@ -39,11 +39,10 @@
       <b-button
         type="submit"
         variant="primary"
-        style="width:100px;display:block;"
-        class="mx-auto w-100"
+        class="w-100"
       >Login</b-button>
       
-      <div class="mt-2">
+      <div class="mt-2 text-center">
         Do not have an account yet?
         <router-link to="register"> Register here</router-link>
       </div>
@@ -67,12 +66,6 @@ import { mockLogin } from "../services/auth.js";
 
 export default {
   name: "LoginForm",
-  props: {
-    containerClass: {
-      type: String,
-      default: ''  // Default class is empty if none is provided
-    }
-  },
   data() {
     return {
       form: {
@@ -116,13 +109,21 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.login-form {
+.login-form-container {
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 600px; /* Match the max-width of content-box in MainPage.vue */
 }
-.container {
-  max-width: 400px;
-  background-color: rgb(125, 163, 163); // Default background
+
+.b-form-group {
+  width: 80%; /* Adjust width as needed */
+  margin: 0 auto 20px auto;
+}
+
+.b-button {
+  width: 80%; /* Adjust width as needed */
+  margin: 0 auto;
 }
 </style>
