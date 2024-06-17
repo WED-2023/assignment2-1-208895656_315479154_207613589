@@ -2,7 +2,7 @@
   <div class="container">
     <div v-if="recipe">
       <div class="recipe-header mt-3 mb-4">
-        <h1>{{ recipe.title }}</h1>
+        <h1>{{ this.recipe.title }}</h1>
         <img :src="recipe.image" class="center" />
       </div>
       <div class="recipe-body">
@@ -15,6 +15,8 @@
               <div>{{ recipe.vegetarian ? 'Vegetarian: Yes' : 'Vegetarian: No' }}</div>
               <div>{{ recipe.glutenFree ? 'Gluten-Free: Yes' : 'Gluten-Free: No' }}</div>
               <div>Servings: {{ recipe.servings }}</div>
+              <div v-if="this.$route.params.family">family chef: {{ recipe.family_chef }}</div>
+              <div v-if="this.$route.params.family">customary time: {{ recipe.customaryTime }}</div>
             </div>
             Ingredients:
             <ul>
@@ -22,8 +24,8 @@
                 {{ (ingredient.amount).toFixed(1) }} {{ ingredient.unit }} {{ ingredient.name }}
               </li>
             </ul>
-            <button @click="goToPreparation" class="mb-2">Prepare this recipe</button> <!-- Added class for margin -->
-            <button @click="addToMeal">Add to Meal</button> <!-- New Button -->
+            <button @click="goToPreparation" class="mb-2">Prepare this recipe</button>
+            <button @click="addToMeal">Add to Meal</button>
           </div>
           <div class="wrapped">
             <h3>Instructions:</h3>
@@ -31,8 +33,7 @@
               <h4>{{ instructionGroup.name }}</h4>
               <ol>
                 <li v-for="(step, stepIndex) in instructionGroup.steps" :key="stepIndex">
-                  <span v-if="stepIndex === 0">{{ step.step.split(':')[1].trim() }}</span>
-                  <span v-else>{{ step.step }}</span>
+                  <span>{{step.step}}</span>
                 </li>
               </ol>
             </div>
@@ -47,7 +48,7 @@
 </template>
 
 <script>
-import { mockGetRecipeFullDetails } from "../services/recipes.js";
+import { mockGetRecipeFullDetails, mockGetFamilyRecipeFullDetails } from "../services/recipes.js";
 import { store } from "../store.js"; // Import the store
 
 export default {
@@ -58,72 +59,52 @@ export default {
       initialServings: 1
     };
   },
+  props: {
+    family: {
+      type: Boolean,
+      default: false
+    }
+  },
   computed: {
     updatedIngredients() {
       return this.recipe.extendedIngredients.map((ingredient) => ({
         ...ingredient,
         amount: ingredient.amount * this.servingsMultiplier
       }));
-    },
+    }
   },
   methods: {
     goToPreparation() {
       store.incrementMealCount();
-      // need to add a function that adding the recipe to the Meal list
-      this.$router.push({ name: 'preperation', params: { recipeId: this.$route.params.recipeId } });
+      this.$router.push({ name: 'preparation', params: { recipeId: this.$route.params.recipeId } });
     },
     addToMeal() {
-      // need to add a function that adding the recipe to the Meal list
-      store.incrementMealCount(); // Increment the counter
+      store.incrementMealCount();
+    },
+    async fetchRecipeDetails() {
+      try {
+        let response;
+        if (this.$route.params.family) {
+          response = await mockGetFamilyRecipeFullDetails(this.$route.params.recipeId);
+        } else {
+          response = await mockGetRecipeFullDetails(this.$route.params.recipeId);
+        }
+        
+        if (response.status !== 200) {
+          this.$router.replace("/NotFound");
+          return;
+        }
+
+        this.recipe = response.data.recipe;
+        console.log(this.recipe)
+      } catch (error) {
+        console.error(error);
+        this.$router.replace("/NotFound");
+      }
     }
   },
-  async created() {
-    try {
-      let response;
-
-      try {
-        response = await mockGetRecipeFullDetails(this.$route.params.recipeId);
-        if (response.status !== 200) this.$router.replace("/NotFound");
-      } catch (error) {
-        console.log("error.response.status", error.response.status);
-        this.$router.replace("/NotFound");
-        return;
-      }
-
-      let {
-        analyzedInstructions,
-        instructions,
-        extendedIngredients,
-        aggregateLikes,
-        readyInMinutes,
-        image,
-        title,
-        servings
-      } = response.data.recipe;
-
-      let _instructions = analyzedInstructions
-        .map((fstep) => {
-          fstep.steps[0].step = fstep.name + fstep.steps[0].step;
-          return fstep.steps;
-        })
-        .reduce((a, b) => [...a, ...b], []);
-
-      let _recipe = {
-        instructions,
-        _instructions,
-        analyzedInstructions,
-        extendedIngredients,
-        aggregateLikes,
-        readyInMinutes,
-        image,
-        title,
-        servings
-      };
-
-      this.recipe = _recipe;
-    } catch (error) {
-      console.log(error);
-    }
+  created() {
+    this.fetchRecipeDetails();
   }
 };
 </script>

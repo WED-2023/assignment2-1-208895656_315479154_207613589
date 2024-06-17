@@ -1,4 +1,5 @@
 // src/services/recipes.js
+
 import recipe_full_view from "../assets/mocks/recipe_full_view.json";
 import recipe_preview from "../assets/mocks/recipe_preview.json";
 import FamilyRecipes from "../assets/mocks/FamilyRecipes.json";
@@ -78,6 +79,32 @@ export function mockGetRecipeFullDetails(recipeId) {
   if (recipeIndex !== -1) {
     // Assuming recipe_full_view is an array with the same index alignment as recipe_preview
     const recipeDetails = recipe_full_view[recipeIndex];
+    return {
+      status: 200,
+      data: { recipe: recipeDetails }
+    };
+  } else {
+    return {
+      status: 404,
+      error: 'Recipe not found'
+    };
+  }
+}
+
+export function mockGetFamilyRecipeFullDetails(recipeId) {
+  console.log("FamilyRecipes loaded:", FamilyRecipes);  // Check what's loaded
+  const id = Number(recipeId);
+  console.log("Looking for ID:", id);
+
+  const recipeIndex = FamilyRecipes.findIndex(recipe => {
+    console.log("Comparing:", recipe.id, id);
+    return recipe.id === id;
+  });
+
+  console.log("Found index:", recipeIndex);  // Check the index found
+
+  if (recipeIndex !== -1) {
+    const recipeDetails = FamilyRecipes[recipeIndex];
     return {
       status: 200,
       data: { recipe: recipeDetails }

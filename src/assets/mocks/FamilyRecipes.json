@@ -1,9 +1,7 @@
 [
     {
         "id": 100000,
-        "preparation_image": "https://tastesbetterfromscratch.com/wp-content/uploads/2020/05/Empanadas-17.jpg",
-        "cooking_image": "https://tastesbetterfromscratch.com/wp-content/uploads/2020/05/Empanadas-18.jpg",
-        "finish_image": "https://tastesbetterfromscratch.com/wp-content/uploads/2020/05/Empanadas-7.jpg",
+        "image": "https://tastesbetterfromscratch.com/wp-content/uploads/2020/05/Empanadas-7.jpg",
         "title": "Empanadas",
         "family_chef": "Miryam Kamer (Gal's grandmother)",
         "readyInMinutes": 25,
@@ -13,6 +11,7 @@
         "vegan": false,
         "glutenFree": false,
         "customaryTime": "Friday nights and New Year's eve.",
+        "instructions": "I got all my fingers, my fingers go chop chop",
         "analyzedInstructions": [
             {
                 "name": "Preparation",

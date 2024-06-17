@@ -7,7 +7,7 @@
       </button>
     </div>
     <!-- Router Link for Navigation -->
-    <router-link @click.native="handleClick" :to="{ name: 'recipe', params: { recipeId: recipe.id } }" class="link-area">
+    <router-link @click.native="handleClick" :to="{ name: 'recipe', params: { recipeId: recipe.id, family: family ? true : undefined } }" class="link-area">
       <div class="recipe-body">
         <img :src="recipe.image" alt="Recipe Image" class="recipe-image" @error="image_load = false"/>
       </div>
@@ -16,6 +16,8 @@
         <ul class="recipe-overview">
           <li>{{ recipe.readyInMinutes }} minutes</li>
           <li>{{ recipe.aggregateLikes }} likes</li>
+          <li v-if="family">Customary time: {{ recipe.customaryTime }}</li>
+          <li v-if="family">Family Chef: {{ recipe.family_chef }}</li>
           <br>
           <li>{{ recipe.summary }}</li>
           <br><br><br>
@@ -37,7 +39,6 @@
 <script>
 import { BProgress } from 'bootstrap-vue';
 import { integer } from 'vuelidate/lib/validators';
-
 export default {
   components: {
     BProgress
@@ -59,9 +60,13 @@ export default {
       type: Boolean, 
       default: false
     },
+    family: {
+      type: Boolean, 
+      default: false
+    },
     progress_value: {
       type: integer,
-      default: 50
+      default: 0
     }
   },
   methods: {
@@ -106,6 +111,10 @@ export default {
   background-color: rgba(144, 238, 144, 0.5); /* Light green with 50% transparency */
 }
 
+.li{
+  font-size: 20px;
+}
+
 .recipe-preview:hover {
   transform: translateY(-5px);
   box-shadow: 0 4px 10px rgba(0,0,0,0.2);
@@ -114,6 +123,10 @@ export default {
 .recipe-body {
   width: 100%;
   height: auto;
+}
+.recipe-body,
+.recipe-body * {
+  font-size: 16px; /* Adjust the font size as per your preference */
 }
 
 .like-button-container {
