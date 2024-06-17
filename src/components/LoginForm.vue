@@ -116,6 +116,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.login-form {
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
 .container {
   max-width: 400px;
   background-color: rgb(125, 163, 163); // Default background

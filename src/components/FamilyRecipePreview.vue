@@ -74,6 +74,12 @@
   </script>
   
   <style scoped>
+  .family-recipe-preview {
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
   .recipe-preview {
     display: block;
     width: 100%;

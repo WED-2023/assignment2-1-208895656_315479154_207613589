@@ -1,15 +1,15 @@
 <template>
-  <div class="container">
-    <img src="https://www.allrecipes.com/thmb/HbxLYVBbKsMhk2NHrXjoHYwedjw=/1900x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/4540851_Buffalo-Chicken-Mac-and-Cheese-3x1-2d466cf4f8574bc69614b58ac490774a.jpg" alt="Buffalo Chicken Mac and Cheese" class="header-image">
+  <div class="main-page">
+    <div class="background-overlay"></div>
     <h1 class="title">Everyday Cooking</h1>
-    <div class="grid-container">
-      <div class="recipe-list">
+    <div class="content-container">
+      <div class="content-box recipe-list transparent-light-green">
         <RecipePreviewList :recipes="recipes" title="Random Recipes" class="center" :showButton="true" />
       </div>
-      <div v-if="!$root.store.username" class="login-form">
+      <div v-if="!$root.store.username" class="content-box login-form transparent-light-green">
         <LoginForm></LoginForm>
       </div>
-      <div v-if="$root.store.username" class="last-viewed-recipes" :showButton="false">
+      <div v-if="$root.store.username" class="content-box last-viewed-recipes transparent-light-green">
         <RecipePreviewList
           :recipes="recipes"
           title="Last Viewed Recipes"
@@ -41,10 +41,24 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.container {
-  text-align: center; /* Center everything in the container */
-  background-color: #a3b64f;
+.main-page {
+  position: relative;
+  min-height: 100vh; /* Ensure the background covers the entire height */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center content horizontally */
+}
 
+.background-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('/src/assets/background.png') no-repeat center center fixed;
+  background-size: cover;
+  opacity: 0.6; /* Adjust opacity to make the background transparent */
+  z-index: -1; /* Ensure the background is behind the content */
 }
 
 .header-image {
@@ -59,42 +73,29 @@ export default {
   font-size: 36px; /* Large font size for visibility */
   color: #333; /* Dark grey color for the text */
   text-shadow: 2px 2px 8px rgba(0,0,0,0.5); /* Soft shadow for a dramatic effect */
+  margin: 20px 0; /* Add some margin to the title */
 }
 
-.grid-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  column-gap: 40px;
+.content-container {
+  display: flex;
+  justify-content: center; /* Center items horizontally */
+  align-items: stretch; /* Ensure items take the same height */
+  width: 100%;
 }
 
-.login-form, .recipe-list {
-  grid-row: 1;
-}
-
-.login-form {
-  grid-column: 2;
-  max-width: 400px;
-  margin: auto;
+.content-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(144, 238, 144, 0.5); /* Light green with 50% transparency */
+  padding: 20px;
+  border-radius: 10px;
   box-shadow: 0 4px 8px rgba(32, 15, 15, 0.1);
-  background-color: #ffffff; /* Set background color to white */
-  border-radius: 50px;
-}
-
-.recipe-list {
-  grid-column: 1;
-}
-
-
-.grid-container
-{
-  background-color: #d8e27c;
-  
-}
-
-
-.last-viewed-recipes {
-  grid-column: 2;
-  grid-row: 1;
+  z-index: 1; /* Ensure these components are above the background */
+  margin: 10px;
+  max-width: 400px; /* Adjust as needed */
+  text-align: center; /* Center the text */
+  flex-grow: 1; /* Ensure they stretch equally */
 }
 </style>
-
