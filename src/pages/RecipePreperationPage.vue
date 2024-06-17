@@ -25,7 +25,7 @@
             Ingredients:
             <ul>
               <li v-for="(ingredient, index) in updatedIngredients" :key="index + '_' + ingredient.id">
-                {{ (ingredient.amount).toFixed(1) }} {{ ingredient.unit }} {{ ingredient.name }}
+                {{ (ingredient.amount).toFixed(2) }} {{ ingredient.unit }} {{ ingredient.name }}
               </li>
             </ul>
           </div>
