@@ -1,46 +1,47 @@
 <template>
   <div class="container">
-    <h1 class="title">Search Page</h1>
-    <b-form @submit.prevent="onSubmit">
-      <b-form-group label="Search for a recipe/food:">
-        <b-input-group>
-          <b-form-input v-model="searchQuery" placeholder="Search for a recipe/food."></b-form-input>
-          <b-input-group-append>
-            <b-button type="submit" variant="primary">Search</b-button>
-          </b-input-group-append>
-        </b-input-group>
-      </b-form-group>
-
+    <div class="sidebar">
       <b-form-group label="Number of results:">
         <b-form-select v-model="resultsCount" :options="resultsOptions"></b-form-select>
       </b-form-group>
 
-      <b-form-group label="Intolerances:">
-        <div class="d-flex justify-content-between align-items-center">
-          <b-form-checkbox-group v-model="selectedFilters" :options="filterOptions" stacked></b-form-checkbox-group>
-          <div class="ml-3">
-            <b-form-group label="Diets:">
-              <b-form-select v-model="selectedDiet" :options="dietOptions"></b-form-select>
-            </b-form-group>
-          </div>
-          <div class="ml-3 d-flex align-items-center">
-            <b-form-group label="Cuisines:" class="mr-2">
-              <b-form-select v-model="selectedCuisine" :options="cuisineOptions"></b-form-select>
-            </b-form-group>
-            <b-form-group label="Sort by:">
-              <b-form-select v-model="sortOption" :options="sortOptions"></b-form-select>
-            </b-form-group>
-          </div>
-        </div>
+      <b-form-group label="Intolerances:" class="mt-4">
+        <b-form-checkbox-group v-model="selectedFilters" :options="filterOptions" stacked></b-form-checkbox-group>
       </b-form-group>
 
-      <b-alert variant="danger" :show="showAlert" dismissible>
-        Please enter a search query and choose a sorting method.
-      </b-alert>
-    </b-form>
+      <b-form-group label="Diets:" class="mt-4">
+        <b-form-select v-model="selectedDiet" :options="dietOptions" multiple></b-form-select>
+      </b-form-group>
 
-    <!-- RecipePreviewList Component to display search results -->
-    <RecipePreviewList v-if="showResults" :title="'Search Results'" :recipeIds="recipeIds" :amountToFetch="5" :sortOption="sortOption" />
+      <b-form-group label="Cuisines:" class="mt-4">
+        <b-form-select v-model="selectedCuisine" :options="cuisineOptions" multiple></b-form-select>
+      </b-form-group>
+
+      <b-form-group label="Sort by:" class="mt-4">
+        <b-form-select v-model="sortOption" :options="sortOptions"></b-form-select>
+      </b-form-group>
+    </div>
+
+    <div class="content">
+      <h1 class="title">Search Page</h1>
+      <b-form @submit.prevent="onSubmit">
+        <b-form-group label="Search for a recipe/food:">
+          <b-input-group>
+            <b-form-input v-model="searchQuery" placeholder="Search for a recipe/food."></b-form-input>
+            <b-input-group-append>
+              <b-button type="submit" variant="primary">Search</b-button>
+            </b-input-group-append>
+          </b-input-group>
+        </b-form-group>
+
+        <b-alert variant="danger" :show="showAlert" dismissible>
+          Please enter a search query and choose a sorting method.
+        </b-alert>
+      </b-form>
+
+      <!-- RecipePreviewList Component to display search results -->
+      <RecipePreviewList v-if="showResults" :title="'Search Results'" :recipeIds="recipeIds" :amountToFetch="5" :sortOption="sortOption" />
+    </div>
   </div>
 </template>
 
@@ -186,15 +187,23 @@ export default {
 
 <style>
 .container {
-  max-width: 600px;
+  display: flex;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
 }
+
+.sidebar {
+  width: 25%;
+  padding-right: 20px;
+}
+
+.content {
+  width: 75%;
+}
+
 .title {
   text-align: center;
   margin-bottom: 20px;
-}
-.ml-3 {
-  margin-left: 1rem;
 }
 </style>

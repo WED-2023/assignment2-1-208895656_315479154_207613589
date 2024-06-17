@@ -59,15 +59,18 @@ export default {
       type: Boolean, 
       default: false
     },
-    progress_value:{
+    progress_value: {
       type: integer,
       default: 50
     }
   },
   methods: {
     toggleLike(id) {
-      mockAddFavorite(id)
-      this.likedRecipes.has(id) ? this.likedRecipes.delete(id) : this.likedRecipes.add(id);
+      if (this.likedRecipes.has(id)) {
+        this.likedRecipes.delete(id);
+      } else {
+        this.likedRecipes.add(id);
+      }
       localStorage.setItem('likedRecipes', JSON.stringify([...this.likedRecipes]));
       this.$forceUpdate();  // Ensuring reactivity is maintained
     },
