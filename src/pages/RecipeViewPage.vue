@@ -76,7 +76,7 @@ export default {
   methods: {
     goToPreparation() {
       store.incrementMealCount();
-      this.$router.push({ name: 'preparation', params: { recipeId: this.$route.params.recipeId } });
+      this.$router.push({ name: 'preperation', params: { recipeId: this.$route.params.recipeId, family: this.$route.params.family } });
     },
     addToMeal() {
       store.incrementMealCount();

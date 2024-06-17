@@ -36,8 +36,7 @@
               <ol>
                 <li v-for="(step, stepIndex) in instructionGroup.steps" :key="stepIndex">
                   <input type="checkbox" v-model="completed" />
-                  <span v-if="stepIndex === 0">{{ step.step.split(':')[1].trim() }}</span>
-                  <span v-else>{{ step.step }}</span>
+                  <span>{{ step.step }}</span>
                 </li>
               </ol>
             </div>
@@ -52,7 +51,8 @@
 </template>
 
 <script>
-import { mockGetRecipeFullDetails } from "../services/recipes.js";
+import { mockGetRecipeFullDetails, mockGetFamilyRecipeFullDetails } from "../services/recipes.js";
+import { store } from "../store.js"; // Import the store
 
 export default {
   data() {
@@ -62,60 +62,54 @@ export default {
       initialServings: 1
     };
   },
+  props: {
+    family: {
+      type: Boolean,
+      default: false
+    }
+  },
   computed: {
     updatedIngredients() {
       return this.recipe.extendedIngredients.map((ingredient) => ({
         ...ingredient,
         amount: ingredient.amount * this.servingsMultiplier
       }));
-    },
+    }
   },
   methods: {
     goToPreparation() {
-      this.$router.push({
-        name: 'preparation',
-        params: { recipeId: this.$route.params.recipeId },
-      });
+      store.incrementMealCount();
+      this.$router.push({ name: 'preparation', params: { recipeId: this.$route.params.recipeId, family: this.$route.params.family } });
     },
-    updateServings() {
-      this.updatedIngredients;
-    }
-  },
-  async created() {
-    try {
-      const response = await mockGetRecipeFullDetails(this.$route.params.recipeId);
-      console.log("API response:", response);
+    addToMeal() {
+      store.incrementMealCount();
+    },
+    async fetchRecipeDetails() {
+      try {
+        let response;
+        console.log(this.$route.params.family)
+        if (this.$route.params.family) {
+          response = await mockGetFamilyRecipeFullDetails(this.$route.params.recipeId);
+        } else {
+          response = await mockGetRecipeFullDetails(this.$route.params.recipeId);
+        }
+        console.log(response)
+        if (response.status !== 200) {
+          this.$router.replace("/NotFound");
+          return;
+        }
 
-      if (response.status !== 200) {
+        this.recipe = response.data.recipe;
+        console.log(this.recipe);
+      } catch (error) {
+        console.error(error);
         this.$router.replace("/NotFound");
-        return;
       }
-
-      const {
-        analyzedInstructions,
-        extendedIngredients,
-        aggregateLikes,
-        readyInMinutes,
-        image,
-        title,
-        servings,
-      } = response.data.recipe;
-
-      this.recipe = {
-        analyzedInstructions,
-        extendedIngredients,
-        aggregateLikes,
-        readyInMinutes,
-        image,
-        title,
-        servings,
-      };
-
-    } catch (error) {
-      console.error("Error fetching recipe details:", error);
-      this.$router.replace("/NotFound");
     }
   },
+  created() {
+    this.fetchRecipeDetails();
+  }
 };
 </script>
 
