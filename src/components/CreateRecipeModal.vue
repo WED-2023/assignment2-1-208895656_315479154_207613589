@@ -12,10 +12,6 @@
         <b-form-input v-model="newRecipe.image" required></b-form-input>
         <b-form-invalid-feedback>Image URL is required.</b-form-invalid-feedback>
       </b-form-group>
-      <b-form-group label="Instructions (required)" :state="validateField(newRecipe.instructions)">
-        <b-form-textarea v-model="newRecipe.instructions" rows="4" required></b-form-textarea>
-        <b-form-invalid-feedback>Instructions are required.</b-form-invalid-feedback>
-      </b-form-group>
       <b-form-group label="Ready in Minutes (10-300)" :state="validateField(newRecipe.readyInMinutes)">
         <b-form-input type="number" v-model="newRecipe.readyInMinutes" min="10" max="300" required></b-form-input>
         <b-form-invalid-feedback>Ready in minutes must be between 10 and 300.</b-form-invalid-feedback>
@@ -33,7 +29,7 @@
         <div v-for="(ingredient, index) in newRecipe.ingredients" :key="index" class="mb-2">
           <b-input-group>
             <b-form-input v-model="ingredient.name" placeholder="Name" required></b-form-input>
-            <b-form-select v-model="ingredient.amount"  :options="amountOptions" required>
+            <b-form-select v-model="ingredient.amount" :options="amountOptions" required>
               <template #first><option value="" disabled selected></option></template>
             </b-form-select>
             <b-button @click="removeIngredient(index)" variant="danger">Remove</b-button>
@@ -42,12 +38,42 @@
         <b-button @click="addIngredient" variant="success">Add Ingredient</b-button>
         <b-form-invalid-feedback v-if="!newRecipe.ingredients.length">At least one ingredient is required.</b-form-invalid-feedback>
       </b-form-group>
+      <b-form-group label="Preparation instructions (at least one step required)" :state="validateField(newRecipe.preparation.length > 0)">
+        <div v-for="(step, index) in newRecipe.preparation" :key="`preparation_${index}`" class="mb-2">
+          <b-input-group>
+            <b-form-input v-model="step.text" placeholder="Step description" required></b-form-input>
+            <b-button @click="removeStep('preparation', index)" variant="danger">Remove</b-button>
+          </b-input-group>
+        </div>
+        <b-button @click="addStep('preparation')" variant="success">Add Step</b-button>
+        <b-form-invalid-feedback v-if="!newRecipe.preparation.length">At least one preparation step is required.</b-form-invalid-feedback>
+      </b-form-group>
+      <b-form-group label="Cooking instructions (at least one step required)" :state="validateField(newRecipe.cooking.length > 0)">
+        <div v-for="(step, index) in newRecipe.cooking" :key="`cooking_${index}`" class="mb-2">
+          <b-input-group>
+            <b-form-input v-model="step.text" placeholder="Step description" required></b-form-input>
+            <b-button @click="removeStep('cooking', index)" variant="danger">Remove</b-button>
+          </b-input-group>
+        </div>
+        <b-button @click="addStep('cooking')" variant="success">Add Step</b-button>
+        <b-form-invalid-feedback v-if="!newRecipe.cooking.length">At least one cooking step is required.</b-form-invalid-feedback>
+      </b-form-group>
+      <b-form-group label="Finishing instructions (at least one step required)" :state="validateField(newRecipe.finishing.length > 0)">
+        <div v-for="(step, index) in newRecipe.finishing" :key="`finishing_${index}`" class="mb-2">
+          <b-input-group>
+            <b-form-input v-model="step.text" placeholder="Step description" required></b-form-input>
+            <b-button @click="removeStep('finishing', index)" variant="danger">Remove</b-button>
+          </b-input-group>
+        </div>
+        <b-button @click="addStep('finishing')" variant="success">Add Step</b-button>
+        <b-form-invalid-feedback v-if="!newRecipe.finishing.length">At least one finishing step is required.</b-form-invalid-feedback>
+      </b-form-group>
     </b-form>
   </b-modal>
 </template>
 
 <script>
-import { BForm, BFormGroup, BFormInput, BInputGroup, BButton, BFormSelect, BFormCheckbox, BAlert, BModal, BFormTextarea, BFormInvalidFeedback } from 'bootstrap-vue';
+import { BForm, BFormGroup, BFormInput, BInputGroup, BButton, BFormSelect, BFormCheckbox, BAlert, BModal, BFormInvalidFeedback } from 'bootstrap-vue';
 
 export default {
   name: "CreateRecipeModal",
@@ -61,7 +87,6 @@ export default {
     BFormCheckbox,
     BAlert,
     BModal,
-    BFormTextarea,
     BFormInvalidFeedback
   },
   props: {
@@ -76,17 +101,19 @@ export default {
       newRecipe: {
         title: '',
         image: '',
-        instructions: '',
         readyInMinutes: 10,
         servings: 1,
         likes: 0,
         glutenFree: false,
         vegan: false,
         vegetarian: false,
-        ingredients: []
+        ingredients: [],
+        preparation: [{ text: '' }],
+        cooking: [{ text: '' }],
+        finishing: [{ text: '' }]
       },
       amountOptions: [
-        { value: 'null', text: 'Amount' },
+        { value: null, text: 'Amount' },
         { value: 1, text: '1' },
         { value: 2, text: '2' },
         { value: 3, text: '3' },
@@ -110,16 +137,30 @@ export default {
     removeIngredient(index) {
       this.newRecipe.ingredients.splice(index, 1);
     },
+    addStep(section) {
+      this.newRecipe[section].push({ text: '' });
+    },
+    removeStep(section, index) {
+      this.newRecipe[section].splice(index, 1);
+    },
     handleSubmit(bvModalEvt) {
       let alertMessage = "";
 
       if (!this.newRecipe.title) alertMessage += "Title, ";
       if (!this.newRecipe.image) alertMessage += "Image URL, ";
-      if (!this.newRecipe.instructions) alertMessage += "Instructions, ";
       if (this.newRecipe.readyInMinutes < 10 || this.newRecipe.readyInMinutes > 300) alertMessage += "Ready in Minutes, ";
       if (this.newRecipe.servings < 1 || this.newRecipe.servings > 20) alertMessage += "Servings, ";
       if (this.newRecipe.ingredients.length === 0 || !this.newRecipe.ingredients.every(ingredient => ingredient.name && ingredient.amount)) {
         alertMessage += "Ingredients, ";
+      }
+      if (this.newRecipe.preparation.length === 0 || !this.newRecipe.preparation.every(step => step.text)) {
+        alertMessage += "Preparation steps, ";
+      }
+      if (this.newRecipe.cooking.length === 0 || !this.newRecipe.cooking.every(step => step.text)) {
+        alertMessage += "Cooking steps, ";
+      }
+      if (this.newRecipe.finishing.length === 0 || !this.newRecipe.finishing.every(step => step.text)) {
+        alertMessage += "Finishing steps, ";
       }
 
       if (alertMessage.length > 0) {
@@ -143,14 +184,16 @@ export default {
       this.newRecipe = {
         title: '',
         image: '',
-        instructions: '',
         readyInMinutes: 10,
         servings: 1,
         likes: 0,
         glutenFree: false,
         vegan: false,
         vegetarian: false,
-        ingredients: []
+        ingredients: [],
+        preparation: [{ text: '' }],
+        cooking: [{ text: '' }],
+        finishing: [{ text: '' }]
       };
     }
   }
