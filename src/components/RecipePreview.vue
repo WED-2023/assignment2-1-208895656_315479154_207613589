@@ -103,6 +103,7 @@ export default {
   border-radius: 8px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   font-family: 'safary';
+  background-color: rgba(144, 238, 144, 0.5); /* Light green with 50% transparency */
 }
 
 .recipe-preview:hover {

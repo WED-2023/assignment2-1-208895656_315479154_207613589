@@ -1,5 +1,5 @@
 <template>
-  <b-container fluid>
+  <b-container fluid class="main-page">
     <b-row>
       <!-- Title and Button on the same row in a flex container -->
       <b-col cols="12">
@@ -16,7 +16,7 @@
       <b-col v-for="r in recipes" :key="r.id">
         <component 
           :is="recipeComponent" 
-          :class="{'recipePreview': !useFamilyRecipePreview, 'familyRecipePreview': useFamilyRecipePreview}"
+          :class="{'recipePreview': !useFamilyRecipePreview, 'familyRecipePreview': useFamilyRecipePreview, 'transparent-light-green': true}"
           :recipe="r" 
           :isClicked="r.clicked" 
           @click.native.stop="toggleRecipeClicked(r)" 
@@ -84,7 +84,7 @@ export default {
         let response;
         if (this.useFamilyRecipePreview) {
           response = await mockGetFamilyRecipesPreview();
-        }else if (this.sortOption === 'likes') {
+        } else if (this.sortOption === 'likes') {
           response = await mockGetRecipesPreviewSortByLikes(this.amountToFetch);
         } else if (this.sortOption === 'preparation_time') {
           response = await mockGetRecipesPreviewSortByTime(this.amountToFetch);
@@ -118,6 +118,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.main-page {
+  // background-color: white;
+  background-repeat: repeat;
+  background-size: 100px 100px; /* Adjust the size as needed */
+  min-height: 100vh; /* Ensure the background covers the entire height */
+}
+
 .container {
   min-height: 400px;
 }
@@ -126,13 +133,17 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  justify-content: center; /* Center content vertically */
+  align-items: center; /* Center content horizontally */
+  text-align: center; /* Center text */
 }
 
 h3 {
   margin-bottom: 0;
 }
 
-.recipePreview {
+.recipePreview,
+.familyRecipePreview {
   text-align: left;
   border: 1px solid transparent;
   transition: border-color 0.3s ease;
@@ -143,22 +154,11 @@ h3 {
   overflow: hidden; /* Ensure overflow content is hidden */
   padding: 15px; /* Add padding to ensure content is not touching the edges */
   margin-bottom: 15px; /* Add margin to separate cards */
-  background-color: #fff; /* Set a consistent background color */
+  background-color: rgba(144, 238, 144, 0.5); /* Light green with 50% transparency */
 }
 
 .familyRecipePreview {
-  /* Add styles specific to FamilyRecipePreview here */
-  text-align: left;
-  border: 1px solid transparent;
-  transition: border-color 0.3s ease;
-  height: 800; /* Adjust height as needed */
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  overflow: hidden; /* Ensure overflow content is hidden */
-  padding: 15px; /* Add padding to ensure content is not touching the edges */
-  margin-bottom: 15px; /* Add margin to separate cards */
-  background-color: #fff; /* Set a consistent background color */
+  height: 800px; /* Adjust height as needed */
 }
 
 .recipePreview[isClicked="true"],
