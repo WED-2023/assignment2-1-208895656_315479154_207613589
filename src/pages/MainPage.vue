@@ -9,12 +9,12 @@
       <div v-if="!$root.store.username" class="content-box login-form transparent-light-green">
         <LoginForm></LoginForm>
       </div>
-      <div v-if="$root.store.username" class="content-box last-viewed-recipes transparent-light-green">
+      <div v-if="$root.store.username" class="content-box1 last-viewed-recipes transparent-light-green">
         <RecipePreviewList
           :recipes="recipes"
           title="Last Viewed Recipes"
           class="center"
-          disabled
+          style="position: relative; top: -18px;"
         ></RecipePreviewList>
       </div>
     </div>
@@ -81,6 +81,22 @@ export default {
   justify-content: center; /* Center items horizontally */
   align-items: stretch; /* Ensure items take the same height */
   width: 100%;
+}
+
+.content-box1 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(144, 238, 144, 0.5); /* Light green with 50% transparency */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(32, 15, 15, 0.1);
+  z-index: 1; /* Ensure these components are above the background */
+  margin: 10px;
+  max-width: 400px; /* Adjust as needed */
+  text-align: center; /* Center the text */
+  flex-grow: 1; /* Ensure they stretch equally */
 }
 
 .content-box {
