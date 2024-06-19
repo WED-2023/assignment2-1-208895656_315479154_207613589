@@ -6,7 +6,7 @@
       </b-form-group>
 
       <b-form-group label="Intolerances:" class="mt-4">
-        <b-form-checkbox-group v-model="selectedFilters" :options="filterOptions" stacked></b-form-checkbox-group>
+        <b-form-select v-model="selectedFilters" :options="filterOptions" multiple></b-form-select>
       </b-form-group>
 
       <b-form-group label="Diets:" class="mt-4">
@@ -40,13 +40,13 @@
       </b-form>
 
       <!-- RecipePreviewList Component to display search results -->
-      <RecipePreviewList v-if="showResults" :title="'Search Results'" :recipeIds="recipeIds" :amountToFetch="5" :sortOption="sortOption" />
+      <RecipePreviewList v-if="showResults" :title="'Search Results'" :recipes="recipes" />
     </div>
   </div>
 </template>
 
 <script>
-import { BForm, BFormGroup, BFormInput, BInputGroup, BInputGroupAppend, BButton, BFormSelect, BFormCheckboxGroup, BAlert } from 'bootstrap-vue';
+import { BForm, BFormGroup, BFormInput, BInputGroup, BInputGroupAppend, BButton, BFormSelect, BAlert } from 'bootstrap-vue';
 import RecipePreviewList from "../components/RecipePreviewList";
 import { mockGetRecipesByQueryAndFilters } from '../services/recipes.js'; // Import your service functions
 
@@ -60,7 +60,6 @@ export default {
     BInputGroupAppend,
     BButton,
     BFormSelect,
-    BFormCheckboxGroup,
     BAlert
   },
   data() {
@@ -131,8 +130,8 @@ export default {
         { value: 'Thai', text: 'Thai' },
         { value: 'Vietnamese', text: 'Vietnamese' }
       ],
-      selectedDiet: null,
-      selectedCuisine: null,
+      selectedDiet: [],
+      selectedCuisine: [],
       sortOption: null,
       sortOptions: [
         { value: null, text: 'choose a sorting method' },
@@ -141,7 +140,7 @@ export default {
       ],
       showAlert: false,
       showResults: false,  // New data property to control the display of RecipePreviewList
-      recipeIds: []  // Array to hold the recipe IDs
+      recipes: []  // Array to hold the recipe data
     };
   },
   watch: {
@@ -152,16 +151,15 @@ export default {
     }
   },
   methods: {
-    async onSubmit() { // Mocking fetching recipe IDs according to the given filters and query
+    async onSubmit() { // Mocking fetching recipe data according to the given filters and query
       if (!this.searchQuery || !this.sortOption) {
         this.showAlert = true;
         this.showResults = false;
       } else {
         this.showAlert = false;
-        this.showResults = true;
         try {
           const response = await this.fetchRecipes();
-          this.recipeIds = response.data.recipes.map(recipe => recipe.id); // Assuming response contains a list of recipe objects
+          this.recipes = response.data.recipes; // Assuming response contains a list of recipe objects
           this.showResults = true;  // Set showResults to true after a successful search
         } catch (error) {
           console.error("Failed to fetch recipes:", error);
@@ -173,14 +171,47 @@ export default {
       const searchQuery = this.searchQuery;
       const resultsCount = this.resultsCount;
       const selectedFilters = this.selectedFilters;
-      const selectedDiet = this.selectedDiet;
-      const selectedCuisine = this.selectedCuisine;
+      const selectedDiet = this.selectedDiet.join(','); // Convert array to comma-separated string
+      const selectedCuisine = this.selectedCuisine.join(','); // Convert array to comma-separated string
       const sortOption = this.sortOption;
 
       // Mock fetching data for demonstration. Replace with actual API call.
       const response = await mockGetRecipesByQueryAndFilters({ searchQuery, resultsCount, selectedFilters, selectedDiet, selectedCuisine, sortOption });
       return response;
+    },
+    loadLastSearch() {
+      const lastSearch = JSON.parse(localStorage.getItem('lastSearch'));
+      if (lastSearch) {
+        this.searchQuery = lastSearch.searchQuery;
+        this.resultsCount = lastSearch.resultsCount;
+        this.selectedFilters = lastSearch.selectedFilters;
+        this.selectedDiet = lastSearch.selectedDiet;
+        this.selectedCuisine = lastSearch.selectedCuisine;
+        this.sortOption = lastSearch.sortOption;
+        this.onSubmit(); // Automatically perform the search
+      }
+    },
+    saveSearch() {
+      const searchDetails = {
+        searchQuery: this.searchQuery,
+        resultsCount: this.resultsCount,
+        selectedFilters: this.selectedFilters,
+        selectedDiet: this.selectedDiet,
+        selectedCuisine: this.selectedCuisine,
+        sortOption: this.sortOption
+      };
+      localStorage.setItem('lastSearch', JSON.stringify(searchDetails));
     }
+  },
+  watch: {
+    showResults(newVal) {
+      if (newVal) {
+        this.saveSearch();
+      }
+    }
+  },
+  mounted() {
+    this.loadLastSearch();
   }
 };
 </script>

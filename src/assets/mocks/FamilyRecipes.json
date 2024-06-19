@@ -444,5 +444,447 @@
                 }
             }
         ]
+    },
+    {
+        "id": 100001,
+        "image": "https://www.allrecipes.com/thmb/43ZFD1l6UKW8n6L4x8_gTSOJ4-s=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/47821-easy-apple-strudel-ddmfs-step-4x3-5456a9a6a4f64db4921256b107943c20.jpg",
+        "title": "Grandma's Strudel",
+        "family_chef": "Gal's Grandma",
+        "readyInMinutes": 60,
+        "servings": 8,
+        "cuisine": "European",
+        "vegetarian": true,
+        "vegan": false,
+        "glutenFree": false,
+        "customaryTime": "Holidays and family gatherings.",
+        "instructions": "Preheat the oven to 375°F (190°C). In a large bowl, combine apples, raisins, sugar, cinnamon, and lemon juice. Roll out the puff pastry on a floured surface.",
+        "analyzedInstructions": [
+            {
+                "name": "Preparation",
+                "steps": [
+                    { "number": 1, "step": "Preheat the oven to 375°F (190°C)." },
+                    { "number": 2, "step": "In a large bowl, combine apples, raisins, sugar, cinnamon, and lemon juice." },
+                    { "number": 3, "step": "Roll out the puff pastry on a floured surface." }
+                ]
+            },
+            {
+                "name": "Cooking",
+                "steps": [
+                    { "number": 4, "step": "Place the apple mixture along one side of the pastry." },
+                    { "number": 5, "step": "Roll up the pastry, sealing the edges with water." },
+                    { "number": 6, "step": "Place on a baking sheet and brush with melted butter." }
+                ]
+            },
+            {
+                "name": "Baking",
+                "steps": [
+                    { "number": 7, "step": "Bake for 35-40 minutes until golden brown." },
+                    { "number": 8, "step": "Allow to cool before slicing." }
+                ]
+            }
+        ],
+        "summary": "A delicious and traditional family favorite.",
+        "extendedIngredients": [
+            {
+                "id": 9003,
+                "aisle": "Produce",
+                "image": "apple.jpg",
+                "consistency": "SOLID",
+                "name": "apples",
+                "nameClean": "apple",
+                "original": "4 large apples, peeled and sliced",
+                "originalName": "apples, peeled and sliced",
+                "amount": 4.0,
+                "unit": "large",
+                "meta": [
+                    "peeled",
+                    "sliced"
+                ],
+                "measures": {
+                    "us": {
+                        "amount": 4.0,
+                        "unitShort": "large",
+                        "unitLong": "large"
+                    },
+                    "metric": {
+                        "amount": 4.0,
+                        "unitShort": "large",
+                        "unitLong": "large"
+                    }
+                }
+            },
+            {
+                "id": 9299,
+                "aisle": "Dried Fruits",
+                "image": "raisins.jpg",
+                "consistency": "SOLID",
+                "name": "raisins",
+                "nameClean": "raisins",
+                "original": "1 cup raisins",
+                "originalName": "raisins",
+                "amount": 1.0,
+                "unit": "cup",
+                "meta": [],
+                "measures": {
+                    "us": {
+                        "amount": 1.0,
+                        "unitShort": "cup",
+                        "unitLong": "cup"
+                    },
+                    "metric": {
+                        "amount": 1.0,
+                        "unitShort": "cup",
+                        "unitLong": "cup"
+                    }
+                }
+            },
+            {
+                "id": 19335,
+                "aisle": "Baking",
+                "image": "sugar-in-bowl.png",
+                "consistency": "SOLID",
+                "name": "sugar",
+                "nameClean": "sugar",
+                "original": "1 cup sugar",
+                "originalName": "sugar",
+                "amount": 1.0,
+                "unit": "cup",
+                "meta": [],
+                "measures": {
+                    "us": {
+                        "amount": 1.0,
+                        "unitShort": "cup",
+                        "unitLong": "cup"
+                    },
+                    "metric": {
+                        "amount": 1.0,
+                        "unitShort": "cup",
+                        "unitLong": "cup"
+                    }
+                }
+            },
+            {
+                "id": 2010,
+                "aisle": "Spices and Seasonings",
+                "image": "cinnamon.jpg",
+                "consistency": "SOLID",
+                "name": "cinnamon",
+                "nameClean": "cinnamon",
+                "original": "1 teaspoon cinnamon",
+                "originalName": "cinnamon",
+                "amount": 1.0,
+                "unit": "teaspoon",
+                "meta": [],
+                "measures": {
+                    "us": {
+                        "amount": 1.0,
+                        "unitShort": "tsp",
+                        "unitLong": "teaspoon"
+                    },
+                    "metric": {
+                        "amount": 1.0,
+                        "unitShort": "tsps",
+                        "unitLong": "teaspoons"
+                    }
+                }
+            },
+            {
+                "id": 9152,
+                "aisle": "Produce",
+                "image": "lemon-juice.jpg",
+                "consistency": "LIQUID",
+                "name": "lemon juice",
+                "nameClean": "lemon juice",
+                "original": "2 tablespoons lemon juice",
+                "originalName": "lemon juice",
+                "amount": 2.0,
+                "unit": "tablespoons",
+                "meta": [],
+                "measures": {
+                    "us": {
+                        "amount": 2.0,
+                        "unitShort": "Tbsps",
+                        "unitLong": "tablespoons"
+                    },
+                    "metric": {
+                        "amount": 2.0,
+                        "unitShort": "Tbsps",
+                        "unitLong": "tablespoons"
+                    }
+                }
+            },
+            {
+                "id": 10018339,
+                "aisle": "Refrigerated",
+                "image": "puff-pastry.png",
+                "consistency": "SOLID",
+                "name": "puff pastry",
+                "nameClean": "puff pastry",
+                "original": "1 sheet puff pastry, thawed",
+                "originalName": "puff pastry, thawed",
+                "amount": 1.0,
+                "unit": "sheet",
+                "meta": [
+                    "thawed"
+                ],
+                "measures": {
+                    "us": {
+                        "amount": 1.0,
+                        "unitShort": "sheet",
+                        "unitLong": "sheet"
+                    },
+                    "metric": {
+                        "amount": 1.0,
+                        "unitShort": "sheet",
+                        "unitLong": "sheet"
+                    }
+                }
+            },
+            {
+                "id": 1001,
+                "aisle": "Milk, Eggs, Other Dairy",
+                "image": "butter-sliced.jpg",
+                "consistency": "SOLID",
+                "name": "butter",
+                "nameClean": "butter",
+                "original": "2 tablespoons butter, melted",
+                "originalName": "butter, melted",
+                "amount": 2.0,
+                "unit": "tablespoons",
+                "meta": [
+                    "melted"
+                ],
+                "measures": {
+                    "us": {
+                        "amount": 2.0,
+                        "unitShort": "Tbsps",
+                        "unitLong": "tablespoons"
+                    },
+                    "metric": {
+                        "amount": 2.0,
+                        "unitShort": "Tbsps",
+                        "unitLong": "tablespoons"
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "id": 100002,
+        "image": "https://www.southernliving.com/thmb/VWEZlNJiPWldB6_8F9V5DpZELTE=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/gettyimages-903814568_0-1-55e62fd22f094eb09094de88fc34e0ef.jpg",
+        "title": "Saturday Pancakes",
+        "family_chef": "Iftach's Aunt",
+        "readyInMinutes": 20,
+        "servings": 4,
+        "cuisine": "American",
+        "vegetarian": true,
+        "vegan": false,
+        "glutenFree": false,
+        "customaryTime": "Saturday mornings.",
+        "instructions": "In a large bowl, whisk together the flour, sugar, baking powder, and salt. In another bowl, beat the eggs and then whisk in the milk and melted butter. Pour the wet ingredients into the dry ingredients and mix until just combined.",
+        "analyzedInstructions": [
+            {
+                "name": "Preparation",
+                "steps": [
+                    { "number": 1, "step": "In a large bowl, whisk together the flour, sugar, baking powder, and salt." },
+                    { "number": 2, "step": "In another bowl, beat the eggs and then whisk in the milk and melted butter." },
+                    { "number": 3, "step": "Pour the wet ingredients into the dry ingredients and mix until just combined." }
+                ]
+            },
+            {
+                "name": "Cooking",
+                "steps": [
+                    { "number": 4, "step": "Heat a griddle or non-stick skillet over medium heat." },
+                    { "number": 5, "step": "Pour 1/4 cup of batter onto the griddle for each pancake." },
+                    { "number": 6, "step": "Cook until bubbles form on the surface of the pancakes and the edges look set, about 2-3 minutes. Flip and cook until golden brown, another 2-3 minutes." }
+                ]
+            },
+            {
+                "name": "Serving",
+                "steps": [
+                    { "number": 7, "step": "Serve the pancakes warm with your favorite toppings." }
+                ]
+            }
+        ],
+        "summary": "A perfect recipe for fluffy and delicious pancakes to start your weekend.",
+        "extendedIngredients": [
+            {
+                "id": 20081,
+                "aisle": "Baking",
+                "image": "flour.png",
+                "consistency": "SOLID",
+                "name": "all-purpose flour",
+                "nameClean": "all-purpose flour",
+                "original": "1 1/2 cups all-purpose flour",
+                "originalName": "all-purpose flour",
+                "amount": 1.5,
+                "unit": "cups",
+                "meta": [],
+                "measures": {
+                    "us": {
+                        "amount": 1.5,
+                        "unitShort": "cups",
+                        "unitLong": "cups"
+                    },
+                    "metric": {
+                        "amount": 1.5,
+                        "unitShort": "cups",
+                        "unitLong": "cups"
+                    }
+                }
+            },
+            {
+                "id": 19335,
+                "aisle": "Baking",
+                "image": "sugar-in-bowl.png",
+                "consistency": "SOLID",
+                "name": "sugar",
+                "nameClean": "sugar",
+                "original": "3 tablespoons sugar",
+                "originalName": "sugar",
+                "amount": 3.0,
+                "unit": "tablespoons",
+                "meta": [],
+                "measures": {
+                    "us": {
+                        "amount": 3.0,
+                        "unitShort": "Tbsps",
+                        "unitLong": "tablespoons"
+                    },
+                    "metric": {
+                        "amount": 3.0,
+                        "unitShort": "Tbsps",
+                        "unitLong": "tablespoons"
+                    }
+                }
+            },
+            {
+                "id": 18371,
+                "aisle": "Baking",
+                "image": "white-powder.jpg",
+                "consistency": "SOLID",
+                "name": "baking powder",
+                "nameClean": "baking powder",
+                "original": "1 tablespoon baking powder",
+                "originalName": "baking powder",
+                "amount": 1.0,
+                "unit": "tablespoon",
+                "meta": [],
+                "measures": {
+                    "us": {
+                        "amount": 1.0,
+                        "unitShort": "Tbsps",
+                        "unitLong": "tablespoons"
+                    },
+                    "metric": {
+                        "amount": 1.0,
+                        "unitShort": "Tbsps",
+                        "unitLong": "tablespoons"
+                    }
+                }
+            },
+            {
+                "id": 2047,
+                "aisle": "Spices and Seasonings",
+                "image": "salt.jpg",
+                "consistency": "SOLID",
+                "name": "salt",
+                "nameClean": "salt",
+                "original": "1/2 teaspoon salt",
+                "originalName": "salt",
+                "amount": 0.5,
+                "unit": "teaspoon",
+                "meta": [],
+                "measures": {
+                    "us": {
+                        "amount": 0.5,
+                        "unitShort": "tsps",
+                        "unitLong": "teaspoons"
+                    },
+                    "metric": {
+                        "amount": 0.5,
+                        "unitShort": "tsps",
+                        "unitLong": "teaspoons"
+                    }
+                }
+            },
+            {
+                "id": 1123,
+                "aisle": "Milk, Eggs, Other Dairy",
+                "image": "egg.png",
+                "consistency": "SOLID",
+                "name": "egg",
+                "nameClean": "egg",
+                "original": "1 egg",
+                "originalName": "egg",
+                "amount": 1.0,
+                "unit": "",
+                "meta": [],
+                "measures": {
+                    "us": {
+                        "amount": 1.0,
+                        "unitShort": "",
+                        "unitLong": ""
+                    },
+                    "metric": {
+                        "amount": 1.0,
+                        "unitShort": "",
+                        "unitLong": ""
+                    }
+                }
+            },
+            {
+                "id": 1077,
+                "aisle": "Milk, Eggs, Other Dairy",
+                "image": "milk.png",
+                "consistency": "LIQUID",
+                "name": "milk",
+                "nameClean": "milk",
+                "original": "1 1/4 cups milk",
+                "originalName": "milk",
+                "amount": 1.25,
+                "unit": "cups",
+                "meta": [],
+                "measures": {
+                    "us": {
+                        "amount": 1.25,
+                        "unitShort": "cups",
+                        "unitLong": "cups"
+                    },
+                    "metric": {
+                        "amount": 1.25,
+                        "unitShort": "cups",
+                        "unitLong": "cups"
+                    }
+                }
+            },
+            {
+                "id": 1001,
+                "aisle": "Milk, Eggs, Other Dairy",
+                "image": "butter-sliced.jpg",
+                "consistency": "SOLID",
+                "name": "butter",
+                "nameClean": "butter",
+                "original": "3 tablespoons butter, melted",
+                "originalName": "butter, melted",
+                "amount": 3.0,
+                "unit": "tablespoons",
+                "meta": [
+                    "melted"
+                ],
+                "measures": {
+                    "us": {
+                        "amount": 3.0,
+                        "unitShort": "Tbsps",
+                        "unitLong": "tablespoons"
+                    },
+                    "metric": {
+                        "amount": 3.0,
+                        "unitShort": "Tbsps",
+                        "unitLong": "tablespoons"
+                    }
+                }
+            }
+        ]
     }
 ]

@@ -122,13 +122,23 @@ export function fetchRecipesByIds(ids) {
   return { data: { recipes: recipes } };
 }
 
-export function mockGetRecipesByQueryAndFilters( searchQuery, resultsCount, selectedFilters, selectedDiet, selectedCuisine, sortOption ){
-  let recipes = [];
-  for(let i = 0; i < resultsCount/5; i++){
-  recipes.push(recipe_preview[i]);
-}
-
-  return { data: { recipes: recipes } };
+export async function mockGetRecipesByQueryAndFilters({ searchQuery, resultsCount, selectedFilters, selectedDiet, selectedCuisine, sortOption }) {
+  try {
+    const response = await axios.get('/api/recipes', {
+      params: {
+        searchQuery,
+        resultsCount,
+        selectedFilters: selectedFilters.join(','),
+        selectedDiet: selectedDiet.join(','),
+        selectedCuisine: selectedCuisine.join(','),
+        sortOption
+      }
+    });
+    return response;
+  } catch (error) {
+    console.error('Failed to fetch recipes:', error);
+    throw error;
+  }
 }
   
 
