@@ -24,9 +24,9 @@
                 <span>User</span>
                 <b-icon icon="chevron-down" />
               </template>
-              <b-dropdown-item><router-link :to="{ name: 'favorites' }">My favorite recipes</router-link></b-dropdown-item>
-              <b-dropdown-item><router-link :to="{ name: 'my-recipes' }">My recipes</router-link></b-dropdown-item>
-              <b-dropdown-item><router-link :to="{ name: 'family-recipes' }">My family recipes</router-link></b-dropdown-item>
+              <b-dropdown-item to="/favorites">My favorite recipes</b-dropdown-item>
+              <b-dropdown-item to="/my-recipes">My recipes</b-dropdown-item>
+              <b-dropdown-item to="/family-recipes">My family recipes</b-dropdown-item>
             </b-dropdown>
           </b-nav-item>
           <b-nav-item>
@@ -134,5 +134,23 @@ export default {
   font-size: 14px; /* Adjust label font size */
   color: #0e0101; /* Adjust label text color */
   white-space: nowrap; /* Prevent label from breaking into multiple lines */
+}
+
+.b-dropdown-item {
+  display: block;
+  width: 100%;
+  padding: 8px 20px;
+  clear: both;
+  font-weight: 400;
+  color: #212529;
+  text-align: inherit;
+  white-space: nowrap;
+  background-color: transparent;
+  border: 0;
+}
+
+.b-dropdown-item:hover {
+  color: #fff;
+  background-color: #007bff;
 }
 </style>
