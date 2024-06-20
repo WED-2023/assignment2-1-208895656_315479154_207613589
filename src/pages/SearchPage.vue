@@ -1,52 +1,63 @@
 <template>
-  <div class="container">
-    <div class="sidebar">
-      <b-form-group label="Number of results:">
+  <div class="search-page">
+    <div class="background-overlay"></div>
+    <header class="header">
+      <h1 class="search-title">Search among <span class="highlight">all</span> our recipes</h1>
+      <p class="search-subtitle">Find the best recipes for any occasion</p>
+    </header>
+
+    <div class="search-bar-container">
+      <b-form @submit.prevent="onSubmit" inline class="search-bar-form">
+        <b-input-group class="search-bar">
+          <b-form-input v-model="searchQuery" placeholder="Enter your search"></b-form-input>
+          <b-input-group-append>
+            <b-button type="submit" variant="primary">Search</b-button>
+          </b-input-group-append>
+        </b-input-group>
+      </b-form>
+    </div>
+
+    <div class="category-buttons">
+      <b-button variant="outline-secondary" class="category-button" @click="setCategory('Vegetarian')">Vegetarian</b-button>
+      <b-button variant="outline-secondary" class="category-button" @click="setCategory('Family')">Family</b-button>
+      <b-button variant="outline-secondary" class="category-button" @click="setCategory('Gluten free')">Gluten free</b-button>
+      <b-button variant="outline-secondary" class="category-button" @click="setCategory('Other')">Other</b-button>
+    </div>
+
+    <div class="filters-container">
+      <b-form-group label="Number of results:" class="filter-item">
         <b-form-select v-model="resultsCount" :options="resultsOptions"></b-form-select>
       </b-form-group>
 
-      <b-form-group label="Intolerances:" class="mt-4">
-        <b-form-select v-model="selectedFilters" :options="filterOptions" multiple></b-form-select>
+      <b-form-group label="Sort by:" class="filter-item">
+        <b-form-select v-model="sortOption" :options="sortOptions"></b-form-select>
       </b-form-group>
 
-      <b-form-group label="Diets:" class="mt-4">
+      <b-form-group label="Diets:" class="filter-item">
         <b-form-select v-model="selectedDiet" :options="dietOptions" multiple></b-form-select>
       </b-form-group>
 
-      <b-form-group label="Cuisines:" class="mt-4">
+      <b-form-group label="Cuisines:" class="filter-item">
         <b-form-select v-model="selectedCuisine" :options="cuisineOptions" multiple></b-form-select>
       </b-form-group>
 
-      <b-form-group label="Sort by:" class="mt-4">
-        <b-form-select v-model="sortOption" :options="sortOptions"></b-form-select>
+      <b-form-group label="Intolerances:" class="filter-item">
+        <b-form-checkbox-group v-model="selectedFilters" :options="filterOptions" stacked></b-form-checkbox-group>
       </b-form-group>
     </div>
 
-    <div class="content">
-      <h1 class="title">Search Page</h1>
-      <b-form @submit.prevent="onSubmit">
-        <b-form-group label="Search for a recipe/food:">
-          <b-input-group>
-            <b-form-input v-model="searchQuery" placeholder="Search for a recipe/food."></b-form-input>
-            <b-input-group-append>
-              <b-button type="submit" variant="primary">Search</b-button>
-            </b-input-group-append>
-          </b-input-group>
-        </b-form-group>
-
-        <b-alert variant="danger" :show="showAlert" dismissible>
-          Please enter a search query and choose a sorting method.
-        </b-alert>
-      </b-form>
-
-      <!-- RecipePreviewList Component to display search results -->
-      <RecipePreviewList v-if="showResults" :title="'Search Results'" :recipes="recipes" />
+    <div class="search-results">
+      <RecipePreviewList v-if="showResults" :title="'Search Results'" :recipeIds="recipeIds" :amountToFetch="resultsCount" :sortOption="sortOption" />
     </div>
+
+    <b-alert variant="danger" :show="showAlert" dismissible>
+      Please enter a search query and choose a sorting method.
+    </b-alert>
   </div>
 </template>
 
 <script>
-import { BForm, BFormGroup, BFormInput, BInputGroup, BInputGroupAppend, BButton, BFormSelect, BAlert } from 'bootstrap-vue';
+import { BForm, BFormGroup, BFormInput, BInputGroup, BInputGroupAppend, BButton, BFormSelect, BFormCheckboxGroup, BAlert } from 'bootstrap-vue';
 import RecipePreviewList from "../components/RecipePreviewList";
 import { mockGetRecipesByQueryAndFilters } from '../services/recipes.js'; // Import your service functions
 
@@ -60,6 +71,7 @@ export default {
     BInputGroupAppend,
     BButton,
     BFormSelect,
+    BFormCheckboxGroup,
     BAlert
   },
   data() {
@@ -87,7 +99,7 @@ export default {
         { value: 'Wheat', text: 'Wheat' }
       ],
       dietOptions: [
-        { value: 'null', text: 'None' },
+        { value: null, text: 'None' },
         { value: 'Gluten Free', text: 'Gluten Free' },
         { value: 'Ketogenic', text: 'Ketogenic' },
         { value: 'Vegetarian', text: 'Vegetarian' },
@@ -101,7 +113,7 @@ export default {
         { value: 'Whole30', text: 'Whole30' }
       ],
       cuisineOptions: [
-        { value: 'null', text: 'None' },
+        { value: null, text: 'None' },
         { value: 'African', text: 'African' },
         { value: 'Asian', text: 'Asian' },
         { value: 'American', text: 'American' },
@@ -130,17 +142,17 @@ export default {
         { value: 'Thai', text: 'Thai' },
         { value: 'Vietnamese', text: 'Vietnamese' }
       ],
-      selectedDiet: [],
-      selectedCuisine: [],
+      selectedDiet: null,
+      selectedCuisine: null,
       sortOption: null,
       sortOptions: [
-        { value: null, text: 'choose a sorting method' },
+        { value: null, text: 'Choose a sorting method' },
         { value: 'likes', text: 'Likes' },
         { value: 'preparation_time', text: 'Preparation time' }
       ],
       showAlert: false,
       showResults: false,  // New data property to control the display of RecipePreviewList
-      recipes: []  // Array to hold the recipe data
+      recipeIds: []  // Array to hold the recipe IDs
     };
   },
   watch: {
@@ -151,19 +163,24 @@ export default {
     }
   },
   methods: {
-    async onSubmit() { // Mocking fetching recipe data according to the given filters and query
+    setCategory(category) {
+      this.searchQuery = category;
+      this.onSubmit();
+    },
+    async onSubmit() {
       if (!this.searchQuery || !this.sortOption) {
         this.showAlert = true;
         this.showResults = false;
       } else {
         this.showAlert = false;
+        this.showResults = true;
         try {
           const response = await this.fetchRecipes();
-          this.recipes = response.data.recipes; // Assuming response contains a list of recipe objects
-          this.showResults = true;  // Set showResults to true after a successful search
+          this.recipeIds = response.data.recipes.map(recipe => recipe.id);
+          this.showResults = true;
         } catch (error) {
           console.error("Failed to fetch recipes:", error);
-          this.showResults = false;  // Set showResults to false if there is an error
+          this.showResults = false;
         }
       }
     },
@@ -171,70 +188,101 @@ export default {
       const searchQuery = this.searchQuery;
       const resultsCount = this.resultsCount;
       const selectedFilters = this.selectedFilters;
-      const selectedDiet = this.selectedDiet.join(','); // Convert array to comma-separated string
-      const selectedCuisine = this.selectedCuisine.join(','); // Convert array to comma-separated string
+      const selectedDiet = this.selectedDiet;
+      const selectedCuisine = this.selectedCuisine;
       const sortOption = this.sortOption;
 
       // Mock fetching data for demonstration. Replace with actual API call.
       const response = await mockGetRecipesByQueryAndFilters({ searchQuery, resultsCount, selectedFilters, selectedDiet, selectedCuisine, sortOption });
       return response;
-    },
-    loadLastSearch() {
-      const lastSearch = JSON.parse(localStorage.getItem('lastSearch'));
-      if (lastSearch) {
-        this.searchQuery = lastSearch.searchQuery;
-        this.resultsCount = lastSearch.resultsCount;
-        this.selectedFilters = lastSearch.selectedFilters;
-        this.selectedDiet = lastSearch.selectedDiet;
-        this.selectedCuisine = lastSearch.selectedCuisine;
-        this.sortOption = lastSearch.sortOption;
-        this.onSubmit(); // Automatically perform the search
-      }
-    },
-    saveSearch() {
-      const searchDetails = {
-        searchQuery: this.searchQuery,
-        resultsCount: this.resultsCount,
-        selectedFilters: this.selectedFilters,
-        selectedDiet: this.selectedDiet,
-        selectedCuisine: this.selectedCuisine,
-        sortOption: this.sortOption
-      };
-      localStorage.setItem('lastSearch', JSON.stringify(searchDetails));
     }
-  },
-  watch: {
-    showResults(newVal) {
-      if (newVal) {
-        this.saveSearch();
-      }
-    }
-  },
-  mounted() {
-    this.loadLastSearch();
   }
 };
 </script>
 
-<style>
-.container {
-  display: flex;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-.sidebar {
-  width: 25%;
-  padding-right: 20px;
-}
-
-.content {
-  width: 75%;
-}
-
-.title {
+<style scoped>
+.search-page {
   text-align: center;
+  padding: 20px;
+  color: white;
+  position: relative;
+}
+
+.background-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('/src/assets/search_background.png') no-repeat center center fixed;
+  background-size: cover;
+  opacity: 0.6;
+  z-index: -1;
+}
+
+.header {
   margin-bottom: 20px;
+}
+
+.search-title {
+  font-size: 3em;
+  font-weight: bold;
+}
+
+.highlight {
+  background-color: #ffc107;
+  padding: 0 10px;
+}
+
+.search-subtitle {
+  margin-bottom: 20px;
+}
+
+.search-bar-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.search-bar-form {
+  width: 50%;
+}
+
+.search-bar {
+  width: 100%; /* Ensure the search bar takes full width within its container */
+}
+
+.category-buttons {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.category-button {
+  margin: 0 10px;
+  background-color: white;
+  color: #ff7f50;
+  border-color: white;
+}
+
+.category-button:hover {
+  background-color: #ffc107;
+  color: white;
+}
+
+.filters-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.filter-item {
+  width: 200px;
+}
+
+.search-results {
+  margin-top: 20px;
 }
 </style>

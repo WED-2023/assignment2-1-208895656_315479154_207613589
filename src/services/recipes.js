@@ -123,23 +123,44 @@ export function fetchRecipesByIds(ids) {
 }
 
 export async function mockGetRecipesByQueryAndFilters({ searchQuery, resultsCount, selectedFilters, selectedDiet, selectedCuisine, sortOption }) {
-  try {
-    const response = await axios.get('/api/recipes', {
-      params: {
-        searchQuery,
-        resultsCount,
-        selectedFilters: selectedFilters.join(','),
-        selectedDiet: selectedDiet.join(','),
-        selectedCuisine: selectedCuisine.join(','),
-        sortOption
-      }
-    });
-    return response;
-  } catch (error) {
-    console.error('Failed to fetch recipes:', error);
-    throw error;
-  }
+  // Mock data to simulate a real API response
+  const mockRecipes = [
+    {
+      id: 1,
+      title: 'Pancakes',
+      image: 'https://example.com/pancakes.jpg',
+      summary: 'Delicious and fluffy pancakes.',
+      analyzedInstructions: [
+        {
+          name: 'Preparation',
+          steps: [{ number: 1, step: 'Mix ingredients.' }, { number: 2, step: 'Cook on a skillet.' }]
+        }
+      ]
+    },
+    {
+      id: 2,
+      title: 'Spaghetti Bolognese',
+      image: 'https://example.com/spaghetti.jpg',
+      summary: 'Hearty and savory spaghetti bolognese.',
+      analyzedInstructions: [
+        {
+          name: 'Preparation',
+          steps: [{ number: 1, step: 'Cook spaghetti.' }, { number: 2, step: 'Prepare the sauce.' }]
+        }
+      ]
+    },
+    // Add more mock recipes as needed
+  ];
+
+  // Simulate filtering and sorting
+  const filteredRecipes = mockRecipes.filter(recipe => recipe.title.toLowerCase().includes(searchQuery.toLowerCase()));
+  return {
+    data: {
+      recipes: filteredRecipes.slice(0, resultsCount)
+    }
+  };
 }
+
   
 
 export function mockGetFamilyRecipesPreview() {
