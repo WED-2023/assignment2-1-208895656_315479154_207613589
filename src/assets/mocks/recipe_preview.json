@@ -1,72 +1,72 @@
 [
     {
-        "id": 716436,
-        "image": "https://img.spoonacular.com/recipes/716436-556x370.jpg",
-        "title": "Grilled Salmon with Avocado Salsa",
-        "readyInMinutes": 25,
-        "aggregateLikes": 315,
-        "vegetarian": false,
-        "vegan": false,
-        "glutenFree": true,
-        "summary": "This Grilled Salmon with Avocado Salsa is a delicious and healthy main course."
-    },
-    {
-        "id": 716437,
-        "image": "https://img.spoonacular.com/recipes/716437-556x370.jpg",
-        "title": "Thai Green Curry with Vegetables",
-        "readyInMinutes": 35,
-        "aggregateLikes": 245,
+        "id": 324694,
+        "image": "https://img.spoonacular.com/recipes/324694-556x370.jpeg",
+        "title": "Silver Dollar Buttermilk-Pecan Pancakes with Bourbon Molasses Butter and Maple Syrup",
+        "readyInMinutes": 55,
+        "aggregateLikes": 0,
         "vegetarian": true,
-        "vegan": true,
-        "glutenFree": true,
-        "summary": "Thai Green Curry with Vegetables is a flavorful and nutritious dish."
+        "vegan": false,
+        "glutenFree": false,
+        "summary": "Silver Dollar Buttermilk-Pecan Pancakes with Bourbon Molasses Butter and Maple Syrup is a breakfast that serves 6. For $2.76 per serving, this recipe covers 15% of your daily requirements of vitamins and minerals."
     },
     {
-        "id": 716439,
-        "image": "https://img.spoonacular.com/recipes/716439-556x370.jpg",
-        "title": "Quinoa Stuffed Peppers",
+        "id": 123456,
+        "image": "https://cdn.apartmenttherapy.info/image/upload/f_auto,q_auto:eco,c_fill,g_auto,w_1220,h_915/k%2Farchive%2F4d14d19b855023bfdb66a6a99bb9dd78fb2894a0",
+        "title": "Garlic Butter Shrimp",
         "readyInMinutes": 60,
-        "aggregateLikes": 285,
+        "aggregateLikes": 10,
+        "vegetarian": false,
+        "vegan": false,
+        "glutenFree": false,
+        "summary": "Garlic Butter Shrimp is a delicious and easy-to-make dish. For <b>$3.51 per serving</b>, this recipe <b>covers 20%</b> of your daily requirements of vitamins and minerals. One serving contains <b>300 calories</b>, <b>15g of protein</b>, and <b>20g of fat</b>. This recipe is liked by 10 foodies. A mixture of shrimp, garlic, butter, and a few other ingredients are all it takes to make this recipe so tasty. It is brought to you by Allrecipes. It is a good option if you're following a <b>gluten-free</b> diet. From preparation to the plate, this recipe takes approximately <b>60 minutes</b>. With a spoonacular <b>score of 40%</b>, this dish is solid. Similar recipes include <a href=\"https://spoonacular.com/recipes/garlic-shrimp-123457\">Garlic Shrimp</a>, <a href=\"https://spoonacular.com/recipes/butter-shrimp-123458\">Butter Shrimp</a>, and <a href=\"https://spoonacular.com/recipes/shrimp-garlic-123459\">Shrimp Garlic</a>."
+        
+    },
+    {
+        "id": 234567,
+        "image": "https://bitesofwellness.com/wp-content/uploads/2021/09/fall-quinoa-salad-social1.jpg",
+        "title": "Quinoa Veggie Bowl",
+        "aggregateLikes": 200,
+        "readyInMinutes": 35,
         "vegetarian": true,
         "vegan": true,
         "glutenFree": true,
-        "summary": "Quinoa Stuffed Peppers make for a nutritious and filling meal."
+        "summary": "Quinoa Veggie Bowl is a healthy and satisfying dish. For <b>$1.50 per serving</b>, this recipe <b>covers 15%</b> of your daily requirements of vitamins and minerals. One serving contains <b>150 calories</b>, <b>5g of protein</b>, and <b>7g of fat</b>. 200 people have tried this recipe and liked it. A mixture of quinoa, carrots, jalapeno, and a few other ingredients are all it takes to make this recipe so delicious. It is brought to you by Epicurious. It is a good option if you're following a <b>vegan and gluten-free</b> diet. From preparation to the plate, this recipe takes approximately <b>35 minutes</b>. With a spoonacular <b>score of 70%</b>, this dish is pretty good. Similar recipes include <a href=\"https://spoonacular.com/recipes/veggie-quinoa-234568\">Veggie Quinoa</a>, <a href=\"https://spoonacular.com/recipes/quinoa-bowl-234569\">Quinoa Bowl</a>, and <a href=\"https://spoonacular.com/recipes/veggie-bowl-234570\">Veggie Bowl</a>."
+        
     },
     {
-        "id": 716440,
-        "image": "https://img.spoonacular.com/recipes/716440-556x370.jpg",
-        "title": "Lemon Garlic Shrimp Pasta",
-        "readyInMinutes": 30,
-        "aggregateLikes": 232,
+        "id": 345678,
+        "image": "https://aquabounty.com/our-salmon/recipes/image-thumb__104__gallery/cedar-plank-salmon-lemon-cayenne.webp",
+        "title": "Cayenne Salmon",
+        "aggregateLikes": 50,
+        "readyInMinutes": 55,
         "vegetarian": false,
         "vegan": false,
-        "glutenFree": false,
-        "summary": "Lemon Garlic Shrimp Pasta is a quick and flavorful dish perfect for any night."
+        "glutenFree": true,
+        "summary": "Cayenne Salmon is a spicy and flavorful dish. For <b>$2.50 per serving</b>, this recipe <b>covers 18%</b> of your daily requirements of vitamins and minerals. One serving contains <b>350 calories</b>, <b>25g of protein</b>, and <b>15g of fat</b>. 50 people have tried this recipe and liked it. A mixture of salmon, cayenne pepper, olive oil, and a few other ingredients are all it takes to make this recipe so delicious. It is brought to you by Bon Appetit. It is a good option if you're following a <b>gluten-free</b> diet. From preparation to the plate, this recipe takes approximately <b>55 minutes</b>. With a spoonacular <b>score of 60%</b>, this dish is pretty good. Similar recipes include <a href=\"https://spoonacular.com/recipes/cayenne-chicken-345679\">Cayenne Chicken</a>, <a href=\"https://spoonacular.com/recipes/salmon-345680\">Salmon</a>, and <a href=\"https://spoonacular.com/recipes/spicy-salmon-345681\">Spicy Salmon</a>."
+        
     },
     {
-        "id": 716441,
-        "image": "https://img.spoonacular.com/recipes/716441-556x370.jpg",
-        "title": "BBQ Chicken Pizza",
-        "readyInMinutes": 35,
-        "aggregateLikes": 220,
-        "vegetarian": false,
-        "vegan": false,
-        "glutenFree": false,
-        "summary": "This BBQ Chicken Pizza is a delightful combination of sweet and savory flavors."
-    },
-    {
-        "id": 716442,
-        "image": "https://img.spoonacular.com/recipes/716442-556x370.jpg",
-        "title": "Vegetable Fried Rice",
-        "readyInMinutes": 20,
+        "id": 456789,
+        "image": "https://images.sbs.com.au/dims4/default/323d28c/2147483647/strip/true/crop/1500x844+0+190/resize/1280x720!/quality/90/?url=http%3A%2F%2Fsbs-au-brightspot.s3.amazonaws.com%2Fdrupal%2Ffood%2Fpublic%2Fspinach-and-dill-fried-rice.jpg",
+        "title": "Spinach and Dill Rice",
         "aggregateLikes": 300,
+        "readyInMinutes": 40,
         "vegetarian": true,
-        "vegan": true,
-        "glutenFree": false,
-        "summary": "Vegetable Fried Rice is a quick and easy meal that's packed with flavor."
+        "vegan": false,
+        "glutenFree": true,
+        "summary": "Spinach and Dill Rice is a nutritious and flavorful side dish. For <b>$1.80 per serving</b>, this recipe <b>covers 12%</b> of your daily requirements of vitamins and minerals. One serving contains <b>200 calories</b>, <b>4g of protein</b>, and <b>8g of fat</b>. 300 people have tried this recipe and liked it. A mixture of fresh spinach, dill, tomatoes, and a few other ingredients are all it takes to make this recipe so delicious. It is brought to you by Martha Stewart. It is a good option if you're following a <b>vegetarian and gluten-free</b> diet. From preparation to the plate, this recipe takes approximately <b>40 minutes</b>. With a spoonacular <b>score of 75%</b>, this dish is quite good. Similar recipes include <a href=\"https://spoonacular.com/recipes/spinach-rice-456790\">Spinach Rice</a>, <a href=\"https://spoonacular.com/recipes/dill-rice-456791\">Dill Rice</a>, and <a href=\"https://spoonacular.com/recipes/spinach-and-dill-456792\">Spinach and Dill</a>."
+        
+    },
+    {
+        "id": 567890,
+        "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvGkydwx3oXcYvZTUbyKkwK6Gc6afWsO2JXA&s",
+        "title": "Bacon and Zucchini Bites",
+        "aggregateLikes": 500,
+        "readyInMinutes": 45,
+        "vegetarian": false,
+        "vegan": false,
+        "glutenFree": true,
+        "summary": "Bacon and Zucchini Bites are a delicious and easy appetizer. For <b>$2.00 per serving</b>, this recipe <b>covers 10%</b> of your daily requirements of vitamins and minerals. One serving contains <b>250 calories</b>, <b>10g of protein</b>, and <b>20g of fat</b>. 500 people have tried this recipe and liked it. A mixture of zucchini, bacon, cheddar cheese, and a few other ingredients are all it takes to make this recipe so tasty. It is brought to you by All Recipes. It is a good option if you're following a <b>gluten-free</b> diet. From preparation to the plate, this recipe takes approximately <b>45 minutes</b>. With a spoonacular <b>score of 85%</b>, this dish is quite good. Similar recipes include <a href=\"https://spoonacular.com/recipes/bacon-bites-567891\">Bacon Bites</a>, <a href=\"https://spoonacular.com/recipes/zucchini-bites-567892\">Zucchini Bites</a>, and <a href=\"https://spoonacular.com/recipes/bacon-zucchini-567893\">Bacon Zucchini</a>."
     }
-
-
-
-    
 ]

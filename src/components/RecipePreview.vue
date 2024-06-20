@@ -18,9 +18,6 @@
           <li>{{ recipe.aggregateLikes }} likes</li>
           <li v-if="family">Customary time: {{ recipe.customaryTime }}</li>
           <li v-if="family">Family Chef: {{ recipe.family_chef }}</li>
-          <br>
-          <li>{{ recipe.summary }}</li>
-          <br><br><br>
         </ul>
         <div class="recipe-icons">
           <img v-if="recipe.glutenFree" src="https://spoonacular.com/application/frontend/images/badges/gluten-free.svg" alt="Gluten-Free" class="icon"/>
@@ -97,7 +94,8 @@ export default {
 <style scoped>
 .recipe-preview {
   display: block;
-  width: 300px;
+  width: 300px;  /* Fixed width for the card */
+  max-height: 400px; /* Fixed height for the card */
   border: 1px solid #ccc;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   margin: 10px;
@@ -111,10 +109,6 @@ export default {
   background-color: rgba(144, 238, 144, 0.5); /* Light green with 50% transparency */
 }
 
-.li{
-  font-size: 20px;
-}
-
 .recipe-preview:hover {
   transform: translateY(-5px);
   box-shadow: 0 4px 10px rgba(0,0,0,0.2);
@@ -122,45 +116,21 @@ export default {
 
 .recipe-body {
   width: 100%;
-  height: auto;
-}
-.recipe-body,
-.recipe-body * {
-  font-size: 16px; /* Adjust the font size as per your preference */
-}
-
-.like-button-container {
-  position: absolute;
-  bottom: 10px;
-  left: 10px;
+  height: 200px; /* Fixed height for the image container */
+  overflow: hidden;
 }
 
 .recipe-image {
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover; /* This ensures the image covers the container */
   display: block;
-}
-
-.like-button {
-  background-color: #24ca0e; /* Green background for 'Like' */
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  font-size: 11px;
-  cursor: pointer;
-  border-radius: 5px;
-  position: absolute;
-  bottom: 10px;
-  left: 10px; /* Position to bottom-left */
-}
-
-.liked {
-  background-color: #ff4444; /* Red background for liked state */
 }
 
 .recipe-footer {
   padding: 10px;
   background-color: #f9f9f9;
+  height: 250px; /* Fixed height for the footer to maintain card height consistency */
 }
 
 .recipe-title {
@@ -178,14 +148,36 @@ export default {
 .recipe-icons {
   display: flex;
   justify-content: flex-end;
-  margin-top: 10px;
+  margin-top: 70px;
 }
 
 .icon {
   width: 40px;
   height: 40px;
   margin-left: 5px;
-  margin-bottom: 15px;
+}
+
+.like-button-container {
+  position: absolute;
+  bottom: 20px;
+  left: 15px;
+}
+
+.like-button {
+  background-color: #24ca0e; /* Green background for 'Like' */
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  font-size: 11px;
+  cursor: pointer;
+  border-radius: 5px;
+  position: absolute;
+  bottom: 10px;
+  left: 10px; /* Position to bottom-left */
+}
+
+.liked {
+  background-color: #ff4444; /* Red background for liked state */
 }
 
 .progress-bar-container {
