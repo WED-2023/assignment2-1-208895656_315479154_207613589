@@ -148,7 +148,8 @@ export default {
 .recipe-icons {
   display: flex;
   justify-content: flex-end;
-  margin-top: 70px;
+  /* margin-top: 70px; */
+  /* bottom: 20px; */
 }
 
 .icon {

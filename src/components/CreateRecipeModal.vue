@@ -38,35 +38,15 @@
         <b-button @click="addIngredient" variant="success">Add Ingredient</b-button>
         <b-form-invalid-feedback v-if="!newRecipe.ingredients.length">At least one ingredient is required.</b-form-invalid-feedback>
       </b-form-group>
-      <b-form-group label="Preparation instructions (at least one step required)" :state="validateField(newRecipe.preparation.length > 0)">
-        <div v-for="(step, index) in newRecipe.preparation" :key="`preparation_${index}`" class="mb-2">
+      <b-form-group label="Instructions (at least one step required)" :state="validateField(newRecipe.instructions.length > 0)">
+        <div v-for="(step, index) in newRecipe.instructions" :key="`instructions_${index}`" class="mb-2">
           <b-input-group>
             <b-form-input v-model="step.text" placeholder="Step description" required></b-form-input>
-            <b-button @click="removeStep('preparation', index)" variant="danger">Remove</b-button>
+            <b-button @click="removeStep(index)" variant="danger">Remove</b-button>
           </b-input-group>
         </div>
-        <b-button @click="addStep('preparation')" variant="success">Add Step</b-button>
-        <b-form-invalid-feedback v-if="!newRecipe.preparation.length">At least one preparation step is required.</b-form-invalid-feedback>
-      </b-form-group>
-      <b-form-group label="Cooking instructions (at least one step required)" :state="validateField(newRecipe.cooking.length > 0)">
-        <div v-for="(step, index) in newRecipe.cooking" :key="`cooking_${index}`" class="mb-2">
-          <b-input-group>
-            <b-form-input v-model="step.text" placeholder="Step description" required></b-form-input>
-            <b-button @click="removeStep('cooking', index)" variant="danger">Remove</b-button>
-          </b-input-group>
-        </div>
-        <b-button @click="addStep('cooking')" variant="success">Add Step</b-button>
-        <b-form-invalid-feedback v-if="!newRecipe.cooking.length">At least one cooking step is required.</b-form-invalid-feedback>
-      </b-form-group>
-      <b-form-group label="Finishing instructions (at least one step required)" :state="validateField(newRecipe.finishing.length > 0)">
-        <div v-for="(step, index) in newRecipe.finishing" :key="`finishing_${index}`" class="mb-2">
-          <b-input-group>
-            <b-form-input v-model="step.text" placeholder="Step description" required></b-form-input>
-            <b-button @click="removeStep('finishing', index)" variant="danger">Remove</b-button>
-          </b-input-group>
-        </div>
-        <b-button @click="addStep('finishing')" variant="success">Add Step</b-button>
-        <b-form-invalid-feedback v-if="!newRecipe.finishing.length">At least one finishing step is required.</b-form-invalid-feedback>
+        <b-button @click="addStep" variant="success">Add Step</b-button>
+        <b-form-invalid-feedback v-if="!newRecipe.instructions.length">At least one step is required.</b-form-invalid-feedback>
       </b-form-group>
     </b-form>
   </b-modal>
@@ -108,9 +88,7 @@ export default {
         vegan: false,
         vegetarian: false,
         ingredients: [],
-        preparation: [{ text: '' }],
-        cooking: [{ text: '' }],
-        finishing: [{ text: '' }]
+        instructions: [{ text: '' }]
       },
       amountOptions: [
         { value: null, text: 'Amount' },
@@ -137,11 +115,11 @@ export default {
     removeIngredient(index) {
       this.newRecipe.ingredients.splice(index, 1);
     },
-    addStep(section) {
-      this.newRecipe[section].push({ text: '' });
+    addStep() {
+      this.newRecipe.instructions.push({ text: '' });
     },
-    removeStep(section, index) {
-      this.newRecipe[section].splice(index, 1);
+    removeStep(index) {
+      this.newRecipe.instructions.splice(index, 1);
     },
     handleSubmit(bvModalEvt) {
       let alertMessage = "";
@@ -153,14 +131,8 @@ export default {
       if (this.newRecipe.ingredients.length === 0 || !this.newRecipe.ingredients.every(ingredient => ingredient.name && ingredient.amount)) {
         alertMessage += "Ingredients, ";
       }
-      if (this.newRecipe.preparation.length === 0 || !this.newRecipe.preparation.every(step => step.text)) {
-        alertMessage += "Preparation steps, ";
-      }
-      if (this.newRecipe.cooking.length === 0 || !this.newRecipe.cooking.every(step => step.text)) {
-        alertMessage += "Cooking steps, ";
-      }
-      if (this.newRecipe.finishing.length === 0 || !this.newRecipe.finishing.every(step => step.text)) {
-        alertMessage += "Finishing steps, ";
+      if (this.newRecipe.instructions.length === 0 || !this.newRecipe.instructions.every(step => step.text)) {
+        alertMessage += "Instructions, ";
       }
 
       if (alertMessage.length > 0) {
@@ -191,9 +163,7 @@ export default {
         vegan: false,
         vegetarian: false,
         ingredients: [],
-        preparation: [{ text: '' }],
-        cooking: [{ text: '' }],
-        finishing: [{ text: '' }]
+        instructions: [{ text: '' }]
       };
     }
   }

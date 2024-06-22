@@ -24,7 +24,7 @@
   
   <style lang="scss" scoped>
   .container {
-    max-height: 1200px;
+    // max-height: 1200px;
     text-align: center; /* Center everything in the container */
     background-image: url('/src/assets/my_favorites_recipes.webp'); /* Add your background image here */
     background-size: cover; /* Ensure the background image covers the entire container */
@@ -46,7 +46,7 @@
   
   .recipe-container {
     max-width: 400px; /* Limit the width of the recipe container */
-    max-height: 1200px;
+    // max-height: 1200px;
     width: 100%; /* Ensure it takes full width up to the max-width */
     background-color: rgba(255, 255, 255, 0.8); /* Slightly transparent white background */
     padding: 20px; /* Padding inside the recipe container */

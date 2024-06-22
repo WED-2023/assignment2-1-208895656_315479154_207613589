@@ -17,7 +17,7 @@
 
   
 <script>
-import { mockGetMyMealsRecipesPreview, removeFromMyMealsById } from '../services/recipes.js';
+import { mockGetRecipesPreview, removeFromMyMealsById } from '../services/recipes.js';
 import RecipePreview from '../components/RecipePreview.vue';
 import draggable from 'vuedraggable';
 import { BButton } from 'bootstrap-vue';
@@ -36,7 +36,7 @@ export default {
   },
   methods: {
     async fetchRecipes() {
-      const response = await mockGetMyMealsRecipesPreview();
+      const response = await mockGetRecipesPreview(6);
       this.recipes = response.data.recipes.map(recipe => ({
         ...recipe,
         clicked: false,

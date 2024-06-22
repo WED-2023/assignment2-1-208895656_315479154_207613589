@@ -15,28 +15,54 @@ export function mockGetRecipesPreview(amount = 1) {
   return { data: { recipes: recipes } };
 }
 
-export function mockGetRecipesPreviewSortByLikes(amount = 1) {
+// export function mockGetRecipesPreviewSortByLikes(amount = 1) {
+//   let recipes_not_sorted = [];
+//   for(let i = 0; i < amount; i++){
+//     recipes_not_sorted.push(recipe_preview[i%recipe_preview.length]);
+//   }
+
+//   // Sort by aggregateLikes in descending order
+//   const recipes_sorted_by_likes = recipes_not_sorted.sort((a, b) => b.aggregateLikes - a.aggregateLikes);
+  
+//   return { data: { recipes: recipes_sorted_by_likes } };
+// }
+
+// export function mockGetRecipesPreviewSortByTime(amount = 1) {
+//   let recipes_not_sorted = [];
+//   for(let i = 0; i < amount; i++){
+//     recipes_not_sorted.push(recipe_preview[i%recipe_preview.length]);
+//   }
+
+//   // Sort by readyInMinutes in ascending order
+//   const recipes_sorted_by_time = recipes_not_sorted.sort((a, b) => a.readyInMinutes - b.readyInMinutes);
+  
+//   return { data: { recipes: recipes_sorted_by_time } };
+// }
+function generateMockRecipes(amount, sortBy) {
   let recipes_not_sorted = [];
-  for(let i = 0; i < amount; i++){
-    recipes_not_sorted.push(recipe_preview[i]);
+  for (let i = 0; i < amount; i++) {
+    // Use a deep copy to avoid referencing the same object multiple times
+    let recipeCopy = JSON.parse(JSON.stringify(recipe_preview[i % recipe_preview.length]));
+    recipeCopy.id += i * recipe_preview.length; // Ensure unique keys
+    recipes_not_sorted.push(recipeCopy);
   }
 
-  // Sort by aggregateLikes in descending order
-  const recipes_sorted_by_likes = recipes_not_sorted.sort((a, b) => b.aggregateLikes - a.aggregateLikes);
-  
-  return { data: { recipes: recipes_sorted_by_likes } };
+  // Sort the recipes based on the specified criteria
+  if (sortBy === 'likes') {
+    recipes_not_sorted.sort((a, b) => b.aggregateLikes - a.aggregateLikes);
+  } else if (sortBy === 'time') {
+    recipes_not_sorted.sort((a, b) => a.readyInMinutes - b.readyInMinutes);
+  }
+
+  return { data: { recipes: recipes_not_sorted } };
+}
+
+export function mockGetRecipesPreviewSortByLikes(amount = 1) {
+  return generateMockRecipes(amount, 'likes');
 }
 
 export function mockGetRecipesPreviewSortByTime(amount = 1) {
-  let recipes_not_sorted = [];
-  for(let i = 0; i < amount; i++){
-    recipes_not_sorted.push(recipe_preview[i]);
-  }
-
-  // Sort by readyInMinutes in ascending order
-  const recipes_sorted_by_time = recipes_not_sorted.sort((a, b) => a.readyInMinutes - b.readyInMinutes);
-  
-  return { data: { recipes: recipes_sorted_by_time } };
+  return generateMockRecipes(amount, 'time');
 }
 
 
@@ -123,49 +149,19 @@ export function fetchRecipesByIds(ids) {
 }
 
 export async function mockGetRecipesByQueryAndFilters({ searchQuery, resultsCount, selectedFilters, selectedDiet, selectedCuisine, sortOption }) {
-  // Mock data to simulate a real API response
-  const mockRecipes = [
-    {
-      id: 1,
-      title: 'Pancakes',
-      image: 'https://example.com/pancakes.jpg',
-      summary: 'Delicious and fluffy pancakes.',
-      analyzedInstructions: [
-        {
-          name: 'Preparation',
-          steps: [{ number: 1, step: 'Mix ingredients.' }, { number: 2, step: 'Cook on a skillet.' }]
-        }
-      ]
-    },
-    {
-      id: 2,
-      title: 'Spaghetti Bolognese',
-      image: 'https://example.com/spaghetti.jpg',
-      summary: 'Hearty and savory spaghetti bolognese.',
-      analyzedInstructions: [
-        {
-          name: 'Preparation',
-          steps: [{ number: 1, step: 'Cook spaghetti.' }, { number: 2, step: 'Prepare the sauce.' }]
-        }
-      ]
-    },
-    // Add more mock recipes as needed
-  ];
-
-  // Simulate filtering and sorting
-  const filteredRecipes = mockRecipes.filter(recipe => recipe.title.toLowerCase().includes(searchQuery.toLowerCase()));
-  return {
-    data: {
-      recipes: filteredRecipes.slice(0, resultsCount)
-    }
-  };
+  if(sortOption === 'likes'){
+    return mockGetRecipesPreviewSortByLikes(resultsCount)
+  }
+  else{
+    return mockGetRecipesPreviewSortByTime(resultsCount)
+  }
 }
 
   
 
 export function mockGetFamilyRecipesPreview() {
   let recipes = [];
-  for(let i = 0; i < 1; i++){
+  for(let i = 0; i < 3; i++){
     recipes.push(FamilyRecipes[i]);
   }
 

@@ -26,28 +26,53 @@
 
     <div class="filters-container">
       <b-form-group label="Number of results:" class="filter-item">
-        <b-form-select v-model="resultsCount" :options="resultsOptions"></b-form-select>
+        <b-form-select v-model="resultsCount" :options="resultsOptions" class="form-control-white"></b-form-select>
       </b-form-group>
 
       <b-form-group label="Sort by:" class="filter-item">
-        <b-form-select v-model="sortOption" :options="sortOptions"></b-form-select>
+        <b-form-select v-model="sortOption" :options="sortOptions" class="form-control-white"></b-form-select>
       </b-form-group>
 
       <b-form-group label="Diets:" class="filter-item">
-        <b-form-select v-model="selectedDiet" :options="dietOptions" multiple></b-form-select>
+        <b-dropdown id="diet-dropdown" text="Select Diets" class="m-2 custom-dropdown" right>
+          <template #button-content>
+            Select Diets
+          </template>
+          <b-dropdown-form class="dropdown-form">
+            <b-form-checkbox-group v-model="selectedDiets" :options="dietOptions" />
+          </b-dropdown-form>
+        </b-dropdown>
       </b-form-group>
 
       <b-form-group label="Cuisines:" class="filter-item">
-        <b-form-select v-model="selectedCuisine" :options="cuisineOptions" multiple></b-form-select>
+        <b-dropdown id="cuisine-dropdown" text="Select Cuisines" class="m-2 custom-dropdown" right>
+          <template #button-content>
+            Select Cuisines
+          </template>
+          <b-dropdown-form class="dropdown-form">
+            <b-form-checkbox-group v-model="selectedCuisines" :options="cuisineOptions" />
+          </b-dropdown-form>
+        </b-dropdown>
       </b-form-group>
 
       <b-form-group label="Intolerances:" class="filter-item">
-        <b-form-checkbox-group v-model="selectedFilters" :options="filterOptions" stacked></b-form-checkbox-group>
+        <b-dropdown id="intolerance-dropdown" text="Select Intolerances" class="m-2 custom-dropdown" right>
+          <template #button-content>
+            Select Intolerances
+          </template>
+          <b-dropdown-form class="dropdown-form">
+            <b-form-checkbox-group v-model="selectedFilters" :options="filterOptions" />
+          </b-dropdown-form>
+        </b-dropdown>
       </b-form-group>
     </div>
 
     <div class="search-results">
-      <RecipePreviewList v-if="showResults" :title="'Search Results'" :recipeIds="recipeIds" :amountToFetch="resultsCount" :sortOption="sortOption" />
+      <div class="recipe-list">
+        <div v-for="recipe in recipes" :key="recipe.id">
+          <RecipePreview :recipe="recipe" />
+        </div>
+      </div>
     </div>
 
     <b-alert variant="danger" :show="showAlert" dismissible>
@@ -57,13 +82,13 @@
 </template>
 
 <script>
-import { BForm, BFormGroup, BFormInput, BInputGroup, BInputGroupAppend, BButton, BFormSelect, BFormCheckboxGroup, BAlert } from 'bootstrap-vue';
-import RecipePreviewList from "../components/RecipePreviewList";
-import { mockGetRecipesByQueryAndFilters } from '../services/recipes.js'; // Import your service functions
+import { BForm, BFormGroup, BFormInput, BInputGroup, BInputGroupAppend, BButton, BFormSelect, BFormCheckboxGroup, BAlert, BDropdown, BDropdownForm } from 'bootstrap-vue';
+import RecipePreview from "../components/RecipePreview.vue";
+import { mockGetRecipesPreviewSortByLikes, mockGetRecipesPreviewSortByTime } from '../services/recipes.js'; // Import your service functions
 
 export default {
   components: {
-    RecipePreviewList,
+    RecipePreview,
     BForm,
     BFormGroup,
     BFormInput,
@@ -72,10 +97,13 @@ export default {
     BButton,
     BFormSelect,
     BFormCheckboxGroup,
-    BAlert
+    BAlert,
+    BDropdown,
+    BDropdownForm
   },
   data() {
     return {
+      recipes: [],
       searchQuery: '',
       resultsCount: 5,
       resultsOptions: [
@@ -99,7 +127,6 @@ export default {
         { value: 'Wheat', text: 'Wheat' }
       ],
       dietOptions: [
-        { value: null, text: 'None' },
         { value: 'Gluten Free', text: 'Gluten Free' },
         { value: 'Ketogenic', text: 'Ketogenic' },
         { value: 'Vegetarian', text: 'Vegetarian' },
@@ -113,7 +140,6 @@ export default {
         { value: 'Whole30', text: 'Whole30' }
       ],
       cuisineOptions: [
-        { value: null, text: 'None' },
         { value: 'African', text: 'African' },
         { value: 'Asian', text: 'Asian' },
         { value: 'American', text: 'American' },
@@ -142,32 +168,40 @@ export default {
         { value: 'Thai', text: 'Thai' },
         { value: 'Vietnamese', text: 'Vietnamese' }
       ],
-      selectedDiet: null,
-      selectedCuisine: null,
-      sortOption: null,
+      selectedDiets: [],
+      selectedCuisines: [],
+      sortOption: 'likes',
       sortOptions: [
-        { value: null, text: 'Choose a sorting method' },
         { value: 'likes', text: 'Likes' },
         { value: 'preparation_time', text: 'Preparation time' }
       ],
       showAlert: false,
-      showResults: false,  // New data property to control the display of RecipePreviewList
-      recipeIds: []  // Array to hold the recipe IDs
+      showResults: false,
+      recipeIds: []
     };
   },
   watch: {
-    sortOption(newVal) {
+    resultsCount() {
       if (this.showResults) {
-        this.onSubmit(); // Fetch results again if the user changes the sort option
+        this.onSubmit();
+      }
+    },
+    sortOption() {
+      if (this.showResults) {
+        this.onSubmit();
       }
     }
   },
   methods: {
     setCategory(category) {
       this.searchQuery = category;
-      this.onSubmit();
+      // this.onSubmit();
     },
     async onSubmit() {
+      console.log("Submit Triggered");
+      console.log("Results Count:", this.resultsCount);
+      console.log("Sort Option:", this.sortOption);
+      
       if (!this.searchQuery || !this.sortOption) {
         this.showAlert = true;
         this.showResults = false;
@@ -176,8 +210,9 @@ export default {
         this.showResults = true;
         try {
           const response = await this.fetchRecipes();
-          this.recipeIds = response.data.recipes.map(recipe => recipe.id);
+          this.recipes = response.data.recipes;
           this.showResults = true;
+          console.log("Recipes Fetched:", this.recipes);
         } catch (error) {
           console.error("Failed to fetch recipes:", error);
           this.showResults = false;
@@ -185,15 +220,25 @@ export default {
       }
     },
     async fetchRecipes() {
-      const searchQuery = this.searchQuery;
-      const resultsCount = this.resultsCount;
-      const selectedFilters = this.selectedFilters;
-      const selectedDiet = this.selectedDiet;
-      const selectedCuisine = this.selectedCuisine;
-      const sortOption = this.sortOption;
+      console.log("Fetching recipes with parameters:", {
+        searchQuery: this.searchQuery,
+        resultsCount: this.resultsCount,
+        selectedFilters: this.selectedFilters,
+        selectedDiets: this.selectedDiets,
+        selectedCuisines: this.selectedCuisines,
+        sortOption: this.sortOption
+      });
 
-      // Mock fetching data for demonstration. Replace with actual API call.
-      const response = await mockGetRecipesByQueryAndFilters({ searchQuery, resultsCount, selectedFilters, selectedDiet, selectedCuisine, sortOption });
+      let response;
+
+      if (this.sortOption === 'likes') {
+        response = await mockGetRecipesPreviewSortByLikes(this.resultsCount);
+      } else if (this.sortOption === 'preparation_time') {
+        response = await mockGetRecipesPreviewSortByTime(this.resultsCount);
+      }
+
+      console.log("Mock Response:", response);
+
       return response;
     }
   }
@@ -272,14 +317,60 @@ export default {
 
 .filters-container {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+  align-items: center;
   flex-wrap: wrap;
   gap: 10px;
   margin-bottom: 20px;
 }
 
 .filter-item {
-  width: 200px;
+  color: black;
+  width: auto;
+  flex: 1;
+}
+
+.form-control-white {
+  background-color: white !important;
+  color: #495057 !important;
+  border-color: #ced4da !important;
+}
+
+.dropdown-form {
+  max-height: 200px; /* Adjust this value as needed */
+  overflow-y: auto;
+}
+
+.custom-dropdown .dropdown-toggle {
+  background-color: white !important;
+  color: #495057 !important;
+  border-color: #ced4da !important;
+  width: 100%; /* Ensure the dropdown button takes the full width of its container */
+  text-align: left; /* Align the text to the left for better readability */
+}
+
+.b-dropdown .dropdown-menu {
+  width: 100% !important;
+}
+
+.recipe-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin: 0 auto;
+  max-width: 1200px;
+}
+
+.recipe-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background: #fff;
+  flex-grow: 1;
 }
 
 .search-results {
