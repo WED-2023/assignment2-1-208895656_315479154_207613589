@@ -94,7 +94,7 @@ export default {
   z-index: 1; /* Ensure these components are above the background */
   margin: 10px;
   width: 100%; /* Expand to full width */
-  max-width: 600px; /* Adjust as needed */
+  max-width: 450px; /* Adjust as needed */
   text-align: center; /* Center the text */
   flex-grow: 1; /* Ensure they stretch equally */
 }

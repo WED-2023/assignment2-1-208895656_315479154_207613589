@@ -1,21 +1,20 @@
 <template>
-    <div class="my-meal-container">
-      <h1 class="meal-heading">My Meal</h1>
-      <draggable v-model="recipes" class="recipe-list" :options="{ handle: '.handle' }">
-        <div v-for="(recipe, index) in recipes" :key="recipe.id" class="recipe-card">
-          <span class="handle">☰</span> <!-- Handle for dragging -->
-          <RecipePreview :recipe="recipe" :progress_bar="true" :progress="recipe.progress" />
-          <div class="button-container">
-            <b-button variant="primary" @click="goToPreparation(recipe.id)">Make this recipe</b-button>
-            <b-button variant="danger" @click="removeRecipe(recipe.id)">Remove</b-button>
-          </div>
-          <span class="order-number">{{ index + 1 }}</span>
+  <div class="my-meal-container">
+    <h1 class="meal-heading">My Meal</h1>
+    <draggable v-model="recipes" class="recipe-list" :options="{ handle: '.handle' }">
+      <div v-for="(recipe, index) in recipes" :key="recipe.id" class="recipe-card">
+        <span class="handle">☰</span> <!-- Handle for dragging -->
+        <RecipePreview :recipe="recipe" :progress_bar="true" :progress="recipe.progress" />
+        <div class="button-container">
+          <b-button variant="primary" @click="goToPreparation(recipe.id)">Make this recipe</b-button>
+          <b-button variant="danger" @click="removeRecipe(recipe.id)">Remove</b-button>
         </div>
-      </draggable>
-    </div>
+        <span class="order-number">{{ index + 1 }}</span>
+      </div>
+    </draggable>
+  </div>
 </template>
 
-  
 <script>
 import { mockGetRecipesPreview, removeFromMyMealsById } from '../services/recipes.js';
 import RecipePreview from '../components/RecipePreview.vue';
@@ -36,22 +35,30 @@ export default {
   },
   methods: {
     async fetchRecipes() {
-      const response = await mockGetRecipesPreview(6);
-      this.recipes = response.data.recipes.map(recipe => ({
-        ...recipe,
-        clicked: false,
-        progress: 0
-      }));
+      try {
+        const response = await mockGetRecipesPreview(6);
+        this.recipes = response.data.recipes.map(recipe => ({
+          ...recipe,
+          clicked: false,
+          progress: 0
+        }));
+      } catch (error) {
+        console.error("Error fetching recipes:", error);
+      }
     },
     goToPreparation(recipeID) {
-      // need to add a function that adding the recipe to the Meal list
-      
       this.$router.push({ name: 'preperation', params: { recipeId: recipeID } });
     },
     async removeRecipe(recipeId) {
-      const response = await removeFromMyMealsById(recipeId);
-      if (response.success) {
-        this.recipes = this.recipes.filter(recipe => recipe.id !== recipeId);
+      try {
+        const response = await removeFromMyMealsById(recipeId);
+        if (response.success) {
+          this.recipes = this.recipes.filter(recipe => recipe.id !== recipeId);
+        } else {
+          console.error("Failed to remove recipe:", response.message);
+        }
+      } catch (error) {
+        console.error("Error removing recipe:", error);
       }
     },
     makeRecipe(recipeId) {
@@ -122,5 +129,3 @@ export default {
   text-align: center;
 }
 </style>
-
-  

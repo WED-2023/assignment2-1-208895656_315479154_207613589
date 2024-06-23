@@ -169,9 +169,9 @@ export function mockGetFamilyRecipesPreview() {
 }
 
 export function removeFromMyMealsById(recipeId) {
-  const index = MyMeals.findIndex(recipe => recipe.id === recipeId);
+  const index = recipe_preview.findIndex(recipe => recipe.id === recipeId);
   if (index !== -1) {
-    MyMeals.splice(index, 1); // Remove 1 item at the found index
+    recipe_preview.splice(index, 1); // Remove 1 item at the found index
     // Optionally, you can save the updated MyMeals array back to storage or perform any other operations needed
     return { success: true };
   } else {

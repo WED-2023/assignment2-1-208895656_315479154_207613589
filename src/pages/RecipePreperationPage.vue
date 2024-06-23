@@ -85,27 +85,42 @@ export default {
       store.incrementMealCount();
     },
     async fetchRecipeDetails() {
-      try {
-        let response;
-        console.log(this.$route.params.family)
-        if (this.$route.params.family) {
-          response = await mockGetFamilyRecipeFullDetails(this.$route.params.recipeId);
-        } else {
-          response = await mockGetRecipeFullDetails(this.$route.params.recipeId);
-        }
-        console.log(response)
-        if (response.status !== 200) {
-          this.$router.replace("/NotFound");
-          return;
-        }
+    try {
+      const recipeId = this.$route.params.recipeId;
+      const apiKey = '5799ecf67ada4bdb93bad051815c71bc'; // Replace with your actual API key from Spoonacular
 
-        this.recipe = response.data.recipe;
-        console.log(this.recipe);
-      } catch (error) {
-        console.error(error);
-        this.$router.replace("/NotFound");
+      // Construct the API URL
+      const information_Url = `https://api.spoonacular.com/recipes/${recipeId}/information?apiKey=${apiKey}`;
+      const analyzedInstructions_URL = `https://api.spoonacular.com/recipes/${recipeId}/analyzedInstructions?apiKey=${apiKey}`;
+
+      // Make the GET request using fetch or axios
+      const info_response = await fetch(information_Url);
+      const data = await info_response.json();
+      const instructions_response = await fetch(analyzedInstructions_URL);
+      const instructions_data = await instructions_response.json();
+
+      console.log("response:", instructions_response)
+      console.log("data:", instructions_data)
+
+      // Check if request was successful
+      if (!info_response.ok) {
+        throw new Error(`HTTP error! Status: ${info_response.status}`);
       }
+      if (!instructions_response.ok) {
+        throw new Error(`HTTP error! Status: ${instructions_response.status}`);
+      }
+
+      // Update component state with fetched recipe details
+      this.recipe = data;
+      this.recipe.analyzedInstructions = instructions_data;
+
+      console.log("instructions:", instructions_data); // Optional: Log the recipe data for debugging
+    } catch (error) {
+      console.error('Error fetching recipe:', error);
+      this.$router.replace('/NotFound'); // Redirect to Not Found page on error
     }
+}
+
   },
   created() {
     this.fetchRecipeDetails();
