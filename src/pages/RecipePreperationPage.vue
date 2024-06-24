@@ -1,56 +1,59 @@
 <template>
-  <div class="container">
-    <div v-if="recipe">
-      <div class="recipe-header mt-3 mb-4">
-        <h1>{{ recipe.title }}</h1>
-        <img :src="recipe.image" class="center" />
-      </div>
-      <div class="recipe-body">
-        <div class="wrapper">
-          <div class="wrapped">
-            <div class="mb-3">
-              <div>Ready in {{ recipe.readyInMinutes }} minutes</div>
-              <div>Likes: {{ recipe.aggregateLikes }} likes</div>
-              <div>{{ recipe.vegan ? 'Vegan: Yes' : 'Vegan: No' }}</div>
-              <div>{{ recipe.vegetarian ? 'Vegetarian: Yes' : 'Vegetarian: No' }}</div>
-              <div>{{ recipe.glutenFree ? 'Gluten-Free: Yes' : 'Gluten-Free: No' }}</div>
-              <div>
-                Servings:
-                <select v-model="servingsMultiplier" @change="updateServings">
-                  <option v-for="n in 10" :key="n" :value="n">{{ n }}</option>
-                </select>
-                (multiplier)
+  <div class="page-background">
+    <div class="container">
+      <div v-if="recipe">
+        <div class="recipe-header mt-3 mb-4">
+          <h1>{{ recipe.title }}</h1>
+          <img :src="recipe.image" class="center" />
+        </div>
+        <div class="recipe-body">
+          <div class="wrapper">
+            <div class="wrapped">
+              <div class="mb-3">
+                <div>Ready in {{ recipe.readyInMinutes }} minutes</div>
+                <div>Likes: {{ recipe.aggregateLikes }} likes</div>
+                <div>{{ recipe.vegan ? 'Vegan: Yes' : 'Vegan: No' }}</div>
+                <div>{{ recipe.vegetarian ? 'Vegetarian: Yes' : 'Vegetarian: No' }}</div>
+                <div>{{ recipe.glutenFree ? 'Gluten-Free: Yes' : 'Gluten-Free: No' }}</div>
+                <div>
+                  Servings: {{ updatedServings }}
+                  <select v-model="servingsMultiplier">
+                    <option v-for="n in 10" :key="n" :value="n">{{ n }}</option>
+                  </select>
+                  (multiplier)
+                </div>
               </div>
-            </div>
-            Ingredients:
-            <ul>
-              <li v-for="(ingredient, index) in updatedIngredients" :key="index + '_' + ingredient.id">
-                {{ (ingredient.amount).toFixed(2) }} {{ ingredient.unit }} {{ ingredient.name }}
-              </li>
-            </ul>
-          </div>
-          <div class="wrapped">
-            <h3>Instructions:</h3>
-            <div v-for="(instructionGroup, index) in recipe.analyzedInstructions" :key="index">
-              <h4>{{ instructionGroup.name }}</h4>
-              <ol>
-                <li v-for="(step, stepIndex) in instructionGroup.steps" :key="stepIndex">
-                  <input type="checkbox" v-model="completed" />
-                  <span>{{ step.step }}</span>
+              Ingredients:
+              <ul>
+                <li v-for="(ingredient, index) in updatedIngredients" :key="index + '_' + ingredient.id">
+                  {{ (ingredient.amount).toFixed(2) }} {{ ingredient.unit }} {{ ingredient.name }}
                 </li>
-              </ol>
+              </ul>
+            </div>
+            <div class="wrapped">
+              <h3>Instructions:</h3>
+              <div v-for="(instructionGroup, index) in recipe.analyzedInstructions" :key="index">
+                <h4>{{ instructionGroup.name }}</h4>
+                <ol>
+                  <li v-for="(step, stepIndex) in instructionGroup.steps" :key="stepIndex">
+                    <input type="checkbox" />
+                    <span>{{ step.step }}</span>
+                  </li>
+                </ol>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <div v-else>
-      <p>Loading recipe details...</p>
+      <div v-else>
+        <p>Loading recipe details...</p>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import { required, integer } from '@vuelidate/validators';
 import { mockGetRecipeFullDetails, mockGetFamilyRecipeFullDetails } from "../services/recipes.js";
 import { store } from "../store.js"; // Import the store
 
@@ -58,22 +61,28 @@ export default {
   data() {
     return {
       recipe: null,
-      servingsMultiplier: 1,
-      initialServings: 1
+      servingsMultiplier: 1
     };
   },
   props: {
     family: {
       type: Boolean,
       default: false
+    },
+    temp_servings: {
+      type: Number,
+      default: null
     }
   },
   computed: {
+    updatedServings() {
+      return this.recipe ? this.recipe.servings * this.servingsMultiplier : 1;
+    },
     updatedIngredients() {
-      return this.recipe.extendedIngredients.map((ingredient) => ({
+      return this.recipe ? this.recipe.extendedIngredients.map((ingredient) => ({
         ...ingredient,
         amount: ingredient.amount * this.servingsMultiplier
-      }));
+      })) : [];
     }
   },
   methods: {
@@ -114,11 +123,20 @@ export default {
 </script>
 
 <style scoped>
+.page-background {
+  background-image: url('@/assets/preparation_background.webp');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  min-height: 100vh;
+  padding: 20px;
+}
+
 .container {
   max-width: 800px;
-  margin: 20px auto;
+  margin: 0 auto;
   padding: 20px;
-  background-color: #f9f9f9;
+  background-color: rgba(249, 249, 249, 0.9); /* Make the background slightly transparent */
   border: 1px solid #eaeaea;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);

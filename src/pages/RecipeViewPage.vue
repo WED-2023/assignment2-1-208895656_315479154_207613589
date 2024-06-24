@@ -1,48 +1,50 @@
 <template>
-  <div class="container">
-    <div v-if="recipe">
-      <div class="recipe-header mt-3 mb-4">
-        <h1>{{ this.recipe.title }}</h1>
-        <img :src="recipe.image" class="center" />
-      </div>
-      <div class="recipe-body">
-        <div class="wrapper">
-          <div class="wrapped">
-            <div class="mb-3">
-              <div>Ready in {{ recipe.readyInMinutes }} minutes</div>
-              <div>Likes: {{ recipe.aggregateLikes }} likes</div>
-              <div>{{ recipe.vegan ? 'Vegan: Yes' : 'Vegan: No' }}</div>
-              <div>{{ recipe.vegetarian ? 'Vegetarian: Yes' : 'Vegetarian: No' }}</div>
-              <div>{{ recipe.glutenFree ? 'Gluten-Free: Yes' : 'Gluten-Free: No' }}</div>
-              <div>Servings: {{ recipe.servings }}</div>
-              <div v-if="this.$route.params.family">family chef: {{ recipe.family_chef }}</div>
-              <div v-if="this.$route.params.family">customary time: {{ recipe.customaryTime }}</div>
-            </div>
-            Ingredients:
-            <ul>
-              <li v-for="(ingredient, index) in updatedIngredients" :key="index + '_' + ingredient.id">
-                {{ (ingredient.amount).toFixed(2) }} {{ ingredient.unit }} {{ ingredient.name }}
-              </li>
-            </ul>
-            <button @click="goToPreparation" class="mb-2">Prepare this recipe</button>
-            <button @click="addToMeal">Add to Meal</button>
-          </div>
-          <div class="wrapped">
-            <h3>Instructions:</h3>
-            <div v-for="(instructionGroup, index) in recipe.analyzedInstructions" :key="index">
-              <h4>{{ instructionGroup.name }}</h4>
-              <ol>
-                <li v-for="(step, stepIndex) in instructionGroup.steps" :key="stepIndex">
-                  <span>{{step.step}}</span>
+  <div class="page-background">
+    <div class="container">
+      <div v-if="recipe">
+        <div class="recipe-header mt-3 mb-4">
+          <h1>{{ this.recipe.title }}</h1>
+          <img :src="recipe.image" class="center" />
+        </div>
+        <div class="recipe-body">
+          <div class="wrapper">
+            <div class="wrapped">
+              <div class="mb-3">
+                <div>Ready in {{ recipe.readyInMinutes }} minutes</div>
+                <div>Likes: {{ recipe.aggregateLikes }} likes</div>
+                <div>{{ recipe.vegan ? 'Vegan: Yes' : 'Vegan: No' }}</div>
+                <div>{{ recipe.vegetarian ? 'Vegetarian: Yes' : 'Vegetarian: No' }}</div>
+                <div>{{ recipe.glutenFree ? 'Gluten-Free: Yes' : 'Gluten-Free: No' }}</div>
+                <div>Servings: {{ recipe.servings }}</div>
+                <div v-if="this.$route.params.family">family chef: {{ recipe.family_chef }}</div>
+                <div v-if="this.$route.params.family">customary time: {{ recipe.customaryTime }}</div>
+              </div>
+              Ingredients:
+              <ul>
+                <li v-for="(ingredient, index) in updatedIngredients" :key="index + '_' + ingredient.id">
+                  {{ (ingredient.amount).toFixed(2) }} {{ ingredient.unit }} {{ ingredient.name }}
                 </li>
-              </ol>
+              </ul>
+              <button @click="goToPreparation" class="mb-2">Prepare this recipe</button>
+              <button @click="addToMeal">Add to Meal</button>
+            </div>
+            <div class="wrapped">
+              <h3>Instructions:</h3>
+              <div v-for="(instructionGroup, index) in recipe.analyzedInstructions" :key="index">
+                <h4>{{ instructionGroup.name }}</h4>
+                <ol>
+                  <li v-for="(step, stepIndex) in instructionGroup.steps" :key="stepIndex">
+                    <span>{{step.step}}</span>
+                  </li>
+                </ol>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <div v-else>
-      <p>Loading recipe details...</p>
+      <div v-else>
+        <p>Loading recipe details...</p>
+      </div>
     </div>
   </div>
 </template>
@@ -110,6 +112,14 @@ export default {
 </script>
 
 <style scoped>
+.page-background {
+  background-image: url('@/assets/preparation_background.webp');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  min-height: 100vh;
+  padding: 20px;
+}
 .container {
   max-width: 800px;
   margin: 20px auto;

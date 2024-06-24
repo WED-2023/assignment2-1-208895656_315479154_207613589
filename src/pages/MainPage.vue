@@ -100,6 +100,6 @@ export default {
 }
 
 .login-form {
-  align-self: flex-start; /* Move the login form box up */
+  align-self: flex-start;
 }
 </style>

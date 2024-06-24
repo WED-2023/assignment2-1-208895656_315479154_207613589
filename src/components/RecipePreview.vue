@@ -30,6 +30,10 @@
     <div v-if="progress_bar" class="progress-bar-container">
       <b-progress :value="progress_value" variant="success" striped :animated="animate"></b-progress>
     </div>
+    <!-- Visited Icon -->
+    <div v-if="clickedRecipes.has(recipe.id)" class="visited-icon">
+      ✅
+    </div>
   </div>
 </template>
 
@@ -190,5 +194,13 @@ export default {
 
 .progress-bar {
   width: 100%;
+}
+
+.visited-icon {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 24px;
+  color: #28a745;
 }
 </style>
