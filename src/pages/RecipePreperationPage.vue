@@ -136,7 +136,7 @@ export default {
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
-  background-color: rgba(249, 249, 249, 0.9); /* Make the background slightly transparent */
+  background-color: rgba(255, 255, 255, 0.7);
   border: 1px solid #eaeaea;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
