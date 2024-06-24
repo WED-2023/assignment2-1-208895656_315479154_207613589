@@ -6,12 +6,15 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
+    "@vuelidate/validators": "^2.0.4",
     "ax": "^0.2.2",
     "axios": "^0.19.2",
     "bootstrap": "^4.5.0",
     "bootstrap-vue": "^2.23.1",
     "core-js": "^3.6.5",
     "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "nodemon": "^3.1.4",
     "sass": "^1.50.0",
     "vue": "^2.6.11",
     "vue-axios": "^2.1.5",
