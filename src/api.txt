@@ -1,0 +1,563 @@
+openapi: 3.0.0
+servers:
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/LEVIAX/Assaignment_2.2_208895656_315479154_207613589/1.0.0
+info:
+  description: This is an API for a recipes website
+  version: "1.0.0"
+  title: Recipes websites API
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+tags:
+  - name: recipe
+    description: Operations on recipes
+  - name: navigation
+    description: Operations on navigating and routing through the websites
+  - name: user
+    description: Operations on users
+paths:
+  /:
+    get:
+      tags:
+        - recipe
+      summary: main page
+      operationId: MainPage
+      description: You can view random recipes on the main page.
+      parameters:
+        - in: query
+          name: FetchLastSeen
+          description: Indicates if it's needed to fetch the last seen recipes
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Recipes preview fetched
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/recipe_preview'
+        '404':
+          description: recipes not found
+          content:
+            application/json:
+              schema:
+                type: string
+                example: recipes not found
+    post:
+      tags:
+        - user
+      summary: Log in, username and password
+      operationId: MainPageLogIn
+      description: the users can log in directly from the main page.
+      parameters:
+        - in: query
+          name: username
+          description: the user's username
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: password
+          description: the user's password
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: log in successfully
+          content:
+            application/json:
+                schema:
+                  type: string
+                  example: log in successfully
+        '404':
+          description: log in failed
+          content:
+            application/json:
+              schema:
+                type: string
+                example: log in failed
+  /register:
+    post:
+      tags:
+        - user
+      summary: register
+      description:  register to the site.
+      parameters:
+        - in: query
+          name: username
+          description: user's chosen username
+          required: true
+          schema:
+            type: string
+            minimum: 3
+            maximum: 8
+            pattern: '^[a-zA-Z]*$'  # Allows only letters, no numbers
+        - in: query
+          name: first_name
+          description: user's first name
+          required: true
+          schema:
+            type: string
+            pattern: '^[a-zA-Z]*$'  # Allows only letters, no numbers
+        - in: query
+          name: last_name
+          description: user's your last name
+          required: true
+          schema:
+            type: string
+            pattern: '^[a-zA-Z]*$'  # Allows only letters, no numbers
+        - in: query
+          name: country
+          description: user's country
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: password
+          description: user's chosen password
+          required: true
+          schema:
+            type: string
+            minimum: 5
+            maximum: 10
+            pattern: "^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]+$"
+        - in: query
+          name: confirm_password
+          description: confirmation of the chosen password
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: email
+          description: your email
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: register successfully
+          content:
+            application/json:
+              schema:
+                type: string
+                example: register successfully
+        '409':
+          description: username already exists in the database
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: ssername already exist.
+  /login:
+    post:
+      tags:
+        - user
+      summary: Website's Login
+      operationId: Login
+      description: Log in to the website
+      parameters:
+        - in: query
+          name: username
+          description: user's username
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: password
+          description: user's password
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: the user logged in successfully to the website
+          content:
+            application/json:
+              schema:
+                type: string
+                example: logged in successfully
+        '404':
+          description: Login failed
+          content:
+            application/json:
+              schema:
+                type: string
+                example: Login failed
+  
+components:
+  schemas:
+    recipe_preview:
+      type: object
+      required:
+        - id
+        - image
+        - title
+        - aggregateLikes
+        - readyInMinutes
+        - vegetarian
+        - vegan
+        - glutenFree
+        - summary
+      properties:
+        id:
+          type: integer
+          example: 345678
+        image:
+          type: string
+          format: uri
+          example: "https://aquabounty.com/our-salmon/recipes/image-thumb__104__gallery/cedar-plank-salmon-lemon-cayenne.webp"
+        title:
+          type: string
+          example: "Cayenne Salmon"
+        aggregateLikes:
+          type: integer
+          example: 50
+        readyInMinutes:
+          type: integer
+          example: 30
+        vegetarian:
+          type: boolean
+          example: false
+        vegan:
+          type: boolean
+          example: false
+        glutenFree:
+          type: boolean
+          example: true
+        summary:
+          type: string
+          example: "Cayenne Salmon is a spicy and flavorful dish."
+    recipe_full_view:
+      type: object
+      required:
+        - vegetarian
+        - vegan
+        - glutenFree
+        - dairyFree
+        - veryHealthy
+        - cheap
+        - veryPopular
+        - sustainable
+        - lowFodmap
+        - weightWatcherSmartPoints
+        - gaps
+        - preparationMinutes
+        - cookingMinutes
+        - aggregateLikes
+        - healthScore
+        - creditsText
+        - sourceName
+        - pricePerServing
+        - extendedIngredients
+        - id
+        - title
+        - readyInMinutes
+        - servings
+        - sourceUrl
+        - image
+        - imageType
+        - summary
+        - cuisines
+        - dishTypes
+        - diets
+        - occasions
+        - instructions
+        - analyzedInstructions
+        - originalId
+        - spoonacularScore
+      properties:
+        vegetarian:
+          type: boolean
+          example: false
+        vegan:
+          type: boolean
+          example: false
+        glutenFree:
+          type: boolean
+          example: true
+        dairyFree:
+          type: boolean
+          example: false
+        veryHealthy:
+          type: boolean
+          example: true
+        cheap:
+          type: boolean
+          example: false
+        veryPopular:
+          type: boolean
+          example: false
+        sustainable:
+          type: boolean
+          example: false
+        lowFodmap:
+          type: boolean
+          example: false
+        weightWatcherSmartPoints:
+          type: integer
+          example: 18
+        gaps:
+          type: string
+          example: "no"
+        preparationMinutes:
+          type: integer
+          example: 20
+        cookingMinutes:
+          type: integer
+          example: 35
+        aggregateLikes:
+          type: integer
+          example: 50
+        healthScore:
+          type: integer
+          example: 7
+        creditsText:
+          type: string
+          example: "Spoonacular"
+        sourceName:
+          type: string
+          example: "Spoonacular"
+        pricePerServing:
+          type: number
+          example: 250.00
+        extendedIngredients:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                example: 15001
+              aisle:
+                type: string
+                example: "Seafood"
+              image:
+                type: string
+                format: uri
+                example: "salmon.jpg"
+              consistency:
+                type: string
+                example: "SOLID"
+              name:
+                type: string
+                example: "salmon fillets"
+              original:
+                type: string
+                example: "4 salmon fillets"
+              originalName:
+                type: string
+                example: "salmon fillets"
+              amount:
+                type: number
+                example: 4.0
+              unit:
+                type: string
+                example: "slice"
+        id:
+          type: integer
+          example: 345678
+        title:
+          type: string
+          example: "Cayenne Salmon"
+        readyInMinutes:
+          type: integer
+          example: 55
+        servings:
+          type: integer
+          example: 4
+        sourceUrl:
+          type: string
+          format: uri
+          example: "http://www.bonappetit.com/recipe/cayenne-salmon"
+        image:
+          type: string
+          format: uri
+          example: "https://aquabounty.com/our-salmon/recipes/image-thumb__104__gallery/cedar-plank-salmon-lemon-cayenne.webp"
+        imageType:
+          type: string
+          example: "jpg"
+        summary:
+          type: string
+          example: "Cayenne Salmon is a spicy and flavorful dish."
+        cuisines:
+          type: array
+          items:
+            type: string
+          example: ["American"]
+        dishTypes:
+          type: array
+          items:
+            type: string
+          example: ["main Course"]
+        diets:
+          type: array
+          items:
+            type: string
+          example: ["gluten Free"]
+        occasions:
+          type: array
+          items:
+            type: string
+          example: ["Family Dinner"]
+        instructions:
+          type: string
+          example: "Preheat the oven to 400 degrees F. Rub the salmon fillets with olive oil, cayenne pepper, and salt. Arrange the salmon fillets on a baking sheet and top with thinly sliced red onions. Bake for 35 minutes or until the salmon is cooked through."
+        analyzedInstructions:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                example: ""
+              steps:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    number:
+                      type: integer
+                      example: 1
+                    step:
+                      type: string
+                      example: "Preheat the oven to 400 degrees F."
+                    ingredients:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 15001
+                          name:
+                            type: string
+                            example: "salmon fillets"
+                          localizedName:
+                            type: string
+                            example: "salmon fillets"
+                          image:
+                            type: string
+                            format: uri
+                            example: "salmon.jpg"
+        spoonacularScore:
+          type: number
+          example: 60.0
+    FamilyRecipes:
+      type: object
+      required:
+        - id
+        - image
+        - title
+        - family_chef
+        - readyInMinutes
+        - servings
+        - cuisine
+        - vegetarian
+        - vegan
+        - glutenFree
+        - customaryTime
+        - instructions
+        - analyzedInstructions
+        - summary
+        - extendedIngredients
+      properties:
+        id:
+          type: integer
+          example: 100000
+        image:
+          type: string
+          format: uri
+          example: "https://tastesbetterfromscratch.com/wp-content/uploads/2020/05/Empanadas-7.jpg"
+        title:
+          type: string
+          example: "Empanadas"
+        family_chef:
+          type: string
+          example: "Gal's grandmother"
+        readyInMinutes:
+          type: integer
+          example: 25
+        servings:
+          type: integer
+          example: 20
+        cuisine:
+          type: string
+          example: "Latin American"
+        vegetarian:
+          type: boolean
+          example: false
+        vegan:
+          type: boolean
+          example: false
+        glutenFree:
+          type: boolean
+          example: false
+        customaryTime:
+          type: string
+          example: "Friday nights and New Year's eve."
+        instructions:
+          type: string
+          example: "Make these delicious empanadas with meat/cheese/corn or whatever you like!!!"
+        analyzedInstructions:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                example: "Preparation"
+              steps:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    number:
+                      type: integer
+                      example: 1
+                    step:
+                      type: string
+                      example: "Heat 2 tablespoons of olive oil in a large skillet over medium heat."
+        summary:
+          type: string
+          example: "These Empanadas are a delicious and savory treat, perfect for any occasion."
+        extendedIngredients:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                example: 4053
+              aisle:
+                type: string
+                example: "Oil, Vinegar, Salad Dressing"
+              image:
+                type: string
+                format: uri
+                example: "olive-oil.jpg"
+              consistency:
+                type: string
+                example: "LIQUID"
+              name:
+                type: string
+                example: "olive oil"
+              original:
+                type: string
+                example: "2 Tablespoons olive oil"
+              originalName:
+                type: string
+                example: "olive oil"
+              amount:
+                type: number
+                example: 2.0
+              unit:
+                type: string
+                example: "Tablespoons"
