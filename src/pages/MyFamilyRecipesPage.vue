@@ -43,11 +43,11 @@ export default {
 
 <style lang="scss" scoped>
 .container {
-  text-align: center; /* Center everything in the container */
-  background-image: url('/src/assets/myFamilyRecipes.webp'); /* Add your background image here */
-  background-size: cover; /* Ensure the background image covers the entire container */
-  background-position: center; /* Center the background image */
-  padding: 50px 0; /* Add padding for spacing */
+  text-align: center;
+  background-image: url('/src/assets/myFamilyRecipes.webp');
+  background-size: cover; 
+  background-position: center; 
+  padding: 50px 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -55,20 +55,20 @@ export default {
 }
 
 .title {
-  font-family: 'Arial', sans-serif; /* Example font */
-  font-size: 36px; /* Large font size for visibility */
-  color: #fff; /* White color for the text */
-  text-shadow: 2px 2px 8px rgba(0,0,0,0.5); /* Soft shadow for a dramatic effect */
-  margin-bottom: 20px; /* Space between the title and the recipe list */
+  font-family: 'Arial', sans-serif;
+  font-size: 36px;
+  color: #fff; 
+  text-shadow: 2px 2px 8px rgba(0,0,0,0.5); 
+  margin-bottom: 20px; 
 }
 
 .recipe-container {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center; /* Center the rows */
-  gap: 20px; /* Space between recipe previews */
+  justify-content: center; 
+  gap: 20px; 
   width: 100%;
-  max-width: 1200px; /* Adjust as needed */
+  max-width: 1200px; 
 }
 
 .recipe-preview-wrapper {

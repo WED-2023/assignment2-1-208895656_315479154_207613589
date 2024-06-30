@@ -76,7 +76,7 @@
     </div>
 
     <b-alert variant="danger" :show="showAlert" dismissible>
-      Please enter a search query and choose a sorting method.
+      Please enter a search query.
     </b-alert>
   </div>
 </template>

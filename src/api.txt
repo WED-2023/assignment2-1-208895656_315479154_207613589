@@ -12,8 +12,6 @@ info:
 tags:
   - name: recipe
     description: Operations on recipes
-  - name: navigation
-    description: Operations on navigating and routing through the websites
   - name: user
     description: Operations on users
 paths:
@@ -23,10 +21,10 @@ paths:
         - recipe
       summary: main page
       operationId: MainPage
-      description: You can view random recipes on the main page.
+      description: view random recipes on the main page.
       parameters:
         - in: query
-          name: FetchLastSeen
+          name: fetch_last_seen
           description: Indicates if it's needed to fetch the last seen recipes
           required: false
           schema:
@@ -81,6 +79,49 @@ paths:
               schema:
                 type: string
                 example: log in failed
+    put:
+      tags:
+        - recipe
+      summary: Add or remove a recipe from user's favorites
+      operationId: toggleFavorite
+      description: Add or remove a recipe from the user's favorite recipes.
+      parameters:
+        - in: query
+          name: recipeID
+          description: The recipe's ID to add or remove
+          required: true
+          schema:
+            type: integer
+        - in: query
+          name: username
+          description: The user's username to add or remove the recipe from their favorite recipes
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: action
+          description: The action to perform - add or remove the recipe from favorites
+          required: true
+          schema:
+            type: string
+            enum:
+              - add
+              - remove
+      responses:
+        '200':
+          description: Recipe added or removed successfully from favorites
+          content:
+            application/json:
+              schema:
+                type: string
+                example: Recipe added or removed successfully from favorites
+        '404':
+          description: Username or Recipe was not found
+          content:
+            application/json:
+              schema:
+                type: string
+                example: Username or Recipe was not found
   /register:
     post:
       tags:
@@ -191,7 +232,423 @@ paths:
               schema:
                 type: string
                 example: Login failed
-  
+  /favorites:
+    get:
+      tags:
+        - recipe
+      summary: user's liked recipes
+      operationId: favorite_recipes
+      description: view the user's favorite recipes according to recipes he marked as "liked".
+      parameters:
+        - in: query
+          name: username
+          description: user's username
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: the user's favorite recipes fetched successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/recipe_preview'
+        '404':
+          description: username was not found
+          content:
+            application/json:
+              schema:
+                type: string
+                example: username was not found
+  /my-recipes:
+    get:
+      tags:
+        - recipe
+      summary: get tha user's personal recipes
+      operationId: my_recipes
+      description: view the user's recipes that he created.
+      parameters:
+        - in: query
+          name: username
+          description: user's username
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: the user's favorite recipes fetched successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/recipe_preview'
+        '404':
+          description: username was not found
+          content:
+            application/json:
+              schema:
+                type: string
+                example: username was not found
+    post:
+      tags:
+        - recipe
+      summary: adding recipe to the user's personal recipes.
+      operationId: create_recipe
+      description: creating and adding a recipe to user's recipes.
+      parameters:
+        - in: query
+          name: title
+          description: title of the recipe
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: image_url
+          description: image of the recipe
+          required: true
+          schema:
+            type: string
+            format: uri
+        - in: query
+          name: ready_in_minutes
+          description: how much time it takes to make the recipe
+          required: true
+          schema:
+            type: integer
+        - in: query
+          name: servings
+          description: number of servings
+          required: true
+          schema:
+            type: integer
+        - in: query
+          name: gluten_free
+          description: is the recipe gluten's free
+          required: true
+          schema:
+            type: boolean
+        - in: query
+          name: vegan
+          description: is the recipe's vegan
+          required: true
+          schema:
+            type: boolean
+        - in: query
+          name: Vegetarian
+          description: is the recipe's Vegetarian
+          required: true
+          schema:
+            type: boolean
+        - in: query
+          name: extendedIngredients
+          description: recipe's ingredients
+          required: true
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                name:
+                  type: string
+                amount:
+                  type: integer
+        - in: query
+          name: analyzedInstructions
+          description: recipe's instructions
+          required: true
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                name:
+                  type: string
+                steps:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      number:
+                        type: integer
+                      step:
+                        type: string
+      responses:      
+        '200':
+          description: recipe added successfully
+          content:
+            application/json:
+              schema:
+                type: string
+                example: recipe added successfully
+        '404':
+          description: the recipe did not added successfully
+          content:
+            application/json:
+              schema:
+                type: string
+                example: the recipe did not added successfully
+  /family-recipes:
+     get:
+      tags:
+        - recipe
+      summary: Website's Login
+      operationId: family_recipes
+      description: view the user's family recipes.
+      parameters:
+        - in: query
+          name: username
+          description: user's username
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: the user's family recipes fetched successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FamilyRecipes'
+        '404':
+          description: username was not found
+          content:
+            application/json:
+              schema:
+                type: string
+                example: username was not found
+  /search:
+    get:
+      tags:
+        - recipe
+      summary: searches for recipe
+      operationId: search
+      description: searching and retrieving recipes according to te user's query and filters. also put the search in "last search".
+      parameters:
+        - in: query
+          name: search_query
+          description: a search query for finding matching recipes
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: number_of_results
+          description: number of recipes the user wants to fetch. (5/10/15)
+          schema:
+            type: integer
+            minimum: 5
+            maximum: 15
+          required: true
+        - in: query
+          name: diets
+          description: the diet the user wants to include in the fetched recipes.
+          schema:
+            type: array
+            items:
+              type: string
+          required: false
+        - in: query
+          name: cuisines
+          description: the cuisines the user to include in the fetched recipes.
+          schema:
+            type: array
+            items:
+              type: string
+          required: false
+        - in: query
+          name: intolerances
+          description: the intolerances the user to include in the fetched recipes.
+          schema:
+            type: array
+            items:
+              type: string
+          required: false
+      responses:
+        '200':
+          description: search results fetched according to user input.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/recipe_preview'
+        '404':
+          description: recipe matching to the title/name and filters not found
+          content:
+            application/json:
+              schema:
+                type: string
+                example: recipe matching to the title/name and filters not found
+  /recipe/{recipeID}:
+    get:
+      tags:
+        - recipe
+      summary: fetch a recipe by id
+      operationId: fetch_recipe_by_id
+      description: fetch a recipe by its ID, and add it to last viewed recipes.
+      parameters:
+        - in: path
+          name: recipeID
+          description: ID of the recipe to fetch
+          required: true
+          schema:
+            type: integer
+        - in: query
+          name: username
+          description: user's username to insrt this recipe to last viewed recipes
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: recipe information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recipe_full_view'
+        '404':
+          description: recipe not found
+          content:
+            application/json:
+              schema:
+                type: string
+                example: recipe information was not found
+    post:
+      tags:
+        - recipe
+      summary: Add the recipe to the user's meal plan.
+      operationId: add_to_meal
+      description: Add a recipe to user's meal plan.
+      parameters:
+        - in: path
+          name: recipeID
+          description: the recipe's id that we are adding
+          schema:
+            type: integer
+          required: true
+        - in: query
+          name: username
+          description: user's username to add the recipe to their meal plan
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Recipe added successfully to meal plan
+        '404':
+          description: username or Recipe was not found
+          content:
+            application/json:
+              schema:
+                type: string
+                example: username or Recipe was not found
+  /meal:
+    get:
+      tags:
+        - recipe
+      summary: Fetch recipes in the user's meal plan
+      operationId: fetchMealPlanRecipes
+      description: Fetch the list of recipes in the user's meal plan.
+      parameters:
+        - in: query
+          name: username
+          description: The user's username to fetch the meal plan recipes
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Meal plan recipes fetched successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/recipe_preview'
+        '404':
+          description: Username or recipes not found
+          content:
+            application/json:
+              schema:
+                type: string
+                example: Username or recipes not found
+    put:
+      tags:
+        - recipe
+      summary: Update the order of recipes in the user's meal plan
+      operationId: updateMealPlanOrder
+      description: Update the order of recipes in the user's meal plan.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  description: The user's username to update the meal plan order
+                order:
+                  type: array
+                  items:
+                    type: integer
+                  description: An array of recipe IDs representing the new order of recipes in the meal plan
+              required:
+                - username
+                - order
+      responses:
+        '200':
+          description: Meal plan order updated successfully
+          content:
+            application/json:
+              schema:
+                type: string
+                example: Meal plan order updated successfully
+        '404':
+          description: Username or recipes not found
+          content:
+            application/json:
+              schema:
+                type: string
+                example: Username or recipes not found
+    delete:
+      tags:
+        - recipe
+      summary: Remove recipe from user's meal plan
+      operationId: removeFromMealPlan
+      description: Remove a recipe from the user's meal plan.
+      parameters:
+        - in: query
+          name: recipeID
+          description: ID of the recipe to remove from the meal plan
+          required: true
+          schema:
+            type: integer
+        - in: query
+          name: username
+          description: The user's username to remove the recipe from their meal plan
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Recipe removed successfully from meal plan
+          content:
+            application/json:
+              schema:
+                type: string
+                example: Recipe removed successfully from meal plan
+        '404':
+          description: Username or Recipe was not found
+          content:
+            application/json:
+              schema:
+                type: string
+                example: Username or Recipe was not found
+     
 components:
   schemas:
     recipe_preview:
