@@ -32,6 +32,9 @@
             <b-form-select v-model="ingredient.amount" :options="amountOptions" required>
               <template #first><option value="" disabled selected></option></template>
             </b-form-select>
+            <b-form-select v-model="ingredient.unit" :options="unitOptions" required>
+              <template #first><option value="" disabled selected></option></template>
+            </b-form-select>
             <b-button @click="removeIngredient(index)" variant="danger">Remove</b-button>
           </b-input-group>
         </div>
@@ -87,11 +90,13 @@ export default {
         glutenFree: false,
         vegan: false,
         vegetarian: false,
-        ingredients: [],
+        ingredients: [{ name: '', amount: null, unit: null }],
         instructions: [{ text: '' }]
       },
       amountOptions: [
         { value: null, text: 'Amount' },
+        { value: 0.25, text: '0.25' },
+        { value: 0.5, text: '0.5' },
         { value: 1, text: '1' },
         { value: 2, text: '2' },
         { value: 3, text: '3' },
@@ -102,6 +107,18 @@ export default {
         { value: 8, text: '8' },
         { value: 9, text: '9' },
         { value: 10, text: '10' }
+      ],
+      unitOptions: [
+        { value: null, text: 'Units' },
+        { value: 'ml', text: 'ml' },
+        { value: 'cup', text: 'cup' },
+        { value: 'gram', text: 'gram' },
+        { value: 'kg', text: 'kg' },
+        { value: 'large', text: 'large' },
+        { value: 'small', text: 'small' },
+        { value: 'teaspoon', text: 'teaspoon' },
+        { value: 'tablespoon', text: 'tablespoon' },
+        { value: 'servings', text: 'servings' }
       ]
     };
   },
@@ -110,7 +127,7 @@ export default {
       return field ? true : false;
     },
     addIngredient() {
-      this.newRecipe.ingredients.push({ name: '', amount: null });
+      this.newRecipe.ingredients.push({ name: '', amount: null, unit: null });
     },
     removeIngredient(index) {
       this.newRecipe.ingredients.splice(index, 1);
@@ -128,7 +145,7 @@ export default {
       if (!this.newRecipe.image) alertMessage += "Image URL, ";
       if (this.newRecipe.readyInMinutes < 10 || this.newRecipe.readyInMinutes > 300) alertMessage += "Ready in Minutes, ";
       if (this.newRecipe.servings < 1 || this.newRecipe.servings > 20) alertMessage += "Servings, ";
-      if (this.newRecipe.ingredients.length === 0 || !this.newRecipe.ingredients.every(ingredient => ingredient.name && ingredient.amount)) {
+      if (this.newRecipe.ingredients.length === 0 || !this.newRecipe.ingredients.every(ingredient => ingredient.name && ingredient.amount && ingredient.unit)) {
         alertMessage += "Ingredients, ";
       }
       if (this.newRecipe.instructions.length === 0 || !this.newRecipe.instructions.every(step => step.text)) {
@@ -162,7 +179,7 @@ export default {
         glutenFree: false,
         vegan: false,
         vegetarian: false,
-        ingredients: [],
+        ingredients: [{ name: '', amount: null, unit: null }],
         instructions: [{ text: '' }]
       };
     }
