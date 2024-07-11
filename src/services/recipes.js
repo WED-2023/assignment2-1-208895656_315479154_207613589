@@ -1,5 +1,5 @@
 // src/services/recipes.js
-
+import axios from 'axios';
 import recipe_full_view from "../assets/mocks/recipe_full_view.json";
 import recipe_preview from "../assets/mocks/recipe_preview.json";
 import FamilyRecipes from "../assets/mocks/FamilyRecipes.json";
@@ -176,5 +176,22 @@ export function removeFromMyMealsById(recipeId) {
     return { success: true };
   } else {
     return { success: false, error: 'Recipe not found in MyMeals' };
+  }
+}
+
+
+export async function getRandomRecipes(amount = 3) {
+  console.log('Fetching random recipes with amount:', amount);
+  try {
+    const response = await axios.get('http://localhost:80/recipes/random', {
+      params: {
+        number: amount
+      }
+    });
+    let recipes = response.data;
+    return {status:200, data: { recipes } };
+  } catch (error) {
+    console.error('Error fetching random recipes:', error);
+    throw error;
   }
 }
