@@ -65,7 +65,7 @@
 
 <script>
 import { required } from "vuelidate/lib/validators";
-import {mockLogin} from "../services/auth.js"
+import {Login} from "../services/auth.js"
 export default {
   name: "Login",
   data() {
@@ -106,7 +106,7 @@ export default {
         // );
 
         const success = true; // modify this to test the error handling
-        const response = mockLogin(this.form.username, this.form.password, success);
+        const response = Login(this.form.username, this.form.password, success);
 
         // console.log(response);
         // this.$root.loggedIn = true;

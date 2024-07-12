@@ -166,8 +166,7 @@
         variant="primary"
         style="width:250px;"
         class="ml-5 w-75"
-        >Register</b-button
-      >
+      >Register</b-button>
       <div class="mt-2">
         You have an account already?
         <router-link to="login"> Log in here</router-link>
@@ -195,7 +194,7 @@ import {
   sameAs,
   email
 } from "vuelidate/lib/validators";
-import { mockRegister } from "../services/auth.js";
+import { register } from "../services/auth.js";
 export default {
   name: "Register",
   data() {
@@ -210,16 +209,15 @@ export default {
         email: "",
         submitError: undefined
       },
-      countries: [{ value: null, text: "", disabled: true }],
-      errors: [],
-      validated: false
+      countries: [{ value: null, text: "", disabled: true }]
     };
   },
   validations: {
     form: {
       username: {
         required,
-        length: (u) => minLength(3)(u) && maxLength(8)(u),
+        minLength: minLength(3),
+        maxLength: maxLength(8),
         alpha
       },
       firstName: {
@@ -235,9 +233,11 @@ export default {
       },
       password: {
         required,
-        length: (p) => minLength(5)(p) && maxLength(10)(p),
-        containsNumber: (p) => /\d/.test(p), // Check if it contains at least one number
-        containsSpecialCharacter: (p) => /[!@#$%^&*(),.?":{}|<>]/.test(p) // Check if it contains at least one special character
+        minLength: minLength(5),
+        maxLength: maxLength(10),
+        containsNumber: (value) => /\d/.test(value),
+        containsSpecialCharacter: (value) =>
+          /[!@#$%^&*(),.?":{}|<>]/.test(value)
       },
       confirmedPassword: {
         required,
@@ -259,12 +259,22 @@ export default {
     },
     async Register() {
       try {
+        this.$v.form.$touch();
+        if (this.$v.form.$anyError) {
+          return;
+        }
+
         const userDetails = {
           username: this.form.username,
-          password: this.form.password
+          password: this.form.password,
+          firstName: this.form.firstName,
+          lastName: this.form.lastName,
+          email: this.form.email,
+          country: this.form.country
         };
+        console.log("userDetails", userDetails);
 
-        const response = mockRegister(userDetails);
+        const response = await register(userDetails);
 
         this.$router.push("/login");
       } catch (err) {
@@ -272,12 +282,7 @@ export default {
         this.form.submitError = err.response.data.message;
       }
     },
-
     onRegister() {
-      this.$v.form.$touch();
-      if (this.$v.form.$anyError) {
-        return;
-      }
       this.Register();
     },
     onReset() {
@@ -288,7 +293,8 @@ export default {
         country: null,
         password: "",
         confirmedPassword: "",
-        email: ""
+        email: "",
+        submitError: undefined
       };
       this.$nextTick(() => {
         this.$v.$reset();
@@ -298,7 +304,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .container {
   max-width: 500px;
 }
