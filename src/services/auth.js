@@ -45,8 +45,14 @@ export async function register(userDetails) {
 
 
 
-export function mockLogout() {
-  return { status: 200, response: { data: { message: "logout succeeded", success: true}} };
+export async function Logout() {
+  try{
+  const response = await axios.post('http://localhost:80/auth/Logout', {});
+  return{response}
+  } catch(error){
+    console.error('Error register', error);
+    throw error;
+  }
 
 }
   

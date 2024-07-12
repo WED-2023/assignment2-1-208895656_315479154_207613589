@@ -15,29 +15,71 @@ export function mockGetRecipesPreview(amount = 1) {
   return { data: { recipes: recipes } };
 }
 
-// export function mockGetRecipesPreviewSortByLikes(amount = 1) {
-//   let recipes_not_sorted = [];
-//   for(let i = 0; i < amount; i++){
-//     recipes_not_sorted.push(recipe_preview[i%recipe_preview.length]);
-//   }
+export async function mockGetMyFavoriteRecipesPreview(){
+  let recipes = [];
+  for(let i = 0; i < 3; i++){
+    recipes.push(recipe_preview[i]);
+  }
 
-//   // Sort by aggregateLikes in descending order
-//   const recipes_sorted_by_likes = recipes_not_sorted.sort((a, b) => b.aggregateLikes - a.aggregateLikes);
-  
-//   return { data: { recipes: recipes_sorted_by_likes } };
-// }
+  return { data: { recipes: recipes } };
+}
 
-// export function mockGetRecipesPreviewSortByTime(amount = 1) {
-//   let recipes_not_sorted = [];
-//   for(let i = 0; i < amount; i++){
-//     recipes_not_sorted.push(recipe_preview[i%recipe_preview.length]);
-//   }
+export async function GetMyFavoriteRecipesPreview(){
+  try{
+  const response = await axios.get('http://localhost:80/users/favorites');
+  console.log("response.data: ", response.data)
+  return {status:200, data: response.data };
+  } catch (error) {
+  console.error('Error register', error);
+  throw error;
+  }
+}
 
-//   // Sort by readyInMinutes in ascending order
-//   const recipes_sorted_by_time = recipes_not_sorted.sort((a, b) => a.readyInMinutes - b.readyInMinutes);
-  
-//   return { data: { recipes: recipes_sorted_by_time } };
-// }
+export async function isFavoriteRecipe(recipeId){
+  try{
+    const response = await axios.get('http://localhost:80/users/is_favorite', {
+      params: {
+        recipeId: recipeId
+      }
+    });
+    console.log("response.data: ", response.data, recipeId)
+    return response.data;
+  } catch (error) {
+    console.error('Error register', error);
+    throw error;
+  }
+}
+
+
+export async function addToFavorites(recipeId){
+  try{
+    const response = await axios.post('http://localhost:80/users/favorites', {
+      recipeId: recipeId
+    });
+    return {status:200, data: response.data };
+  } catch (error) {
+    console.error('Error register', error);
+    throw error;
+  }
+}
+
+
+export async function removeFromFavorites(recipeId){
+  try{
+    const response = await axios.delete('http://localhost:80/users/favorites', {
+      data: {
+        recipeId: recipeId
+      }
+    });
+    return {status:200, data: response.data };
+  } catch (error) {
+    console.error('Error register', error);
+    throw error;
+  }
+
+}
+
+
 function generateMockRecipes(amount, sortBy) {
   let recipes_not_sorted = [];
   for (let i = 0; i < amount; i++) {

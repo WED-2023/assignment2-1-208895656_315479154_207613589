@@ -2,8 +2,8 @@
   <div class="recipe-preview" :class="{ 'clicked': clickedRecipes.has(recipe.id) }">
     <!-- Like Button Container -->
     <div class="like-button-container" @click.stop="toggleLike(recipe.id)">
-      <button :class="{'liked': likedRecipes.has(recipe.id)}" class="like-button">
-        {{ likedRecipes.has(recipe.id) ? '♥ Unlike' : '♥ Like' }}
+      <button :class="{'liked': isLiked}" class="like-button">
+        {{ isLiked ? '♥ Unlike' : '♥ Like' }}
       </button>
     </div>
     <!-- Router Link for Navigation -->
@@ -40,17 +40,11 @@
 <script>
 import { BProgress } from 'bootstrap-vue';
 import { integer } from 'vuelidate/lib/validators';
+import { isFavoriteRecipe, addToFavorites, removeFromFavorites } from '../services/recipes.js';
+
 export default {
   components: {
     BProgress
-  },
-  data() {
-    return {
-      image_load: true,
-      clickedRecipes: new Set(),
-      likedRecipes: new Set(),
-      animate: true // Animation for the progress bar
-    };
   },
   props: {
     recipe: {
@@ -70,27 +64,55 @@ export default {
       default: 0
     }
   },
+  data() {
+    return {
+      image_load: true,
+      clickedRecipes: new Set(),
+      isLiked: false, // Track whether the recipe is liked
+      animate: true // Animation for the progress bar
+    };
+  },
   methods: {
-    toggleLike(id) {
-      if (this.likedRecipes.has(id)) {
-        this.likedRecipes.delete(id);
-      } else {
-        this.likedRecipes.add(id);
+    async toggleLike(id) {
+      try {
+        // console.log('Is liked:', id);
+        if (this.isLiked) {
+          console.log('Removing from favorites');
+          await removeFromFavorites(id);
+        } else {
+          console.log('Adding to favorites');
+          await addToFavorites(id);
+        }
+        this.isLiked = !this.isLiked; // Update local isLiked state
+      } catch (error) {
+        console.error('Error toggling like:', error);
       }
-      localStorage.setItem('likedRecipes', JSON.stringify([...this.likedRecipes]));
-      this.$forceUpdate();  // Ensuring reactivity is maintained
     },
     handleClick() {
       this.clickedRecipes.add(this.recipe.id);
-      localStorage.setItem('clickedRecipes', JSON.stringify([...this.clickedRecipes]));
+      // Optionally, save clicked recipes to localStorage if needed
+      // localStorage.setItem('clickedRecipes', JSON.stringify([...this.clickedRecipes]));
+    },
+    async checkIfLiked(id) {
+      try {
+        const response = await isFavoriteRecipe(id);
+        this.isLiked = response; // Set isLiked based on the server response
+      } catch (error) {
+        console.error('Error checking liked status:', error);
+        this.isLiked = false; // Default to false if there's an error
+      }
     }
   },
-  mounted() {
-    const storedLikes = JSON.parse(localStorage.getItem('likedRecipes') || "[]");
-    this.likedRecipes = new Set(storedLikes);
-    
-    const storedClicks = JSON.parse(localStorage.getItem('clickedRecipes') || "[]");
-    this.clickedRecipes = new Set(storedClicks);
+  async mounted() {
+    await this.checkIfLiked(this.recipe.id); // Check if the recipe is liked when the component is mounted
+  },
+  watch: {
+    recipe: {
+      handler(newRecipe) {
+        this.checkIfLiked(newRecipe.id); // Check if the recipe is liked when the recipe prop changes
+      },
+      immediate: true
+    }
   }
 };
 </script>
