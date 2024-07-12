@@ -31,7 +31,7 @@
       <b-progress :value="progress_value" variant="success" striped :animated="animate"></b-progress>
     </div>
     <!-- Visited Icon -->
-    <div v-if="clickedRecipes.has(recipe.id)" class="visited-icon">
+    <div v-if="isClicked" class="visited-icon">
       ✅
     </div>
   </div>
@@ -69,7 +69,9 @@ export default {
       image_load: true,
       clickedRecipes: new Set(),
       isLiked: false, // Track whether the recipe is liked
-      animate: true // Animation for the progress bar
+      animate: true, // Animation for the progress bar
+      isClicked: false
+  
     };
   },
   methods: {
