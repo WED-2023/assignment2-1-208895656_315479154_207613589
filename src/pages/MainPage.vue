@@ -6,10 +6,10 @@
       <div class="content-box recipe-list transparent-light-green">
         <RecipePreviewList :recipes="recipes" title="Random Recipes" class="center" :showButton="true" />
       </div>
-      <div v-if="!$root.store.username" class="content-box login-form transparent-light-green">
+      <div v-if="!$root.store.username" class="content-box login-form">
         <LoginForm></LoginForm>
       </div>
-      <div v-if="$root.store.username" class="content-box last-viewed-recipes transparent-light-green">
+      <div v-if="$root.store.username" class="content-box last-viewed-recipes">
         <RecipePreviewList
           :recipes="recipes"
           title="Last Viewed Recipes"

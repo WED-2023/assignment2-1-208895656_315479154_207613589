@@ -37,7 +37,7 @@
 <script>
 import RecipePreview from "./RecipePreview.vue";
 import FamilyRecipePreview from "./FamilyRecipePreview.vue"; // Assuming you'll create this component
-import { mockGetOtherRecipes, mockGetRecipesPreview, mockGetRecipesPreviewSortByLikes, mockGetRecipesPreviewSortByTime, mockGetFamilyRecipesPreview, getRandomRecipes } from "../services/recipes.js";
+import { mockGetOtherRecipes, mockGetRecipesPreview, mockGetRecipesPreviewSortByLikes, mockGetRecipesPreviewSortByTime, mockGetFamilyRecipesPreview, getRandomRecipes, getMyLastWatchedRecipes } from "../services/recipes.js";
 
 export default {
   name: "RecipePreviewList",
@@ -94,9 +94,11 @@ export default {
           response = await mockGetRecipesPreviewSortByLikes(this.amountToFetch);
         } else if (this.sortOption === 'preparation_time') {
           response = await mockGetRecipesPreviewSortByTime(this.amountToFetch);
-        // } else if (this.title === 'Random Recipes') {
-        //   response = await getRandomRecipes(this.amountToFetch);
+        } else if (this.title === 'Random Recipes') {
+          // response = await getRandomRecipes(this.amountToFetch);
+          response = await mockGetRecipesPreview(this.amountToFetch);
         } else{  
+          // response = await getMyLastWatchedRecipes(this.amountToFetch);
           response = await mockGetRecipesPreview(this.amountToFetch);
         }
         this.recipes = response.data.recipes.map(recipe => ({

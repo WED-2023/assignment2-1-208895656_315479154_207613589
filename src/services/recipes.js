@@ -279,3 +279,16 @@ export async function addToLastWatched(recipeId){
     throw error;
   }
 }
+
+
+export async function getMyLastWatchedRecipes(){
+  try{
+    const response = await axios.get('http://localhost:80/users/last_watch');
+    let recipes = response.data;
+    console.log("recipes: ", response.data)
+    return {status:200, data: { recipes } };
+  } catch (error) {
+    console.error('Error register', error);
+    throw error;
+  }
+}

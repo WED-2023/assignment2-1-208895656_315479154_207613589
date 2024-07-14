@@ -13,7 +13,7 @@
       <h3 :title="recipe.title" class="recipe-title">{{ recipe.title }}</h3>
       <ul class="recipe-overview">
         <li>{{ recipe.readyInMinutes }} minutes</li>
-        <li>{{ recipe.aggregateLikes }} likes</li>
+        <li>{{ recipe.aggregateLikes || 0 }} likes</li>
         <li v-if="family">Customary time: {{ recipe.customaryTime }}</li>
         <li v-if="family">Family Chef: {{ recipe.family_chef }}</li>
       </ul>
