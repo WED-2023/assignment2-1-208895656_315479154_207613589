@@ -1,5 +1,5 @@
 <template>
-  <div class="recipe-preview" :class="{ 'clicked': clickedRecipes.has(recipe.id) }">
+  <div class="recipe-preview" :class="{ 'clicked': isClicked }">
     <!-- Like Button Container -->
     <div class="like-button-container" @click.stop="toggleLike(recipe.id)">
       <button :class="{'liked': isLiked}" class="like-button">
@@ -40,7 +40,7 @@
 <script>
 import { BProgress } from 'bootstrap-vue';
 import { integer } from 'vuelidate/lib/validators';
-import { isFavoriteRecipe, addToFavorites, removeFromFavorites } from '../services/recipes.js';
+import { isFavoriteRecipe, addToFavorites, removeFromFavorites, isWatchedRecipe, addToWatched } from '../services/recipes.js';
 
 export default {
   components: {
@@ -67,22 +67,17 @@ export default {
   data() {
     return {
       image_load: true,
-      clickedRecipes: new Set(),
       isLiked: false, // Track whether the recipe is liked
-      animate: true, // Animation for the progress bar
-      isClicked: false
-  
+      isClicked: false, // Track whether the recipe is clicked (watched)
+      animate: true // Animation for the progress bar
     };
   },
   methods: {
     async toggleLike(id) {
       try {
-        // console.log('Is liked:', id);
         if (this.isLiked) {
-          console.log('Removing from favorites');
           await removeFromFavorites(id);
         } else {
-          console.log('Adding to favorites');
           await addToFavorites(id);
         }
         this.isLiked = !this.isLiked; // Update local isLiked state
@@ -90,10 +85,8 @@ export default {
         console.error('Error toggling like:', error);
       }
     },
-    handleClick() {
-      this.clickedRecipes.add(this.recipe.id);
-      // Optionally, save clicked recipes to localStorage if needed
-      // localStorage.setItem('clickedRecipes', JSON.stringify([...this.clickedRecipes]));
+    async handleClick() {
+      await this.addToWatchedRecipes(this.recipe.id);
     },
     async checkIfLiked(id) {
       try {
@@ -103,15 +96,34 @@ export default {
         console.error('Error checking liked status:', error);
         this.isLiked = false; // Default to false if there's an error
       }
+    },
+    async checkIfClicked(id) {
+      try {
+        const response = await isWatchedRecipe(id);
+        this.isClicked = response; // Set isClicked based on the server response
+      } catch (error) {
+        console.error('Error checking clicked status:', error);
+        this.isClicked = false; // Default to false if there's an error
+      }
+    },
+    async addToWatchedRecipes(id) {
+      try {
+        await addToWatched(id);
+        this.isClicked = true; // Update local isClicked state
+      } catch (error) {
+        console.error('Error adding to watched:', error);
+      }
     }
   },
   async mounted() {
     await this.checkIfLiked(this.recipe.id); // Check if the recipe is liked when the component is mounted
+    await this.checkIfClicked(this.recipe.id); // Check if the recipe is clicked (watched) when the component is mounted
   },
   watch: {
     recipe: {
       handler(newRecipe) {
         this.checkIfLiked(newRecipe.id); // Check if the recipe is liked when the recipe prop changes
+        this.checkIfClicked(newRecipe.id); // Check if the recipe is clicked (watched) when the recipe prop changes
       },
       immediate: true
     }

@@ -42,7 +42,7 @@ export async function isFavoriteRecipe(recipeId){
         recipeId: recipeId
       }
     });
-    console.log("response.data: ", response.data, recipeId)
+    // console.log("response.data: ", response.data, recipeId)
     return response.data;
   } catch (error) {
     console.error('Error register', error);
@@ -234,6 +234,35 @@ export async function getRandomRecipes(amount = 3) {
     return {status:200, data: { recipes } };
   } catch (error) {
     console.error('Error fetching random recipes:', error);
+    throw error;
+  }
+}
+
+
+export async function isWatchedRecipe(recipeId){
+  try{
+    const response = await axios.get('http://localhost:80/users/is_watched', {
+      params: {
+        recipeId: recipeId
+      }
+    });
+    console.log("is watched: ", response.data, recipeId)
+    return response.data;
+  } catch (error) {
+    console.error('Error register', error);
+    throw error;
+  }
+}
+
+
+export async function addToWatched(recipeId){
+  try{
+    const response = await axios.post('http://localhost:80/users/viewd_recipes', {
+      recipeId: recipeId
+    });
+    return {status:200, data: response.data };
+  } catch (error) {
+    console.error('Error register', error);
     throw error;
   }
 }
