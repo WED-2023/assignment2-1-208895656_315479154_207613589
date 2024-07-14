@@ -110,7 +110,7 @@ export default {
     async shuffleRecipes() {
       try {
         // const response = await getRandomRecipes(this.amountToFetch);
-        response = await mockGetRecipesPreview(this.amountToFetch);
+        response = await mockGetOtherRecipes(this.amountToFetch);
         this.recipes = response.data.recipes.map(recipe => ({
           ...recipe,
           clicked: false
@@ -164,7 +164,7 @@ h3 {
   overflow: hidden; /* Ensure overflow content is hidden */
   padding: 15px; /* Add padding to ensure content is not touching the edges */
   margin-bottom: 15px; /* Add margin to separate cards */
-  background-color: rgba(144, 238, 144, 0.5); /* Light green with 50% transparency */
+  background-color: #a0b9dacc; /* Light green with 50% transparency */
 }
 
 .familyRecipePreview {

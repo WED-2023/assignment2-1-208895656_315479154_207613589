@@ -1,31 +1,29 @@
 <template>
-  <div class="recipe-preview" :class="{ 'clicked': isClicked }">
+  <div class="recipe-preview" :class="{ 'clicked': isClicked }" @click="handleClick">
     <!-- Like Button Container -->
-    <div class="like-button-container" @click.stop="toggleLike(recipe.id)">
-      <button :class="{'liked': isLiked}" class="like-button">
+    <div class="like-button-container">
+      <button :class="{'liked': isLiked}" class="like-button" @click.stop="toggleLike(recipe.id)">
         {{ isLiked ? '♥ Unlike' : '♥ Like' }}
       </button>
     </div>
-    <!-- Router Link for Navigation -->
-    <router-link @click.native="handleClick" :to="{ name: 'recipe', params: { recipeId: recipe.id, family: family ? true : undefined } }" class="link-area">
-      <div class="recipe-body">
-        <img :src="recipe.image" alt="Recipe Image" class="recipe-image" @error="image_load = false"/>
+    <div class="recipe-body">
+      <img :src="recipe.image" alt="Recipe Image" class="recipe-image" @error="image_load = false"/>
+    </div>
+    <div class="recipe-footer">
+      <h3 :title="recipe.title" class="recipe-title">{{ recipe.title }}</h3>
+      <ul class="recipe-overview">
+        <li>{{ recipe.readyInMinutes }} minutes</li>
+        <li>{{ recipe.aggregateLikes }} likes</li>
+        <li v-if="family">Customary time: {{ recipe.customaryTime }}</li>
+        <li v-if="family">Family Chef: {{ recipe.family_chef }}</li>
+      </ul>
+      <!-- Recipe Icons -->
+      <div class="recipe-icons">
+        <img v-if="recipe.glutenFree" src="https://spoonacular.com/application/frontend/images/badges/gluten-free.svg" alt="Gluten-Free" class="icon"/>
+        <img v-if="recipe.vegan" src="https://spoonacular.com/application/frontend/images/badges/vegan.svg" alt="Vegan" class="icon"/>
+        <img v-if="recipe.vegetarian" src="https://spoonacular.com/application/frontend/images/badges/vegetarian.svg" alt="Vegetarian" class="icon"/>
       </div>
-      <div class="recipe-footer">
-        <h3 :title="recipe.title" class="recipe-title">{{ recipe.title }}</h3>
-        <ul class="recipe-overview">
-          <li>{{ recipe.readyInMinutes }} minutes</li>
-          <li>{{ recipe.aggregateLikes }} likes</li>
-          <li v-if="family">Customary time: {{ recipe.customaryTime }}</li>
-          <li v-if="family">Family Chef: {{ recipe.family_chef }}</li>
-        </ul>
-        <div class="recipe-icons">
-          <img v-if="recipe.glutenFree" src="https://spoonacular.com/application/frontend/images/badges/gluten-free.svg" alt="Gluten-Free" class="icon"/>
-          <img v-if="recipe.vegan" src="https://spoonacular.com/application/frontend/images/badges/vegan.svg" alt="Vegan" class="icon"/>
-          <img v-if="recipe.vegetarian" src="https://spoonacular.com/application/frontend/images/badges/vegetarian.svg" alt="Vegetarian" class="icon"/>
-        </div>
-      </div>
-    </router-link>
+    </div>
     <!-- Progress Bar Container -->
     <div v-if="progress_bar" class="progress-bar-container">
       <b-progress :value="progress_value" variant="success" striped :animated="animate"></b-progress>
@@ -34,13 +32,15 @@
     <div v-if="isClicked" class="visited-icon">
       ✅
     </div>
+    <!-- Clickable Overlay -->
+    <div class="clickable-overlay" v-if="!isClicked"></div>
   </div>
 </template>
 
 <script>
 import { BProgress } from 'bootstrap-vue';
 import { integer } from 'vuelidate/lib/validators';
-import { isFavoriteRecipe, addToFavorites, removeFromFavorites, isWatchedRecipe, addToWatched } from '../services/recipes.js';
+import { isFavoriteRecipe, addToFavorites, removeFromFavorites, isWatchedRecipe, addToWatched, addToLastWatched } from '../services/recipes.js';
 
 export default {
   components: {
@@ -59,6 +59,10 @@ export default {
       type: Boolean, 
       default: false
     },
+    my_recipe: {
+      type: Boolean, 
+      default: false
+    },
     progress_value: {
       type: integer,
       default: 0
@@ -67,9 +71,9 @@ export default {
   data() {
     return {
       image_load: true,
-      isLiked: false, // Track whether the recipe is liked
-      isClicked: false, // Track whether the recipe is clicked (watched)
-      animate: true // Animation for the progress bar
+      isLiked: false,
+      isClicked: false,
+      animate: true
     };
   },
   methods: {
@@ -86,44 +90,52 @@ export default {
       }
     },
     async handleClick() {
-      await this.addToWatchedRecipes(this.recipe.id);
+      this.isClicked = true;
+      try {
+        await this.addToWatchedRecipes(this.recipe.id);
+        // Perform programmatic navigation after adding to watched recipes
+        this.$router.push({ name: 'recipe', params: { recipeId: this.recipe.id, family: this.family ? true : undefined }});
+      } catch (error) {
+        console.error('Error handling click:', error);
+      }
     },
     async checkIfLiked(id) {
       try {
         const response = await isFavoriteRecipe(id);
-        this.isLiked = response; // Set isLiked based on the server response
+        this.isLiked = response;
       } catch (error) {
         console.error('Error checking liked status:', error);
-        this.isLiked = false; // Default to false if there's an error
+        this.isLiked = false;
       }
     },
     async checkIfClicked(id) {
       try {
         const response = await isWatchedRecipe(id);
-        this.isClicked = response; // Set isClicked based on the server response
+        this.isClicked = response;
       } catch (error) {
         console.error('Error checking clicked status:', error);
-        this.isClicked = false; // Default to false if there's an error
+        this.isClicked = false;
       }
     },
     async addToWatchedRecipes(id) {
       try {
         await addToWatched(id);
-        this.isClicked = true; // Update local isClicked state
+        await addToLastWatched(id);
+        this.isClicked = true; // Update local isClicked state after both operations complete successfully
       } catch (error) {
         console.error('Error adding to watched:', error);
       }
     }
   },
-  async mounted() {
-    await this.checkIfLiked(this.recipe.id); // Check if the recipe is liked when the component is mounted
-    await this.checkIfClicked(this.recipe.id); // Check if the recipe is clicked (watched) when the component is mounted
+  created() {
+    this.checkIfLiked(this.recipe.id);
+    this.checkIfClicked(this.recipe.id);
   },
   watch: {
     recipe: {
       handler(newRecipe) {
-        this.checkIfLiked(newRecipe.id); // Check if the recipe is liked when the recipe prop changes
-        this.checkIfClicked(newRecipe.id); // Check if the recipe is clicked (watched) when the recipe prop changes
+        this.checkIfLiked(newRecipe.id);
+        this.checkIfClicked(newRecipe.id);
       },
       immediate: true
     }
@@ -147,6 +159,7 @@ export default {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   font-family: 'safary';
   background-color: rgba(144, 238, 144, 0.5); /* Light green with 50% transparency */
+  cursor: pointer; /* Make the whole card clickable */
 }
 
 .recipe-preview:hover {
@@ -169,8 +182,6 @@ export default {
 
 .recipe-footer {
   padding: 10px;
-  background-color: #f9f9f9;
-  height: 250px; /* Fixed height for the footer to maintain card height consistency */
 }
 
 .recipe-title {
@@ -188,8 +199,6 @@ export default {
 .recipe-icons {
   display: flex;
   justify-content: flex-end;
-  /* margin-top: 70px; */
-  /* bottom: 20px; */
 }
 
 .icon {
@@ -238,5 +247,29 @@ export default {
   right: 20px;
   font-size: 24px;
   color: #28a745;
+}
+
+.recipe-overview {
+  list-style: none;
+  padding: 0;
+  margin: 5px 0;
+  font-size: 16px;
+  color: #000000; /* Adjust text color here */
+}
+
+.recipe-title {
+  margin: 5px 0;
+  font-size: 18px;
+  color: #000000; /* Adjust title color here */
+}
+
+.clickable-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: transparent; /* Transparent overlay to indicate clickability */
+  z-index: 10; /* Ensure it's above other content */
 }
 </style>

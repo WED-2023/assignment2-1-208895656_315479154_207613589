@@ -246,7 +246,7 @@ export async function isWatchedRecipe(recipeId){
         recipeId: recipeId
       }
     });
-    console.log("is watched: ", response.data, recipeId)
+    // console.log("is watched: ", response.data, recipeId)
     return response.data;
   } catch (error) {
     console.error('Error register', error);
@@ -258,6 +258,19 @@ export async function isWatchedRecipe(recipeId){
 export async function addToWatched(recipeId){
   try{
     const response = await axios.post('http://localhost:80/users/viewd_recipes', {
+      recipeId: recipeId
+    });
+    return {status:200, data: response.data };
+  } catch (error) {
+    console.error('Error register', error);
+    throw error;
+  }
+}
+
+
+export async function addToLastWatched(recipeId){
+  try{
+    const response = await axios.post('http://localhost:80/users/last_watch', {
       recipeId: recipeId
     });
     return {status:200, data: response.data };

@@ -87,14 +87,14 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: rgba(144, 238, 144, 0.5); /* Light green with 50% transparency */
+  background-color: hsl(215, 100%, 97%, 0.7); 
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(32, 15, 15, 0.1);
   z-index: 1; /* Ensure these components are above the background */
   margin: 10px;
   width: 100%; /* Expand to full width */
-  max-width: 450px; /* Adjust as needed */
+  max-width: 400px; /* Adjust as needed */
   text-align: center; /* Center the text */
   flex-grow: 1; /* Ensure they stretch equally */
 }
