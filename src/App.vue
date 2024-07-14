@@ -35,23 +35,25 @@
         </template>
       </b-navbar-nav>
 
-      <!-- Display meal counter with an icon -->
-      <b-navbar-nav>
-        <b-nav-item class="meal-counter">
-          <router-link :to="{ name: 'meal' }">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnW-w8lH3R_fAVK-RkKMvmbefRFYG0isntsQ&s" alt="Plate Icon" class="meal-icon" />
-            <span class="meal-count">{{ mealCount }}</span>
-            <span class="meal-label">My Meal</span>
-          </router-link>
-        </b-nav-item>
-      </b-navbar-nav>
+      <!-- Display meal counter with an icon only if user is logged in -->
+      <template v-if="$root.store.username">
+        <b-navbar-nav>
+          <b-nav-item class="meal-counter">
+            <router-link :to="{ name: 'meal' }">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnW-w8lH3R_fAVK-RkKMvmbefRFYG0isntsQ&s" alt="Plate Icon" class="meal-icon" />
+              <span class="meal-count">{{ mealCount }}</span>
+              <span class="meal-label">My Meal</span>
+            </router-link>
+          </b-nav-item>
+        </b-navbar-nav>
+      </template>
     </b-navbar>
     
     <!-- Router View for Content -->
-    <router-view />
+    <router-view @meal-count-updated="fetchMealCount" />
 
     <!-- Create Recipe Modal Component -->
-    <CreateRecipeModal :isVisible.sync="showCreateRecipeModal" />
+    <CreateRecipeModal :isVisible.sync="showCreateRecipeModal" @recipe-created="fetchMealCount" />
   </div>
 </template>
 
@@ -59,6 +61,8 @@
 import CreateRecipeModal from './components/CreateRecipeModal.vue';
 import { store } from './store.js';
 import { Logout } from "./services/auth.js";
+import { meal_plan_count } from "./services/recipes.js"; // Import your function
+
 export default {
   name: 'App',
   components: {
@@ -75,14 +79,26 @@ export default {
     }
   },
   methods: {
+    async fetchMealCount() {
+      try {
+        const count = await meal_plan_count();
+        store.mealCount = count; // Update the store
+      } catch (error) {
+        console.error('Error fetching meal count:', error);
+      }
+    },
     async Logout() {
       const response = await Logout();
       this.$root.store.logout();
       this.$root.toast('Logout', 'User logged out successfully', 'success');
+      await this.fetchMealCount(); // Update meal count on logout
       this.$router.push('/').catch(() => {
         this.$forceUpdate();
       });
     },
+  },
+  created() {
+    this.fetchMealCount();
   },
   provide() {
     return {

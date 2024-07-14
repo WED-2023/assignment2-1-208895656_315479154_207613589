@@ -292,3 +292,83 @@ export async function getMyLastWatchedRecipes(){
     throw error;
   }
 }
+
+
+export async function getMyMealPlan(){
+  try{
+    const response = await axios.get('http://localhost:80/users/meal_plan');
+    let recipes = response.data;
+    return {status:200, data: { recipes } };
+  } catch (error) {
+    console.error('Error register', error);
+    throw error;
+  }
+}
+
+
+
+export async function addToMealPlan(recipeId){
+  try{
+    const response = await axios.post('http://localhost:80/users/meal_plan', {
+      recipeId: recipeId
+    });
+    return {status:200, data: response.data };
+  } catch (error) {
+    console.error('Error register', error);
+    throw error;
+  }
+}
+
+
+
+export async function removeFromMealPlan(recipeId){
+  try{
+    const response = await axios.delete('http://localhost:80/users/meal_plan', {
+      data: {
+        recipeId: recipeId
+      }
+    });
+    return {status:200};
+  } catch (error) {
+    console.error('Error register', error);
+    throw error;
+  }
+
+}
+
+export async function GetRecipeFullView(recipeId) {
+  try {
+    console.log("getRecipeFullView", recipeId);
+    const response = await axios.get(`http://localhost:80/recipes/full_view/${recipeId}`);
+    return { status: response.status, data: response.data };
+  } catch (error) {
+    console.error('Error fetching recipe full view:', error);
+    throw error;
+  }
+}
+
+
+export async function meal_plan_count(){
+  try{
+    const response = await axios.get('http://localhost:80/users/meal_plan_count');
+    console.log("meal_plan_count: ", response.data.count)
+    return response.data.count;
+  } catch (error) {
+    console.error('Error register', error);
+    throw error;
+  }
+}
+
+
+export async function change_meal_order(recipesId){
+  try{
+    console.log("change_meal_order", recipesId);
+    const response = await axios.put('http://localhost:80/users/meal_plan', {
+      recipesId: recipesId
+    });
+    return {status: response.status};
+  } catch (error) {
+    console.error('Error register', error);
+    throw error;
+  }
+}

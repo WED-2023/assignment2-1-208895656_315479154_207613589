@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import { mockGetRecipeFullDetails, mockGetFamilyRecipeFullDetails } from "../services/recipes.js";
+import { mockGetRecipeFullDetails, mockGetFamilyRecipeFullDetails, GetRecipeFullView, addToMealPlan, meal_plan_count } from "../services/recipes.js";
 import { store } from "../store.js"; // Import the store
 
 export default {
@@ -76,12 +76,23 @@ export default {
     }
   },
   methods: {
-    goToPreparation() {
-      store.incrementMealCount();
+    async goToPreparation() {
+      await addToMealPlan(this.recipe.id);
+      await this.fetchMealCount(); // Refetch the meal count
       this.$router.push({ name: 'preperation', params: { recipeId: this.$route.params.recipeId, family: this.$route.params.family } });
     },
-    addToMeal() {
-      store.incrementMealCount();
+    async addToMeal() {
+      await addToMealPlan(this.recipe.id);
+      await this.fetchMealCount(); // Refetch the meal count
+    },
+    async fetchMealCount() {
+      try {
+        const count = await meal_plan_count();
+        store.mealCount = count; // Update the store
+        this.$emit('meal-count-updated'); // Emit event to update meal count in parent
+      } catch (error) {
+        console.error('Error fetching meal count:', error);
+      }
     },
     async fetchRecipeDetails() {
       try {
@@ -89,16 +100,14 @@ export default {
         if (this.$route.params.family) {
           response = await mockGetFamilyRecipeFullDetails(this.$route.params.recipeId);
         } else {
-          response = await mockGetRecipeFullDetails(this.$route.params.recipeId);
+          response = await GetRecipeFullView(this.$route.params.recipeId);
         }
         
         if (response.status !== 200) {
           this.$router.replace("/NotFound");
           return;
         }
-
-        this.recipe = response.data.recipe;
-        console.log(this.recipe)
+        this.recipe = response.data;
       } catch (error) {
         console.error(error);
         this.$router.replace("/NotFound");

@@ -166,7 +166,7 @@ h3 {
   overflow: hidden; /* Ensure overflow content is hidden */
   padding: 15px; /* Add padding to ensure content is not touching the edges */
   margin-bottom: 15px; /* Add margin to separate cards */
-  background-color: #a0b9dacc; /* Light green with 50% transparency */
+  background-color: #a0b9dacc; 
 }
 
 .familyRecipePreview {

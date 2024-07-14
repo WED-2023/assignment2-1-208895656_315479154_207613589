@@ -1,5 +1,5 @@
 <template>
-  <div class="recipe-preview" :class="{ 'clicked': isClicked }" @click="handleClick">
+  <div class="recipe-preview" @click="handleClick">
     <!-- Like Button Container -->
     <div class="like-button-container">
       <button :class="{'liked': isLiked}" class="like-button" @click.stop="toggleLike(recipe.id)">
@@ -147,7 +147,7 @@ export default {
 .recipe-preview {
   display: block;
   width: 300px;  /* Fixed width for the card */
-  max-height: 400px; /* Fixed height for the card */
+  height: 450px; /* Fixed height for the card */
   border: 1px solid #ccc;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   margin: 10px;
@@ -158,7 +158,7 @@ export default {
   border-radius: 8px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   font-family: 'safary';
-  background-color: rgba(144, 238, 144, 0.5); /* Light green with 50% transparency */
+  background-color: #a0b9dacc;
   cursor: pointer; /* Make the whole card clickable */
 }
 
@@ -171,6 +171,7 @@ export default {
   width: 100%;
   height: 200px; /* Fixed height for the image container */
   overflow: hidden;
+  position: relative; /* Ensure relative positioning for absolute child */
 }
 
 .recipe-image {
@@ -178,6 +179,9 @@ export default {
   height: 100%;
   object-fit: cover; /* This ensures the image covers the container */
   display: block;
+  position: absolute;
+  top: 10px;
+  left: 0;
 }
 
 .recipe-footer {
@@ -193,7 +197,8 @@ export default {
   list-style: none;
   padding: 0;
   margin: 5px 0;
-  font-size: 14px;
+  font-size: 16px;
+  color: #000000; /* Adjust text color here */
 }
 
 .recipe-icons {
@@ -249,20 +254,6 @@ export default {
   color: #28a745;
 }
 
-.recipe-overview {
-  list-style: none;
-  padding: 0;
-  margin: 5px 0;
-  font-size: 16px;
-  color: #000000; /* Adjust text color here */
-}
-
-.recipe-title {
-  margin: 5px 0;
-  font-size: 18px;
-  color: #000000; /* Adjust title color here */
-}
-
 .clickable-overlay {
   position: absolute;
   top: 0;
@@ -273,3 +264,4 @@ export default {
   z-index: 10; /* Ensure it's above other content */
 }
 </style>
+

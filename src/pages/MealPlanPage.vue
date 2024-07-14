@@ -1,7 +1,12 @@
 <template>
   <div class="my-meal-container">
     <h1 class="meal-heading">My Meal</h1>
-    <draggable v-model="recipes" class="recipe-list" :options="{ handle: '.handle' }">
+    <draggable
+      v-model="recipes"
+      class="recipe-list"
+      :options="{ handle: '.handle' }"
+      @update="onOrderChange"
+    >
       <div v-for="(recipe, index) in recipes" :key="recipe.id" class="recipe-card">
         <span class="handle">☰</span> <!-- Handle for dragging -->
         <RecipePreview :recipe="recipe" :progress_bar="true" :progress="recipe.progress" />
@@ -16,10 +21,11 @@
 </template>
 
 <script>
-import { mockGetRecipesPreview, removeFromMyMealsById } from '../services/recipes.js';
+import { getMyMealPlan, removeFromMealPlan, meal_plan_count, change_meal_order } from '../services/recipes.js';
 import RecipePreview from '../components/RecipePreview.vue';
 import draggable from 'vuedraggable';
 import { BButton } from 'bootstrap-vue';
+import { store } from "../store.js"; // Import the store
 
 export default {
   name: 'MyMeal',
@@ -36,7 +42,7 @@ export default {
   methods: {
     async fetchRecipes() {
       try {
-        const response = await mockGetRecipesPreview(6);
+        const response = await getMyMealPlan();
         this.recipes = response.data.recipes.map(recipe => ({
           ...recipe,
           clicked: false,
@@ -51,9 +57,10 @@ export default {
     },
     async removeRecipe(recipeId) {
       try {
-        const response = await removeFromMyMealsById(recipeId);
-        if (response.success) {
+        const response = await removeFromMealPlan(recipeId);
+        if (response.status === 200) {
           this.recipes = this.recipes.filter(recipe => recipe.id !== recipeId);
+          await this.fetchMealCount(); // Refetch the meal count
         } else {
           console.error("Failed to remove recipe:", response.message);
         }
@@ -61,8 +68,20 @@ export default {
         console.error("Error removing recipe:", error);
       }
     },
-    makeRecipe(recipeId) {
-      // Functionality for making a recipe
+    async fetchMealCount() {
+      try {
+        const count = await meal_plan_count();
+        store.mealCount = count; // Update the store
+        this.$emit('meal-count-updated'); // Emit event to update meal count in parent
+      } catch (error) {
+        console.error('Error fetching meal count:', error);
+      }
+    },
+    onOrderChange() {
+      // Functionality to handle order change
+      console.log('Order changed:', this.recipes);
+      // Here you can call a method to save the new order to the server if needed
+      change_meal_order(this.recipes.map(recipe => recipe.id));
     }
   },
   mounted() {
