@@ -11,7 +11,7 @@
             <div class="wrapped">
               <div class="mb-3">
                 <div>Ready in {{ recipe.readyInMinutes }} minutes</div>
-                <div>Likes: {{ recipe.aggregateLikes }} likes</div>
+                <div v-if="!this.$route.params.my_recipe">Likes: {{ recipe.aggregateLikes }} likes</div>
                 <div>{{ recipe.vegan ? 'Vegan: Yes' : 'Vegan: No' }}</div>
                 <div>{{ recipe.vegetarian ? 'Vegetarian: Yes' : 'Vegetarian: No' }}</div>
                 <div>{{ recipe.glutenFree ? 'Gluten-Free: Yes' : 'Gluten-Free: No' }}</div>
@@ -26,7 +26,7 @@
                 </li>
               </ul>
               <button @click="goToPreparation" class="mb-2">Prepare this recipe</button>
-              <button @click="addToMeal">Add to Meal</button>
+              <button @click="addToMeal" v-if="!this.$route.params.my_recipe">Add to Meal</button>
             </div>
             <div class="wrapped">
               <h3>Instructions:</h3>
@@ -50,9 +50,9 @@
 </template>
 
 <script>
-import { mockGetRecipeFullDetails, mockGetFamilyRecipeFullDetails, GetRecipeFullView, addToMealPlan, meal_plan_count } from "../services/recipes.js";
+import { mockGetRecipeFullDetails, mockGetFamilyRecipeFullDetails, GetRecipeFullView } from "../services/recipes.js";
 import { store } from "../store.js"; // Import the store
-
+import {addToMealPlan, meal_plan_count, getMyRecipe} from "../services/user.js"
 export default {
   data() {
     return {
@@ -99,15 +99,21 @@ export default {
         let response;
         if (this.$route.params.family) {
           response = await mockGetFamilyRecipeFullDetails(this.$route.params.recipeId);
+        }else if(this.$route.params.my_recipe){
+          response = await getMyRecipe(this.$route.params.title);
+          console.log('getMyRecipe response viewpage',response.data.recipe[0])
+          this.recipe = response.data.recipe[0];
+          return;
         } else {
           response = await GetRecipeFullView(this.$route.params.recipeId);
+          this.recipe = response.data;
         }
         
         if (response.status !== 200) {
           this.$router.replace("/NotFound");
           return;
         }
-        this.recipe = response.data;
+
       } catch (error) {
         console.error(error);
         this.$router.replace("/NotFound");

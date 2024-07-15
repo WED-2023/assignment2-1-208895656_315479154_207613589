@@ -61,7 +61,7 @@
 import CreateRecipeModal from './components/CreateRecipeModal.vue';
 import { store } from './store.js';
 import { Logout } from "./services/auth.js";
-import { meal_plan_count } from "./services/recipes.js"; // Import your function
+import { meal_plan_count } from "./services/user.js"; // Import your function
 
 export default {
   name: 'App',

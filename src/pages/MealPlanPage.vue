@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { getMyMealPlan, removeFromMealPlan, meal_plan_count, change_meal_order } from '../services/recipes.js';
+import{getMyMealPlan, removeFromMealPlan, meal_plan_count, change_meal_order} from '../services/user.js';
 import RecipePreview from '../components/RecipePreview.vue';
 import draggable from 'vuedraggable';
 import { BButton } from 'bootstrap-vue';

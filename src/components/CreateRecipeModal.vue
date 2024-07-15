@@ -1,6 +1,6 @@
 <template>
   <b-modal v-model="isVisible" title="Create a Recipe" @ok="handleSubmit" @hidden="handleHidden">
-    <b-form>
+    <b-form @submit.stop.prevent="handleSubmit">
       <b-alert v-if="showAlert" variant="danger" dismissible @dismissed="showAlert = false">
         You should fill all the details and add at least one ingredient.
       </b-alert>
@@ -25,8 +25,8 @@
         <b-form-checkbox v-model="newRecipe.vegan">Vegan</b-form-checkbox>
         <b-form-checkbox v-model="newRecipe.vegetarian">Vegetarian</b-form-checkbox>
       </b-form-group>
-      <b-form-group label="Ingredients (at least one required)" :state="validateField(newRecipe.ingredients.length > 0)">
-        <div v-for="(ingredient, index) in newRecipe.ingredients" :key="index" class="mb-2">
+      <b-form-group label="Ingredients (at least one required)" :state="validateField(newRecipe.extendedIngredients.length > 0)">
+        <div v-for="(ingredient, index) in newRecipe.extendedIngredients" :key="index" class="mb-2">
           <b-input-group>
             <b-form-input v-model="ingredient.name" placeholder="Name" required></b-form-input>
             <b-form-select v-model="ingredient.amount" :options="amountOptions" required>
@@ -39,17 +39,17 @@
           </b-input-group>
         </div>
         <b-button @click="addIngredient" variant="success">Add Ingredient</b-button>
-        <b-form-invalid-feedback v-if="!newRecipe.ingredients.length">At least one ingredient is required.</b-form-invalid-feedback>
+        <b-form-invalid-feedback v-if="!newRecipe.extendedIngredients.length">At least one ingredient is required.</b-form-invalid-feedback>
       </b-form-group>
-      <b-form-group label="Instructions (at least one step required)" :state="validateField(newRecipe.instructions.length > 0)">
-        <div v-for="(step, index) in newRecipe.instructions" :key="`instructions_${index}`" class="mb-2">
+      <b-form-group label="Instructions (at least one step required)" :state="validateField(newRecipe.analyzedInstructions.length > 0)">
+        <div v-for="(step, index) in newRecipe.analyzedInstructions" :key="`instructions_${index}`" class="mb-2">
           <b-input-group>
-            <b-form-input v-model="step.text" placeholder="Step description" required></b-form-input>
+            <b-form-input v-model="step.step" placeholder="Step description" required></b-form-input>
             <b-button @click="removeStep(index)" variant="danger">Remove</b-button>
           </b-input-group>
         </div>
         <b-button @click="addStep" variant="success">Add Step</b-button>
-        <b-form-invalid-feedback v-if="!newRecipe.instructions.length">At least one step is required.</b-form-invalid-feedback>
+        <b-form-invalid-feedback v-if="!newRecipe.analyzedInstructions.length">At least one step is required.</b-form-invalid-feedback>
       </b-form-group>
     </b-form>
   </b-modal>
@@ -57,6 +57,7 @@
 
 <script>
 import { BForm, BFormGroup, BFormInput, BInputGroup, BButton, BFormSelect, BFormCheckbox, BAlert, BModal, BFormInvalidFeedback } from 'bootstrap-vue';
+import { create_my_recipe } from '../services/user';
 
 export default {
   name: "CreateRecipeModal",
@@ -90,8 +91,8 @@ export default {
         glutenFree: false,
         vegan: false,
         vegetarian: false,
-        ingredients: [{ name: '', amount: null, unit: null }],
-        instructions: [{ text: '' }]
+        extendedIngredients: [{ name: '', amount: null, unit: null }],
+        analyzedInstructions: [{ step: '' }]
       },
       amountOptions: [
         { value: null, text: 'Amount' },
@@ -127,28 +128,28 @@ export default {
       return field ? true : false;
     },
     addIngredient() {
-      this.newRecipe.ingredients.push({ name: '', amount: null, unit: null });
+      this.newRecipe.extendedIngredients.push({ name: '', amount: null, unit: null });
     },
     removeIngredient(index) {
-      this.newRecipe.ingredients.splice(index, 1);
+      this.newRecipe.extendedIngredients.splice(index, 1);
     },
     addStep() {
-      this.newRecipe.instructions.push({ text: '' });
+      this.newRecipe.analyzedInstructions.push({ step: '' });
     },
     removeStep(index) {
-      this.newRecipe.instructions.splice(index, 1);
+      this.newRecipe.analyzedInstructions.splice(index, 1);
     },
-    handleSubmit(bvModalEvt) {
+    async handleSubmit(bvModalEvt) {
       let alertMessage = "";
 
       if (!this.newRecipe.title) alertMessage += "Title, ";
       if (!this.newRecipe.image) alertMessage += "Image URL, ";
       if (this.newRecipe.readyInMinutes < 10 || this.newRecipe.readyInMinutes > 300) alertMessage += "Ready in Minutes, ";
       if (this.newRecipe.servings < 1 || this.newRecipe.servings > 20) alertMessage += "Servings, ";
-      if (this.newRecipe.ingredients.length === 0 || !this.newRecipe.ingredients.every(ingredient => ingredient.name && ingredient.amount && ingredient.unit)) {
+      if (this.newRecipe.extendedIngredients.length === 0 || !this.newRecipe.extendedIngredients.every(ingredient => ingredient.name && ingredient.amount && ingredient.unit)) {
         alertMessage += "Ingredients, ";
       }
-      if (this.newRecipe.instructions.length === 0 || !this.newRecipe.instructions.every(step => step.text)) {
+      if (this.newRecipe.analyzedInstructions.length === 0 || !this.newRecipe.analyzedInstructions.every(step => step.step)) {
         alertMessage += "Instructions, ";
       }
 
@@ -158,11 +159,15 @@ export default {
         this.showAlert = true;
         bvModalEvt.preventDefault();
       } else {
-        // Handle the creation of the recipe with the newRecipe data
-        // some mock function to create recipe.
-        console.log('Recipe created:', this.newRecipe);
-        this.$emit('update:isVisible', false);
-        this.resetForm();
+        try {
+          const response = await create_my_recipe(this.newRecipe);
+          console.log('Recipe created:', response.data);
+          this.$emit('update:isVisible', false);
+          this.resetForm();
+        } catch (error) {
+          console.error('Error creating recipe:', error);
+          alert("An error occurred while creating the recipe. Please try again.");
+        }
       }
     },
     handleHidden() {
@@ -179,8 +184,8 @@ export default {
         glutenFree: false,
         vegan: false,
         vegetarian: false,
-        ingredients: [{ name: '', amount: null, unit: null }],
-        instructions: [{ text: '' }]
+        extendedIngredients: [{ name: '', amount: null, unit: null }],
+        analyzedInstructions: [{ step: '' }]
       };
     }
   }

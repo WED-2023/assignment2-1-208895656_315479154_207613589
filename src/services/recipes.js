@@ -24,60 +24,7 @@ export async function mockGetMyFavoriteRecipesPreview(){
   return { data: { recipes: recipes } };
 }
 
-export async function GetMyFavoriteRecipesPreview(){
-  try{
-  const response = await axios.get('http://localhost:80/users/favorites');
-  console.log("response.data: ", response.data)
-  return {status:200, data: response.data };
-  } catch (error) {
-  console.error('Error register', error);
-  throw error;
-  }
-}
 
-export async function isFavoriteRecipe(recipeId){
-  try{
-    const response = await axios.get('http://localhost:80/users/is_favorite', {
-      params: {
-        recipeId: recipeId
-      }
-    });
-    // console.log("response.data: ", response.data, recipeId)
-    return response.data;
-  } catch (error) {
-    console.error('Error register', error);
-    throw error;
-  }
-}
-
-
-export async function addToFavorites(recipeId){
-  try{
-    const response = await axios.post('http://localhost:80/users/favorites', {
-      recipeId: recipeId
-    });
-    return {status:200, data: response.data };
-  } catch (error) {
-    console.error('Error register', error);
-    throw error;
-  }
-}
-
-
-export async function removeFromFavorites(recipeId){
-  try{
-    const response = await axios.delete('http://localhost:80/users/favorites', {
-      data: {
-        recipeId: recipeId
-      }
-    });
-    return {status:200, data: response.data };
-  } catch (error) {
-    console.error('Error register', error);
-    throw error;
-  }
-
-}
 
 
 function generateMockRecipes(amount, sortBy) {
@@ -239,106 +186,10 @@ export async function getRandomRecipes(amount = 3) {
 }
 
 
-export async function isWatchedRecipe(recipeId){
-  try{
-    const response = await axios.get('http://localhost:80/users/is_watched', {
-      params: {
-        recipeId: recipeId
-      }
-    });
-    // console.log("is watched: ", response.data, recipeId)
-    return response.data;
-  } catch (error) {
-    console.error('Error register', error);
-    throw error;
-  }
-}
-
-
-export async function addToWatched(recipeId){
-  try{
-    const response = await axios.post('http://localhost:80/users/viewd_recipes', {
-      recipeId: recipeId
-    });
-    return {status:200, data: response.data };
-  } catch (error) {
-    console.error('Error register', error);
-    throw error;
-  }
-}
-
-
-export async function addToLastWatched(recipeId){
-  try{
-    const response = await axios.post('http://localhost:80/users/last_watch', {
-      recipeId: recipeId
-    });
-    return {status:200, data: response.data };
-  } catch (error) {
-    console.error('Error register', error);
-    throw error;
-  }
-}
-
-
-export async function getMyLastWatchedRecipes(){
-  try{
-    const response = await axios.get('http://localhost:80/users/last_watch');
-    let recipes = response.data;
-    console.log("recipes: ", response.data)
-    return {status:200, data: { recipes } };
-  } catch (error) {
-    console.error('Error register', error);
-    throw error;
-  }
-}
-
-
-export async function getMyMealPlan(){
-  try{
-    const response = await axios.get('http://localhost:80/users/meal_plan');
-    let recipes = response.data;
-    return {status:200, data: { recipes } };
-  } catch (error) {
-    console.error('Error register', error);
-    throw error;
-  }
-}
-
-
-
-export async function addToMealPlan(recipeId){
-  try{
-    const response = await axios.post('http://localhost:80/users/meal_plan', {
-      recipeId: recipeId
-    });
-    return {status:200, data: response.data };
-  } catch (error) {
-    console.error('Error register', error);
-    throw error;
-  }
-}
-
-
-
-export async function removeFromMealPlan(recipeId){
-  try{
-    const response = await axios.delete('http://localhost:80/users/meal_plan', {
-      data: {
-        recipeId: recipeId
-      }
-    });
-    return {status:200};
-  } catch (error) {
-    console.error('Error register', error);
-    throw error;
-  }
-
-}
 
 export async function GetRecipeFullView(recipeId) {
   try {
-    console.log("getRecipeFullView", recipeId);
+    // console.log("getRecipeFullView", recipeId);
     const response = await axios.get(`http://localhost:80/recipes/full_view/${recipeId}`);
     return { status: response.status, data: response.data };
   } catch (error) {
@@ -348,27 +199,4 @@ export async function GetRecipeFullView(recipeId) {
 }
 
 
-export async function meal_plan_count(){
-  try{
-    const response = await axios.get('http://localhost:80/users/meal_plan_count');
-    console.log("meal_plan_count: ", response.data.count)
-    return response.data.count;
-  } catch (error) {
-    console.error('Error register', error);
-    throw error;
-  }
-}
 
-
-export async function change_meal_order(recipesId){
-  try{
-    console.log("change_meal_order", recipesId);
-    const response = await axios.put('http://localhost:80/users/meal_plan', {
-      recipesId: recipesId
-    });
-    return {status: response.status};
-  } catch (error) {
-    console.error('Error register', error);
-    throw error;
-  }
-}

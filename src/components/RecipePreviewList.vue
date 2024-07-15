@@ -37,8 +37,8 @@
 <script>
 import RecipePreview from "./RecipePreview.vue";
 import FamilyRecipePreview from "./FamilyRecipePreview.vue"; // Assuming you'll create this component
-import { mockGetOtherRecipes, mockGetRecipesPreview, mockGetRecipesPreviewSortByLikes, mockGetRecipesPreviewSortByTime, mockGetFamilyRecipesPreview, getRandomRecipes, getMyLastWatchedRecipes } from "../services/recipes.js";
-
+import { mockGetOtherRecipes, mockGetRecipesPreview, mockGetRecipesPreviewSortByLikes, mockGetRecipesPreviewSortByTime, mockGetFamilyRecipesPreview, getRandomRecipes } from "../services/recipes.js";
+import{getMyLastWatchedRecipes} from "../services/user.js";
 export default {
   name: "RecipePreviewList",
   components: {

@@ -1,7 +1,7 @@
 <template>
   <div class="recipe-preview" @click="handleClick">
     <!-- Like Button Container -->
-    <div class="like-button-container">
+    <div class="like-button-container" v-if="!my_recipe">
       <button :class="{'liked': isLiked}" class="like-button" @click.stop="toggleLike(recipe.id)">
         {{ isLiked ? '♥ Unlike' : '♥ Like' }}
       </button>
@@ -13,9 +13,10 @@
       <h3 :title="recipe.title" class="recipe-title">{{ recipe.title }}</h3>
       <ul class="recipe-overview">
         <li>{{ recipe.readyInMinutes }} minutes</li>
-        <li>{{ recipe.aggregateLikes || 0 }} likes</li>
-        <li v-if="family">Customary time: {{ recipe.customaryTime }}</li>
-        <li v-if="family">Family Chef: {{ recipe.family_chef }}</li>
+        <li v-if="!my_recipe">{{ recipe.aggregateLikes || 0 }} likes</li>
+        <li v-if="my_recipe">{{ recipe.servings}} servings</li>
+        <li v-if="family && !my_recipe">Customary time: {{ recipe.customaryTime }}</li>
+        <li v-if="family && !my_recipe">Family Chef: {{ recipe.family_chef }}</li>
       </ul>
       <!-- Recipe Icons -->
       <div class="recipe-icons">
@@ -40,7 +41,7 @@
 <script>
 import { BProgress } from 'bootstrap-vue';
 import { integer } from 'vuelidate/lib/validators';
-import { isFavoriteRecipe, addToFavorites, removeFromFavorites, isWatchedRecipe, addToWatched, addToLastWatched } from '../services/recipes.js';
+import { isFavoriteRecipe, addToFavorites, removeFromFavorites, isWatchedRecipe, addToWatched, addToLastWatched } from '../services/user.js';
 
 export default {
   components: {
@@ -91,12 +92,19 @@ export default {
     },
     async handleClick() {
       this.isClicked = true;
-      try {
-        await this.addToWatchedRecipes(this.recipe.id);
-        // Perform programmatic navigation after adding to watched recipes
-        this.$router.push({ name: 'recipe', params: { recipeId: this.recipe.id, family: this.family ? true : undefined }});
-      } catch (error) {
-        console.error('Error handling click:', error);
+      console.log("my_recipe", this.my_recipe)
+      if(this.my_recipe) {
+        this.$router.push({ name: 'recipe', params: { title: this.recipe.title, family: this.family ? true : undefined, my_recipe: this.my_recipe ? true : undefined }});
+        return;
+      }
+      else{
+        try {
+          await this.addToWatchedRecipes(this.recipe.id);
+          // Perform programmatic navigation after adding to watched recipes
+          this.$router.push({ name: 'recipe', params: { recipeId: this.recipe.id, title: this.recipe.title, family: this.family ? true : undefined, my_recipe: this.my_recipe ? true : undefined }});
+        } catch (error) {
+          console.error('Error handling click:', error);
+        }
       }
     },
     async checkIfLiked(id) {
@@ -158,7 +166,7 @@ export default {
   border-radius: 8px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   font-family: 'safary';
-  background-color: #a0b9dacc;
+  background-color: hsla(214, 44%, 74%, 0.9);
   cursor: pointer; /* Make the whole card clickable */
 }
 
@@ -264,4 +272,3 @@ export default {
   z-index: 10; /* Ensure it's above other content */
 }
 </style>
-
