@@ -77,9 +77,15 @@ export default {
   },
   methods: {
     async goToPreparation() {
-      await addToMealPlan(this.recipe.id);
-      await this.fetchMealCount(); // Refetch the meal count
-      this.$router.push({ name: 'preperation', params: { recipeId: this.$route.params.recipeId, family: this.$route.params.family } });
+      if(this.$route.params.my_recipe){
+        this.$router.push({ name: 'preperation', params: {title:this.$route.params.title, recipeId: this.$route.params.recipeId, family: this.$route.params.family, my_recipe: this.$route.params.my_recipe  } });
+        return;
+      }
+      else{
+        await addToMealPlan(this.recipe.id);
+        await this.fetchMealCount(); // Refetch the meal count
+        this.$router.push({ name: 'preperation', params: {title:this.$route.params.title, recipeId: this.$route.params.recipeId, family: this.$route.params.family, my_recipe: this.$route.params.my_recipe  } });
+      }
     },
     async addToMeal() {
       await addToMealPlan(this.recipe.id);

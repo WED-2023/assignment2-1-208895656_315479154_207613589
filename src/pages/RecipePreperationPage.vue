@@ -11,7 +11,7 @@
             <div class="wrapped">
               <div class="mb-3">
                 <div>Ready in {{ recipe.readyInMinutes }} minutes</div>
-                <div>Likes: {{ recipe.aggregateLikes }} likes</div>
+                <div v-if="!this.$route.params.my_recipe">Likes: {{ recipe.aggregateLikes }} likes</div>
                 <div>{{ recipe.vegan ? 'Vegan: Yes' : 'Vegan: No' }}</div>
                 <div>{{ recipe.vegetarian ? 'Vegetarian: Yes' : 'Vegetarian: No' }}</div>
                 <div>{{ recipe.glutenFree ? 'Gluten-Free: Yes' : 'Gluten-Free: No' }}</div>
@@ -54,8 +54,9 @@
 
 <script>
 import { required, integer } from '@vuelidate/validators';
-import { mockGetRecipeFullDetails, mockGetFamilyRecipeFullDetails } from "../services/recipes.js";
+import { mockGetRecipeFullDetails, mockGetFamilyRecipeFullDetails, GetRecipeFullView } from "../services/recipes.js";
 import { store } from "../store.js"; // Import the store
+import {getMyRecipe} from "../services/user.js"
 
 export default {
   data() {
@@ -99,8 +100,16 @@ export default {
         console.log(this.$route.params.family)
         if (this.$route.params.family) {
           response = await mockGetFamilyRecipeFullDetails(this.$route.params.recipeId);
+        }else if(this.$route.params.my_recipe){
+          response = await getMyRecipe(this.$route.params.title);
+          console.log('getMyRecipe response recipe preperation page',response.data.recipe[0])
+          this.recipe = response.data.recipe[0];
+          return;
         } else {
-          response = await mockGetRecipeFullDetails(this.$route.params.recipeId);
+          response = await GetRecipeFullView(this.$route.params.recipeId);
+          this.recipe = response.data;
+          // response = await mockGetRecipeFullDetails(this.$route.params.recipeId);
+          // this.recipe = response.data.recipe;
         }
         console.log(response)
         if (response.status !== 200) {
@@ -108,7 +117,7 @@ export default {
           return;
         }
 
-        this.recipe = response.data.recipe;
+        
         console.log(this.recipe);
       } catch (error) {
         console.error(error);
