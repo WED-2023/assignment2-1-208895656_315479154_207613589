@@ -198,5 +198,24 @@ export async function GetRecipeFullView(recipeId) {
   }
 }
 
+export async function search(recipeName, cuisine, diet, intolerance, number) {
+  try {
+    const response = await axios.get('http://localhost:80/recipes/search', {
+      params: {
+        recipeName: recipeName,
+        cuisine: cuisine,
+        diet: diet,
+        intolerance: intolerance,
+        number: number
+      }
+    });
+    return { status: response.status, data: response.data };
+  } catch (error) {
+    console.error('Error searching for recipes:', error);
+    throw error;
+  }
+
+}
+
 
 

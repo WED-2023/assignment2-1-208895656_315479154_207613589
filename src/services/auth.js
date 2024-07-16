@@ -2,25 +2,26 @@
 import axios from 'axios';
 
 export async function Login(current_username, current_password) {
-  try{
-    console.log("username: ", current_username)
-    console.log("password: ", current_password)
-  const response = await axios.post('http://localhost:80/auth/login', {
-    username: current_username,
-    password: current_password
-  });
-  return {response};
+  try {
+    console.log("username: ", current_username);
+    console.log("password: ", current_password);
+    const response = await axios.post('http://localhost:80/auth/login', {
+      username: current_username,
+      password: current_password
+    });
+    // Clear session storage on login to remove stale data
+    sessionStorage.removeItem('lastSearch');
+    return { response };
   } catch (error) {
-  console.error('Error register', error);
-  throw error;
+    console.error('Error login', error);
+    throw error;
   }
 }
 
-
 export async function register(userDetails) {
   try {
-    console.log("starting register", userDetails)
-    console.log(userDetails.firstName)
+    console.log("starting register", userDetails);
+    console.log(userDetails.firstName);
     const response = await axios.post('http://localhost:80/auth/Register', {
       username: userDetails.username,
       password: userDetails.password,
@@ -29,31 +30,32 @@ export async function register(userDetails) {
       email: userDetails.email,
       country: userDetails.country
     });
-    console.log(response)
-    return {response};
+    console.log(response);
+    return { response };
   } catch (error) {
     console.error('Error register', error);
     throw error;
   }
-
-  // if (!success) {
-  //   throw { status: 409, response: { data: { message: "Username taken", success: false } } };
-  // }
-
-  // return { status: 200, response: { data: { message: "user created", success: true}} };
 }
-
-
 
 export async function Logout() {
-  try{
-  const response = await axios.post('http://localhost:80/auth/Logout', {});
-  return{response}
-  } catch(error){
-    console.error('Error register', error);
+  try {
+    const response = await axios.post('http://localhost:80/auth/Logout', {});
+    // Clear session storage on logout
+    sessionStorage.removeItem('lastSearch');
+    return { response };
+  } catch (error) {
+    console.error('Error logout', error);
     throw error;
   }
-
 }
-  
 
+export async function getCurrentUser() {
+  try {
+    const response = await axios.get('http://localhost:80/auth/current_user');
+    return response.data;
+  } catch (error) {
+    console.error('Error getting current user', error);
+    throw error;
+  }
+}
