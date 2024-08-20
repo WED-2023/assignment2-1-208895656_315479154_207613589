@@ -40,6 +40,7 @@ import {
 Vue.use(Vuelidate);
 
 axios.defaults.baseURL = 'http://localhost:80'; //need to change to the server url later
+// axios.defaults.baseURL = 'https://daniftgalkitchen.cs.bgu.ac.il'; //need to change to the server url later
 axios.defaults.withCredentials = true; // setting the defaults
 
 axios.interceptors.request.use(
