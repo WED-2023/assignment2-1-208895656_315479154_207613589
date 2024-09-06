@@ -1,6 +1,5 @@
 <template>
   <div class="search-page">
-    <!-- Your template content -->
     <div class="background-overlay"></div>
     <header class="header">
       <h1 class="search-title">Search among <span class="highlight">all</span> our recipes</h1>
@@ -20,9 +19,9 @@
 
     <div class="category-buttons">
       <b-button variant="outline-secondary" class="category-button" @click="setCategory('Vegetarian')">Vegetarian</b-button>
-      <b-button variant="outline-secondary" class="category-button" @click="setCategory('meat')">meat</b-button>
-      <b-button variant="outline-secondary" class="category-button" @click="setCategory('Gluten free')">Gluten free</b-button>
-      <b-button variant="outline-secondary" class="category-button" @click="setCategory('taco')">taco</b-button>
+      <b-button variant="outline-secondary" class="category-button" @click="setCategory('Meat')">Meat</b-button>
+      <b-button variant="outline-secondary" class="category-button" @click="setCategory('Gluten Free')">Gluten Free</b-button>
+      <b-button variant="outline-secondary" class="category-button" @click="setCategory('Taco')">Taco</b-button>
     </div>
 
     <div class="filters-container">
@@ -69,12 +68,10 @@
     </div>
 
     <div class="search-results">
-      <!-- Show alert for empty query -->
       <b-alert variant="warning" :show="showNoQueryAlert" dismissible>
         Please enter a search query.
       </b-alert>
 
-      <!-- Show alert for no results -->
       <b-alert variant="danger" :show="showNoResultsAlert" dismissible>
         No recipes found. Please try a different search query or filters.
       </b-alert>
@@ -92,7 +89,7 @@
 import { BForm, BFormGroup, BFormInput, BInputGroup, BInputGroupAppend, BButton, BFormSelect, BFormCheckboxGroup, BAlert, BDropdown, BDropdownForm } from 'bootstrap-vue';
 import RecipePreview from "../components/RecipePreview.vue";
 import { search } from '../services/recipes.js';
-import { getCurrentUser, Logout } from '../services/auth'; // Import your authentication service function
+import { getCurrentUser } from '../services/auth';
 
 export default {
   components: {
@@ -181,38 +178,41 @@ export default {
       sortOption: 'likes',
       sortOptions: [
         { value: 'likes', text: 'Likes' },
-        { value: 'preparation_time', text: 'Preparation time' }
+        { value: 'preparation_time', text: 'Preparation Time' }
       ],
-      showAlert: false,
       showNoQueryAlert: false,
       showNoResultsAlert: false,
       user: null
     };
   },
-  async mounted() {
-    try {
-      const currentUser = await getCurrentUser();
-      this.user = currentUser;
-
-      if (this.user) {
-        const lastSearch = sessionStorage.getItem('lastSearch');
-        if (lastSearch) {
-          const searchParams = JSON.parse(lastSearch);
-          this.searchQuery = searchParams.searchQuery;
-          this.resultsCount = searchParams.resultsCount;
-          this.selectedFilters = searchParams.selectedFilters;
-          this.selectedDiets = searchParams.selectedDiets;
-          this.selectedCuisines = searchParams.selectedCuisines;
-          this.sortOption = searchParams.sortOption;
-
-          this.onSubmit();
-        }
-      }
-    } catch (error) {
-      console.error('Failed to get current user:', error);
+  watch: {
+    sortOption() {
+      this.sortRecipes();
     }
   },
   methods: {
+    sortRecipes() {
+      if (!this.recipes || this.recipes.length === 0) return;
+
+      this.recipes.sort((a, b) => {
+        switch (this.sortOption) {
+          case 'likes':
+            return b.popularity - a.popularity;
+          case 'preparation_time':
+            return a.readyInMinutes - b.readyInMinutes;
+          default:
+            return 0;
+        }
+      });
+    },
+    async fetchRecipes() {
+      const response = await search(this.searchQuery, this.selectedCuisines.join(', '), this.selectedDiets.join(', '), this.selectedFilters.join(', '), this.resultsCount);
+      if (response && response.data) {
+        this.recipes = response.data;
+        this.sortRecipes();
+      }
+      return response;
+    },
     async onSubmit() {
       this.showNoQueryAlert = false;
       this.showNoResultsAlert = false;
@@ -244,24 +244,47 @@ export default {
         this.showNoResultsAlert = true;
       }
     },
-    async fetchRecipes() {
-      const response = await search(this.searchQuery, this.selectedCuisines.join(', '),this.selectedDiets.join(', '), this.selectedFilters.join(', '),  this.resultsCount);
-      return response;
-    },
     setCategory(category) {
       this.searchQuery = category;
       this.onSubmit();
     }
+  },
+  async mounted() {
+    try {
+      const currentUser = await getCurrentUser();
+      this.user = currentUser;
+
+      if (this.user) {
+        const lastSearch = sessionStorage.getItem('lastSearch');
+        if (lastSearch) {
+          const searchParams = JSON.parse(lastSearch);
+          this.searchQuery = searchParams.searchQuery;
+          this.resultsCount = searchParams.resultsCount;
+          this.selectedFilters = searchParams.selectedFilters;
+          this.selectedDiets = searchParams.selectedDiets;
+          this.selectedCuisines = searchParams.selectedCuisines;
+          this.sortOption = searchParams.sortOption;
+
+          this.onSubmit();
+        }
+      }
+    } catch (error) {
+      console.error('Failed to get current user:', error);
+    }
   }
 };
 </script>
-
 <style scoped>
 .search-page {
   text-align: center;
   padding: 20px;
   color: white;
   position: relative;
+  background-image: url('/src/assets/search_background.png');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  min-height: 100vh;
 }
 
 .background-overlay {
@@ -336,7 +359,7 @@ export default {
 }
 
 .filter-item {
-  color: black;
+  color: white;
   width: auto;
   flex: 1;
 }

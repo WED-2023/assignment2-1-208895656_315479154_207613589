@@ -66,6 +66,7 @@
 <script>
 import { required } from "vuelidate/lib/validators";
 import {Login} from "../services/auth.js"
+import { store } from "../store.js";
 export default {
   name: "Login",
   data() {
@@ -105,13 +106,13 @@ export default {
         //   }
         // );
 
-        const success = true; // modify this to test the error handling
-        const response = Login(this.form.username, this.form.password, success);
+        // const success = true; // modify this to test the error handling
+        const response = await Login(this.form.username, this.form.password, success);
 
-        // console.log(response);
+        console.log("response after login", response);
+        console.log("store.user_id", store.user_id)
         // this.$root.loggedIn = true;
         console.log(this.$root.store.login);
-        this.$root.store.login(this.form.username);
         this.$router.push("/");
       } catch (err) {
         console.log(err.response);

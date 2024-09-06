@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h1 class="title">My Recipes</h1>
+    <h1 class="title"></h1>
     <div class="recipe-container">
       <div class="recipe-preview-wrapper" v-for="recipe in recipes" :key="recipe.title">
       <RecipePreview :recipe="recipe" my_recipe="true"/>
@@ -45,38 +45,38 @@ mounted() {
 
 <style lang="scss" scoped>
 .container {
-text-align: center;
-background-image: url('/src/assets/my_recipes.webp');
-background-size: cover; 
-background-position: center; 
-padding: 50px 0;
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
+  text-align: center;
+  background-image: url('/src/assets/my_recipes.webp');
+  background-size: cover; 
+  background-position: center; 
+  padding: 50px 0;
+  min-height: 100vh; /* Ensure the container covers the full height of the viewport */
+  display: flex;
+  flex-direction: column;
 }
 
 .title {
-font-family: 'Arial', sans-serif;
-font-size: 36px;
-color: #fff; 
-text-shadow: 2px 2px 8px rgba(0,0,0,0.5); 
-margin-bottom: 20px; 
+  font-family: 'Arial', sans-serif;
+  font-size: 36px;
+  color: #fff; 
+  text-shadow: 2px 2px 8px rgba(0,0,0,0.5); 
+  margin-bottom: 20px; /* Existing margin */
 }
 
 .recipe-container {
-display: flex;
-flex-wrap: wrap;
-justify-content: center; 
-gap: 20px; 
-width: 100%;
-max-width: 1200px; 
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; 
+  gap: 20px; 
+  width: 100%;
+  max-width: 1200px; 
+  margin-top: 100px; /* Adds space above the recipes */
 }
 
 .recipe-preview-wrapper {
-flex: 1 1 calc(33.333% - 20px); /* Three items per row with spacing */
-max-width: calc(33.333% - 20px);
-box-sizing: border-box;
-padding: 10px;
+  flex: 1 1 calc(33.333% - 20px); /* Three items per row with spacing */
+  max-width: calc(33.333% - 20px);
+  box-sizing: border-box;
+  padding: 10px;
 }
 </style>

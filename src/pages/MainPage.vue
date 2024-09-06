@@ -3,15 +3,20 @@
     <div class="background-overlay"></div>
     <h1 class="title">Everyday Cooking</h1>
     <div class="content-container">
+      <!-- Random Recipes for All Users -->
       <div class="content-box recipe-list transparent-light-green">
-        <RecipePreviewList :recipes="recipes" title="Random Recipes" class="center" :showButton="true" />
+        <RecipePreviewList :recipes="randomRecipes" title="Random Recipes" class="center" :showButton="true" />
       </div>
-      <div v-if="!$root.store.username" class="content-box login-form">
+
+      <!-- Show login form if the user is not logged in -->
+      <div v-if="!user_id" class="content-box login-form">
         <LoginForm></LoginForm>
       </div>
-      <div v-if="$root.store.username" class="content-box last-viewed-recipes">
+
+      <!-- Show last viewed recipes if the user is logged in -->
+      <div v-if="user_id" class="content-box last-viewed-recipes">
         <RecipePreviewList
-          :recipes="recipes"
+          :recipes="lastViewedRecipes"
           title="Last Viewed Recipes"
           class="center"
         ></RecipePreviewList>
@@ -23,6 +28,9 @@
 <script>
 import RecipePreviewList from "../components/RecipePreviewList";
 import LoginForm from "../components/LoginForm";
+import { getRandomRecipes } from "../services/recipes";
+import { getMyLastWatchedRecipes, meal_plan_count } from "../services/user";
+import { store } from "../store.js"; // Ensure store is properly imported
 
 export default {
   components: {
@@ -31,11 +39,51 @@ export default {
   },
   data() {
     return {
-      recipes: [
-        // Populate this array with your recipes
-      ],
+      randomRecipes: [],  // To store random recipes
+      lastViewedRecipes: [], // To store last viewed recipes
     };
   },
+  mounted() {
+    this.fetchRandomRecipes();
+
+    if (this.user_id) {
+      this.fetchLastViewedRecipes();
+      this.fetchMealCount(); // Fetch the meal plan count if user is logged in
+    }
+  },
+  computed: {
+    user_id(){
+      console.log("store.user_id != 0", store.user_id != 0)
+      return store.user_id != 0
+    }
+  },
+  methods: {
+    async fetchRandomRecipes() {
+      try {
+        const response = await getRandomRecipes();  
+        this.randomRecipes = response.data;  // Set the random recipes
+      } catch (error) {
+        console.error("Error fetching random recipes:", error);
+      }
+    },
+    async fetchLastViewedRecipes() {
+      try {
+        const response = await getMyLastWatchedRecipes();  // Assuming this is your API call for last viewed recipes
+        this.lastViewedRecipes = response.data;  // Set the last viewed recipes
+      } catch (error) {
+        console.error("Error fetching last viewed recipes:", error);
+      }
+    },
+    async fetchMealCount() {
+      try {
+        const count = await meal_plan_count(); // Fetch meal count from the server
+        store.setMealCount(count); // Update store with the fetched meal count
+      } catch (error) {
+        console.error('Error fetching meal count:', error);
+        store.setMealCount(0); // Default to 0 if there's an error
+      }
+    }
+  }
 };
 </script>
 

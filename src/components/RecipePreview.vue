@@ -1,7 +1,7 @@
 <template>
   <div class="recipe-preview" @click="handleClick">
     <!-- Like Button Container -->
-    <div class="like-button-container" v-if="!my_recipe">
+    <div class="like-button-container" v-if="!my_recipe && !family && user_id">
       <button :class="{'liked': isLiked}" class="like-button" @click.stop="toggleLike(recipe.id)">
         {{ isLiked ? '♥ Unlike' : '♥ Like' }}
       </button>
@@ -14,24 +14,21 @@
       <ul class="recipe-overview">
         <li>{{ recipe.readyInMinutes }} minutes</li>
         <li v-if="!my_recipe">{{ recipe.aggregateLikes || 0 }} likes</li>
-        <li v-if="my_recipe">{{ recipe.servings}} servings</li>
+        <li v-if="my_recipe">{{ recipe.servings }} servings</li>
         <li v-if="family && !my_recipe">Customary time: {{ recipe.customaryTime }}</li>
         <li v-if="family && !my_recipe">Family Chef: {{ recipe.family_chef }}</li>
       </ul>
       <!-- Recipe Icons -->
       <div class="recipe-icons">
-        <img v-if="recipe.glutenFree" src="https://spoonacular.com/application/frontend/images/badges/gluten-free.svg" alt="Gluten-Free" class="icon"/>
-        <img v-if="recipe.vegan" src="https://spoonacular.com/application/frontend/images/badges/vegan.svg" alt="Vegan" class="icon"/>
-        <img v-if="recipe.vegetarian" src="https://spoonacular.com/application/frontend/images/badges/vegetarian.svg" alt="Vegetarian" class="icon"/>
+        <img v-show="recipe.glutenFree" src="https://spoonacular.com/application/frontend/images/badges/gluten-free.svg" alt="Gluten-Free" class="icon"/>
+        <img v-show="recipe.vegan" src="https://spoonacular.com/application/frontend/images/badges/vegan.svg" alt="Vegan" class="icon"/>
+        <img v-show="recipe.vegetarian" src="https://spoonacular.com/application/frontend/images/badges/vegetarian.svg" alt="Vegetarian" class="icon"/>
+        <div v-show="isClicked" class="visited-icon">👁️</div>
       </div>
     </div>
     <!-- Progress Bar Container -->
     <div v-if="progress_bar" class="progress-bar-container">
       <b-progress :value="progress_value" variant="success" striped :animated="animate"></b-progress>
-    </div>
-    <!-- Visited Icon -->
-    <div v-if="isClicked" class="visited-icon">
-      ✅
     </div>
     <!-- Clickable Overlay -->
     <div class="clickable-overlay" v-if="!isClicked"></div>
@@ -41,7 +38,8 @@
 <script>
 import { BProgress } from 'bootstrap-vue';
 import { integer } from 'vuelidate/lib/validators';
-import { isFavoriteRecipe, addToFavorites, removeFromFavorites, isWatchedRecipe, addToWatched, addToLastWatched } from '../services/user.js';
+import { isFavoriteRecipe, addToFavorites, removeFromFavorites, isWatchedRecipe, addToWatched, addToLastWatched, addToMealPlan } from '../services/user.js';
+import { store } from '../store.js'; // Import store to update meal count
 
 export default {
   components: {
@@ -77,6 +75,11 @@ export default {
       animate: true
     };
   },
+  computed: {
+    user_id() {
+      return sessionStorage.getItem('user_id'); // Get user_id from sessionStorage
+    }
+  },
   methods: {
     async toggleLike(id) {
       try {
@@ -91,23 +94,33 @@ export default {
       }
     },
     async handleClick() {
-      this.isClicked = true;
-      console.log("my_recipe", this.my_recipe)
-      if(this.my_recipe) {
-        this.$router.push({ name: 'recipe', params: { title: this.recipe.title, family: this.family ? true : undefined, my_recipe: this.my_recipe ? true : undefined }});
-        return;
-      }
-      else{
-        try {
-          await this.addToWatchedRecipes(this.recipe.id);
-          // Perform programmatic navigation after adding to watched recipes
+      try {
+        if (this.my_recipe) {
+          this.$router.push({ name: 'recipe', params: { title: this.recipe.title, family: this.family ? true : undefined, my_recipe: this.my_recipe ? true : undefined }});
+        } else {
           this.$router.push({ name: 'recipe', params: { recipeId: this.recipe.id, title: this.recipe.title, family: this.family ? true : undefined, my_recipe: this.my_recipe ? true : undefined }});
-        } catch (error) {
-          console.error('Error handling click:', error);
+          await this.addToWatchedRecipes(this.recipe.id);
+          this.isClicked = true;
         }
+      } catch (error) {
+        console.error('Error handling click:', error);
+      }
+    },
+    async addRecipeToMealPlan(recipeId) {
+      try {
+        const response = await addToMealPlan(recipeId);
+        if (response.status === 200) {
+          store.incrementMealCount();  // Increment the meal count immediately
+          alert('Recipe added to your meal plan!');
+        } else {
+          console.error('Failed to add recipe to meal plan:', response.message);
+        }
+      } catch (error) {
+        console.error('Error adding recipe to meal plan:', error);
       }
     },
     async checkIfLiked(id) {
+      if (!this.user_id) return;
       try {
         const response = await isFavoriteRecipe(id);
         this.isLiked = response;
@@ -117,6 +130,7 @@ export default {
       }
     },
     async checkIfClicked(id) {
+      if (!this.user_id) return;
       try {
         const response = await isWatchedRecipe(id);
         this.isClicked = response;
@@ -165,9 +179,8 @@ export default {
   overflow: hidden;
   border-radius: 8px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  font-family: 'safary';
   background-color: hsla(214, 44%, 74%, 0.9);
-  cursor: pointer; /* Make the whole card clickable */
+  cursor: pointer;
 }
 
 .recipe-preview:hover {
@@ -179,13 +192,13 @@ export default {
   width: 100%;
   height: 200px; /* Fixed height for the image container */
   overflow: hidden;
-  position: relative; /* Ensure relative positioning for absolute child */
+  position: relative;
 }
 
 .recipe-image {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* This ensures the image covers the container */
+  object-fit: cover;
   display: block;
   position: absolute;
   top: 10px;
@@ -206,12 +219,13 @@ export default {
   padding: 0;
   margin: 5px 0;
   font-size: 16px;
-  color: #000000; /* Adjust text color here */
+  color: #000000;
 }
 
 .recipe-icons {
   display: flex;
   justify-content: flex-end;
+  align-items: center;
 }
 
 .icon {
@@ -220,14 +234,21 @@ export default {
   margin-left: 5px;
 }
 
+.visited-icon {
+  font-size: 24px;
+  margin-left: 10px;
+  color: #4CAF50;
+}
+
 .like-button-container {
   position: absolute;
   bottom: 20px;
   left: 15px;
+  z-index: 2;
 }
 
 .like-button {
-  background-color: #24ca0e; /* Green background for 'Like' */
+  background-color: #24ca0e;
   color: white;
   border: none;
   padding: 5px 10px;
@@ -236,30 +257,25 @@ export default {
   border-radius: 5px;
   position: absolute;
   bottom: 10px;
-  left: 10px; /* Position to bottom-left */
+  left: 10px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-.liked {
-  background-color: #ff4444; /* Red background for liked state */
+.like-button:hover {
+  background-color: #1e9d06;
+  transform: scale(1.05);
+}
+
+.like-button.liked {
+  background-color: #e0245e;
+}
+
+.like-button.liked:hover {
+  background-color: #c21d47;
 }
 
 .progress-bar-container {
-  width: 100%;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-}
-
-.progress-bar {
-  width: 100%;
-}
-
-.visited-icon {
-  position: absolute;
-  top: 10px;
-  right: 20px;
-  font-size: 24px;
-  color: #28a745;
+  margin-top: 10px;
 }
 
 .clickable-overlay {
@@ -268,7 +284,7 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: transparent; /* Transparent overlay to indicate clickability */
-  z-index: 10; /* Ensure it's above other content */
+  background: rgba(0,0,0,0.1);
+  z-index: 1;
 }
 </style>

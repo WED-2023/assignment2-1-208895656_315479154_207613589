@@ -1,15 +1,19 @@
 <template>
   <div class="my-meal-container">
     <h1 class="meal-heading">My Meal</h1>
+    <b-button variant="danger" @click="clearAllRecipes">Clear All Recipes</b-button> <!-- Clear All Recipes Button -->
     <draggable
       v-model="recipes"
       class="recipe-list"
-      :options="{ handle: '.handle' }"
+      v-bind="{ handle: '.handle' }"
       @update="onOrderChange"
     >
-      <div v-for="(recipe, index) in recipes" :key="recipe.id" class="recipe-card">
-        <span class="handle">☰</span> <!-- Handle for dragging -->
-        <RecipePreview :recipe="recipe" :progress_bar="true" :progress="recipe.progress" />
+      <div v-for="(recipe, index) in recipes" :key="recipe.id || index" class="recipe-card">
+        <span class="handle">☰</span>
+        <RecipePreview :recipe="recipe" />
+        <div class="progress-bar">
+          <div class="progress" :style="{ width: calculateProgress(recipe) }"></div>
+        </div>
         <div class="button-container">
           <b-button variant="primary" @click="goToPreparation(recipe.id)">Make this recipe</b-button>
           <b-button variant="danger" @click="removeRecipe(recipe.id)">Remove</b-button>
@@ -21,11 +25,11 @@
 </template>
 
 <script>
-import{getMyMealPlan, removeFromMealPlan, meal_plan_count, change_meal_order} from '../services/user.js';
+import { getMyMealPlan, removeFromMealPlan, meal_plan_count, change_meal_order, clearMealPlan } from '../services/user.js';
 import RecipePreview from '../components/RecipePreview.vue';
 import draggable from 'vuedraggable';
 import { BButton } from 'bootstrap-vue';
-import { store } from "../store.js"; // Import the store
+import { store } from "../store.js";
 
 export default {
   name: 'MyMeal',
@@ -43,11 +47,16 @@ export default {
     async fetchRecipes() {
       try {
         const response = await getMyMealPlan();
-        this.recipes = response.data.recipes.map(recipe => ({
-          ...recipe,
-          clicked: false,
-          progress: 0
-        }));
+        if (response && response.data && response.data.recipes) {
+          this.recipes = response.data.recipes.map(recipe => ({
+            ...recipe,
+            clicked: false,
+            progress: this.calculateProgress(recipe)
+          }));
+        } else {
+          console.error("No recipes found in response.");
+        }
+        await this.fetchMealCount(); // Fetch and set meal count after fetching recipes
       } catch (error) {
         console.error("Error fetching recipes:", error);
       }
@@ -60,7 +69,7 @@ export default {
         const response = await removeFromMealPlan(recipeId);
         if (response.status === 200) {
           this.recipes = this.recipes.filter(recipe => recipe.id !== recipeId);
-          await this.fetchMealCount(); // Refetch the meal count
+          store.decrementMealCount(); // Decrease the meal count after removal
         } else {
           console.error("Failed to remove recipe:", response.message);
         }
@@ -68,20 +77,40 @@ export default {
         console.error("Error removing recipe:", error);
       }
     },
+    async clearAllRecipes() {
+      try {
+        const response = await clearMealPlan(); // API call to clear all recipes
+        if (response.status === 200) {
+          this.recipes = []; // Clear the local recipes array
+          store.resetMealCount(); // Reset meal count after clearing
+          alert('All recipes have been cleared from your meal plan.');
+        } else {
+          console.error("Failed to clear all recipes:", response.message);
+        }
+      } catch (error) {
+        console.error("Error clearing all recipes:", error);
+      }
+    },
     async fetchMealCount() {
       try {
-        const count = await meal_plan_count();
-        store.mealCount = count; // Update the store
-        this.$emit('meal-count-updated'); // Emit event to update meal count in parent
+        const count = await meal_plan_count(); // Call the API to get meal count
+        store.setMealCount(count); // Update the store with the correct meal count
       } catch (error) {
         console.error('Error fetching meal count:', error);
       }
     },
     onOrderChange() {
-      // Functionality to handle order change
       console.log('Order changed:', this.recipes);
-      // Here you can call a method to save the new order to the server if needed
       change_meal_order(this.recipes.map(recipe => recipe.id));
+    },
+    calculateProgress(recipe) {
+      const completed = JSON.parse(sessionStorage.getItem(`completedSteps_${recipe.id}`));
+      const totalSteps = parseInt(sessionStorage.getItem(`totalSteps_${recipe.id}`)) || 0;
+
+      if (!completed || totalSteps === 0) return "0%";
+
+      const completedSteps = completed.filter(step => step).length;
+      return `${Math.round((completedSteps / totalSteps) * 100)}%`;
     }
   },
   mounted() {
@@ -113,7 +142,7 @@ export default {
   align-items: center;
   padding: 10px;
   min-height: 550px;
-  max-height: 590px;
+  max-height: 630px;
   border: 1px solid #ddd;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -125,6 +154,20 @@ export default {
   cursor: grab;
   margin-bottom: 10px;
   font-size: 20px;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 10px;
+  background-color: #e9ecef;
+  border-radius: 5px;
+  margin: 10px 0;
+}
+
+.progress {
+  height: 100%;
+  background-color: #007bff;
+  border-radius: 5px;
 }
 
 .button-container {

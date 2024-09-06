@@ -1,60 +1,59 @@
 <template>
-    <div class="container">
-      <h1 class="title">My Favorite Recipes</h1>
-      <div class="recipe-container">
-        <div class="recipe-preview-wrapper" v-for="recipe in recipes" :key="recipe.id">
-        <RecipePreview :recipe="recipe"/>
-      </div>
-      </div>
+  <div class="container">
+    <h1 class="title">My Favorite Recipes</h1>
+    <div class="recipe-container">
+      <div class="recipe-preview-wrapper" v-for="recipe in recipes" :key="recipe.id">
+      <RecipePreview :recipe="recipe"/>
     </div>
-  </template>
-  
-  <script>
-  import RecipePreviewList from "../components/RecipePreviewList";
-  import RecipePreview from "../components/RecipePreview";
-  import { mockGetMyFavoriteRecipesPreview } from "../services/recipes.js";
-  import {GetMyFavoriteRecipesPreview} from "../services/user.js";
-  export default {
-    components: {
-      RecipePreview
-    },
-    methods: {
-    async updateRecipes() {
-      try {
-        // const response = await mockGetMyFavoriteRecipesPreview();
-        const response = await GetMyFavoriteRecipesPreview();
-        console.log("response.data.... :", response.data)
-        this.recipes = response.data.map(recipe => ({
-          ...recipe,
-          clicked: false
-        }));
-      } catch (error) {
-        console.error("Failed to fetch recipes:", error);
-      }
+    </div>
+  </div>
+</template>
+
+<script>
+import RecipePreviewList from "../components/RecipePreviewList";
+import RecipePreview from "../components/RecipePreview";
+import { mockGetMyFavoriteRecipesPreview } from "../services/recipes.js";
+import {GetMyFavoriteRecipesPreview} from "../services/user.js";
+export default {
+  components: {
+    RecipePreview
+  },
+  methods: {
+  async updateRecipes() {
+    try {
+      // const response = await mockGetMyFavoriteRecipesPreview();
+      const response = await GetMyFavoriteRecipesPreview();
+      console.log("response.data.... :", response.data)
+      this.recipes = response.data.map(recipe => ({
+        ...recipe,
+        clicked: false
+      }));
+    } catch (error) {
+      console.error("Failed to fetch recipes:", error);
     }
+  }
+},
+mounted() {
+  this.updateRecipes(); // Fetch recipes when the component is mounted
+},
+  data() {
+    return {
+      recipes: [] // Populate this array with your recipes
+    };
   },
-  mounted() {
-    this.updateRecipes(); // Fetch recipes when the component is mounted
-  },
-    data() {
-      return {
-        recipes: [] // Populate this array with your recipes
-      };
-    },
-  };
-  </script>
-  
-  <style lang="scss" scoped>
+};
+</script>
+
+<style lang="scss" scoped>
 .container {
   text-align: center;
   background-image: url('/src/assets/my_favorites_recipes.webp');
   background-size: cover; 
   background-position: center; 
   padding: 50px 0;
+  min-height: 100vh; /* Ensure the container covers the full height of the viewport */
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
 }
 
 .title {
@@ -72,6 +71,7 @@
   gap: 20px; 
   width: 100%;
   max-width: 1200px; 
+  flex-grow: 1; /* Allow the recipe container to grow and take up available space */
 }
 
 .recipe-preview-wrapper {
@@ -80,5 +80,4 @@
   box-sizing: border-box;
   padding: 10px;
 }
-  </style>
-  
+</style>

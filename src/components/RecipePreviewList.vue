@@ -36,7 +36,7 @@
 
 <script>
 import RecipePreview from "./RecipePreview.vue";
-import FamilyRecipePreview from "./FamilyRecipePreview.vue"; // Assuming you'll create this component
+import FamilyRecipePreview from "./FamilyRecipePreview.vue"; 
 import { mockGetOtherRecipes, mockGetRecipesPreview, mockGetRecipesPreviewSortByLikes, mockGetRecipesPreviewSortByTime, mockGetFamilyRecipesPreview, getRandomRecipes } from "../services/recipes.js";
 import{getMyLastWatchedRecipes} from "../services/user.js";
 export default {
@@ -95,11 +95,11 @@ export default {
         } else if (this.sortOption === 'preparation_time') {
           response = await mockGetRecipesPreviewSortByTime(this.amountToFetch);
         } else if (this.title === 'Random Recipes') {
-          // response = await getRandomRecipes(this.amountToFetch);
-          response = await mockGetRecipesPreview(this.amountToFetch);
+          response = await getRandomRecipes(this.amountToFetch);
+          // response = await mockGetRecipesPreview(this.amountToFetch);
         } else{  
-          // response = await getMyLastWatchedRecipes(this.amountToFetch);
-          response = await mockGetRecipesPreview(this.amountToFetch);
+          response = await getMyLastWatchedRecipes(this.amountToFetch);
+          // response = await mockGetRecipesPreview(this.amountToFetch);
         }
         this.recipes = response.data.recipes.map(recipe => ({
           ...recipe,
@@ -111,8 +111,10 @@ export default {
     },
     async shuffleRecipes() {
       try {
-        // const response = await getRandomRecipes(this.amountToFetch);
-        response = await mockGetOtherRecipes(this.amountToFetch);
+        const response = await getRandomRecipes(this.amountToFetch);
+        console.log("before shuffle")
+        // response = await mockGetOtherRecipes(this.amountToFetch);
+        
         this.recipes = response.data.recipes.map(recipe => ({
           ...recipe,
           clicked: false

@@ -8,7 +8,7 @@
       </b-navbar-nav>
 
       <b-navbar-nav>
-        <template v-if="!$root.store.username">
+        <template v-if="check_user">
           <b-nav-text>hello guest</b-nav-text>
           <b-nav-item><router-link :to="{ name: 'register' }">Register</router-link></b-nav-item>
           <b-nav-item><router-link :to="{ name: 'login' }">Login</router-link></b-nav-item>
@@ -30,38 +30,35 @@
             </b-dropdown>
           </b-nav-item>
           <b-nav-item>
-            <b-button @click="Logout" variant="danger">Logout</b-button>
+            <b-button @click="logout" variant="danger">Logout</b-button>
           </b-nav-item>
         </template>
       </b-navbar-nav>
 
-      <!-- Display meal counter with an icon only if user is logged in -->
-      <template v-if="$root.store.username">
-        <b-navbar-nav>
-          <b-nav-item class="meal-counter">
-            <router-link :to="{ name: 'meal' }">
-              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnW-w8lH3R_fAVK-RkKMvmbefRFYG0isntsQ&s" alt="Plate Icon" class="meal-icon" />
-              <span class="meal-count">{{ mealCount }}</span>
-              <span class="meal-label">My Meal</span>
-            </router-link>
-          </b-nav-item>
-        </b-navbar-nav>
-      </template>
+      <!-- Display meal counter with an icon -->
+      <b-navbar-nav>
+        <b-nav-item class="meal-counter">
+          <router-link :to="{ name: 'meal' }">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnW-w8lH3R_fAVK-RkKMvmbefRFYG0isntsQ&s" alt="Plate Icon" class="meal-icon" />
+            <span class="meal-count">{{ mealCount }}</span>
+            <span class="meal-label">My Meal</span>
+          </router-link>
+        </b-nav-item>
+      </b-navbar-nav>
     </b-navbar>
     
     <!-- Router View for Content -->
-    <router-view @meal-count-updated="fetchMealCount" />
+    <router-view />
 
     <!-- Create Recipe Modal Component -->
-    <CreateRecipeModal :isVisible.sync="showCreateRecipeModal" @recipe-created="fetchMealCount" />
+    <CreateRecipeModal :isVisible.sync="showCreateRecipeModal" />
   </div>
 </template>
 
 <script>
 import CreateRecipeModal from './components/CreateRecipeModal.vue';
 import { store } from './store.js';
-import { Logout } from "./services/auth.js";
-import { meal_plan_count } from "./services/user.js"; // Import your function
+import { Logout } from './services/auth.js';
 
 export default {
   name: 'App',
@@ -75,30 +72,21 @@ export default {
   },
   computed: {
     mealCount() {
-      return store.mealCount;
+      return store.mealCount; // Reactive meal count
+    },
+    check_user(){
+      return store.user_id == 0
     }
   },
   methods: {
-    async fetchMealCount() {
-      try {
-        const count = await meal_plan_count();
-        store.mealCount = count; // Update the store
-      } catch (error) {
-        console.error('Error fetching meal count:', error);
-      }
-    },
-    async Logout() {
-      const response = await Logout();
-      this.$root.store.logout();
+    async logout() {
+      console.log("logout pressed")
+      await Logout()
       this.$root.toast('Logout', 'User logged out successfully', 'success');
-      await this.fetchMealCount(); // Update meal count on logout
       this.$router.push('/').catch(() => {
         this.$forceUpdate();
       });
     },
-  },
-  created() {
-    this.fetchMealCount();
   },
   provide() {
     return {

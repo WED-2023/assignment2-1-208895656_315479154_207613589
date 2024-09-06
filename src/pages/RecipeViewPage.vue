@@ -89,6 +89,7 @@ export default {
     },
     async addToMeal() {
       await addToMealPlan(this.recipe.id);
+      store.incrementMealCount()
       await this.fetchMealCount(); // Refetch the meal count
     },
     async fetchMealCount() {

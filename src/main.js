@@ -3,6 +3,7 @@ import App from "./App.vue";
 import VueAxios from "vue-axios";
 import axios from "axios";
 
+
 import routes from "./routes";
 import VueRouter from "vue-router";
 Vue.use(VueRouter);
@@ -39,8 +40,8 @@ import {
 ].forEach((x) => Vue.use(x));
 Vue.use(Vuelidate);
 
-axios.defaults.baseURL = 'http://localhost:80'; //need to change to the server url later
-// axios.defaults.baseURL = 'https://daniftgalkitchen.cs.bgu.ac.il'; //need to change to the server url later
+// axios.defaults.baseURL = 'http://localhost:80'; //need to change to the server url later
+axios.defaults.baseURL = 'https://daniftgalkitchen.cs.bgu.ac.il/'; //need to change to the server url later
 axios.defaults.withCredentials = true; // setting the defaults
 
 axios.interceptors.request.use(
@@ -71,8 +72,8 @@ Vue.use(VueAxios, axios);
 Vue.config.productionTip = false;
 
 const shared_data = {
-  server_domain: "http://localhost:3000",
-  // server_domain: "http://daniftgalkitchen.cs.bgu.ac.il/"
+  // server_domain: "http://localhost:3000",
+  server_domain: "http://daniftgalkitchen.cs.bgu.ac.il/",
   username: localStorage.username,
   login(username) {
     localStorage.setItem("username", username);

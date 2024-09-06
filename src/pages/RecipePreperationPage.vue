@@ -36,10 +36,15 @@
                 <h4>{{ instructionGroup.name }}</h4>
                 <ol>
                   <li v-for="(step, stepIndex) in instructionGroup.steps" :key="stepIndex">
-                    <input type="checkbox" />
+                    <input type="checkbox" :checked="completedSteps[getCheckboxIndex(index, stepIndex)]"
+                      @change="toggleStep(index, stepIndex)"
+                    />
                     <span>{{ step.step }}</span>
                   </li>
                 </ol>
+              </div>
+              <div class="progress">
+                Progress: {{ calculateProgress() }}%
               </div>
             </div>
           </div>
@@ -53,16 +58,16 @@
 </template>
 
 <script>
-import { required, integer } from '@vuelidate/validators';
-import { mockGetRecipeFullDetails, mockGetFamilyRecipeFullDetails, GetRecipeFullView } from "../services/recipes.js";
-import { store } from "../store.js"; // Import the store
-import {getMyRecipe} from "../services/user.js"
+import { mockGetRecipeFullDetails, GetRecipeFullView } from "../services/recipes.js"; 
+import { getMyRecipe } from "../services/user.js";
 
 export default {
   data() {
     return {
       recipe: null,
-      servingsMultiplier: 1
+      servingsMultiplier: 1,
+      completedSteps: [],
+      totalSteps: 0,
     };
   },
   props: {
@@ -87,42 +92,62 @@ export default {
     }
   },
   methods: {
-    goToPreparation() {
-      // store.incrementMealCount();
-      this.$router.push({ name: 'preparation', params: { recipeId: this.$route.params.recipeId, family: this.$route.params.family } });
-    },
-    addToMeal() {
-      // store.incrementMealCount();
-    },
     async fetchRecipeDetails() {
       try {
         let response;
-        console.log(this.$route.params.family)
         if (this.$route.params.family) {
-          response = await mockGetFamilyRecipeFullDetails(this.$route.params.recipeId);
-        }else if(this.$route.params.my_recipe){
+          response = await mockGetRecipeFullDetails(this.$route.params.recipeId);
+        } else if (this.$route.params.my_recipe) {
           response = await getMyRecipe(this.$route.params.title);
-          console.log('getMyRecipe response recipe preperation page',response.data.recipe[0])
           this.recipe = response.data.recipe[0];
           return;
         } else {
           response = await GetRecipeFullView(this.$route.params.recipeId);
           this.recipe = response.data;
-          // response = await mockGetRecipeFullDetails(this.$route.params.recipeId);
-          // this.recipe = response.data.recipe;
         }
-        console.log(response)
+
         if (response.status !== 200) {
           this.$router.replace("/NotFound");
           return;
         }
 
-        
-        console.log(this.recipe);
+        // Initialize the total steps and restore checkbox state from sessionStorage
+        this.totalSteps = this.recipe.analyzedInstructions.reduce((acc, group) => acc + group.steps.length, 0);
+        this.completedSteps = this.getSavedCheckboxState(this.recipe.id, this.totalSteps);
+
       } catch (error) {
-        console.error(error);
+        console.error("Error fetching recipe details:", error);
         this.$router.replace("/NotFound");
       }
+    },
+    toggleStep(sectionIndex, stepIndex) {
+      const index = this.getCheckboxIndex(sectionIndex, stepIndex);
+      this.completedSteps[index] = !this.completedSteps[index];
+      this.saveCheckboxState();
+    },
+    saveCheckboxState() {
+      sessionStorage.setItem(`completedSteps_${this.recipe.id}`, JSON.stringify(this.completedSteps));
+      sessionStorage.setItem(`totalSteps_${this.recipe.id}`, this.completedSteps.length.toString());
+    },
+    getSavedCheckboxState(recipeId, stepsCount) {
+      const completed = sessionStorage.getItem(`completedSteps_${recipeId}`);
+      const totalSteps = parseInt(sessionStorage.getItem(`totalSteps_${recipeId}`)) || stepsCount;
+      this.totalSteps = totalSteps;
+
+      if (completed) {
+        const parsedCompleted = JSON.parse(completed);
+        return Array.isArray(parsedCompleted) ? parsedCompleted : new Array(totalSteps).fill(false);
+      } else {
+        return new Array(totalSteps).fill(false);
+      }
+    },
+    getCheckboxIndex(sectionIndex, stepIndex) {
+      const stepsBefore = this.recipe.analyzedInstructions.slice(0, sectionIndex).reduce((acc, section) => acc + section.steps.length, 0);
+      return stepsBefore + stepIndex;
+    },
+    calculateProgress() {
+      const completedCount = this.completedSteps.filter(step => step).length;
+      return Math.round((completedCount / this.totalSteps) * 100);
     }
   },
   created() {
@@ -244,7 +269,6 @@ ol li:last-child {
   text-decoration: line-through;
 }
 
-/* Adding a subtle hover effect to ingredients and instructions for better interactivity */
 li:hover {
   background-color: #f0f0f0;
 }
@@ -267,5 +291,11 @@ button:hover {
 
 input[type='checkbox'] {
   margin-right: 10px;
+}
+
+.progress {
+  margin-top: 20px;
+  font-size: 18px;
+  font-weight: bold;
 }
 </style>
