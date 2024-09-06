@@ -78,8 +78,9 @@ export default {
   methods: {
     async goToPreparation() {
       if(this.$route.params.my_recipe){
+        await this.fetchMealCount();
         this.$router.push({ name: 'preperation', params: {title:this.$route.params.title, recipeId: this.$route.params.recipeId, family: this.$route.params.family, my_recipe: this.$route.params.my_recipe  } });
-        return;
+        // return;
       }
       else{
         await addToMealPlan(this.recipe.id);

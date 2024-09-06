@@ -58,9 +58,9 @@ export async function Logout() {
   try {
     const response = await axios.post('https://daniftgalkitchen.cs.bgu.ac.il/auth/Logout', {});
     // Clear session storage on logout
-    sessionStorage.removeItem('lastSearch');
-    sessionStorage.removeItem('user_id')
-    sessionStorage.removeItem('username')
+    // sessionStorage.removeItem('lastSearch');
+    // sessionStorage.removeItem('user_id')
+    // sessionStorage.removeItem('username')
     store.reset()
     console.log(store.user_id)
     return { response };

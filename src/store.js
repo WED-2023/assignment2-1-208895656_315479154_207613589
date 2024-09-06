@@ -5,10 +5,14 @@ const state = {
 
 import { reactive } from 'vue';
 
+// Load initial values from sessionStorage if available
+const savedUserId = sessionStorage.getItem('user_id');
+const savedUsername = sessionStorage.getItem('username');
+
 export const store = reactive({
   mealCount: 0, // Initial meal count
-  username:"",
-  user_id: 0,
+  username: savedUsername || "",  // Load from sessionStorage or default to empty
+  user_id: savedUserId ? Number(savedUserId) : 0,  // Load from sessionStorage or default to 0
 
   // Increment the meal count
   incrementMealCount() {
@@ -22,17 +26,33 @@ export const store = reactive({
     }
   },
 
-  set_user_id(user_id){
-    this.user_id = user_id
+  // Set user_id and persist it to sessionStorage
+  set_user_id(user_id) {
+    this.user_id = user_id;
+    if (user_id) {
+      sessionStorage.setItem('user_id', user_id); // Save to sessionStorage
+    } else {
+      sessionStorage.removeItem('user_id'); // Remove from sessionStorage if logging out
+    }
   },
 
-  set_username(user_name){
-    this.username = user_name
+  // Set username and persist it to sessionStorage
+  set_username(username) {
+    this.username = username;
+    if (username) {
+      sessionStorage.setItem('username', username); // Save to sessionStorage
+    } else {
+      sessionStorage.removeItem('username'); // Remove from sessionStorage if logging out
+    }
   },
-  reset(){
-    this.username = ""
-    this.user_id = 0
-    this.mealCount = 0
+
+  // Reset state on logout and clear sessionStorage
+  reset() {
+    this.username = "";
+    this.user_id = 0;
+    this.mealCount = 0;
+    sessionStorage.removeItem('username');
+    sessionStorage.removeItem('user_id');
   },
 
   // Set the meal count to a specific value
@@ -44,9 +64,11 @@ export const store = reactive({
   resetMealCount() {
     this.mealCount = 0;
   },
+
+  // Fetch meal count from the server
   async fetchMealCount() {
     try {
-      const count = await meal_plan_count(); // Fetch the meal plan count from the server
+      const count = await meal_plan_count(); // Assuming this is an API call to get meal count
       this.mealCount = count;
     } catch (error) {
       console.error('Error fetching meal count:', error);

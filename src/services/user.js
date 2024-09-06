@@ -149,7 +149,7 @@ export async function removeFromMealPlan(recipeId){
 export async function meal_plan_count() {
   const user_id = sessionStorage.getItem('user_id');
   if (!user_id) {
-    console.warn("No user ID found in session storage. Skipping request.");
+    // console.warn("No user ID found in session storage. Skipping request.");
     return { status: 401, count: 0 };
   }
 
