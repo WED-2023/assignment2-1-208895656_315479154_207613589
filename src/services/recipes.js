@@ -66,7 +66,7 @@ export function mockGetOtherRecipes(amount = 1) {
       const j = Math.floor(Math.random() * (i + 1));
       [recipes[i], recipes[j]] = [recipes[j], recipes[i]];
     }
-  
+    console.log("rec", recipes)
     return { data: { recipes: recipes.slice(0, amount) } };
 }
 
@@ -172,12 +172,13 @@ export function removeFromMyMealsById(recipeId) {
 export async function getRandomRecipes(amount = 3) {
   console.log('Fetching random recipes with amount:', amount);
   try {
-    const response = await axios.get('http://localhost:80/recipes/random', {
+    const response = await axios.get('https://daniftgalkitchen.cs.bgu.ac.il/recipes/random', {
       params: {
         number: amount
       }
     });
     let recipes = response.data;
+    console.log("random recipes: ", recipes)
     return {status:200, data: { recipes } };
   } catch (error) {
     console.error('Error fetching random recipes:', error);
@@ -190,7 +191,7 @@ export async function getRandomRecipes(amount = 3) {
 export async function GetRecipeFullView(recipeId) {
   try {
     // console.log("getRecipeFullView", recipeId);
-    const response = await axios.get(`http://localhost:80/recipes/full_view/${recipeId}`);
+    const response = await axios.get(`https://daniftgalkitchen.cs.bgu.ac.il/recipes/full_view/${recipeId}`);
     return { status: response.status, data: response.data };
   } catch (error) {
     console.error('Error fetching recipe full view:', error);
@@ -200,7 +201,7 @@ export async function GetRecipeFullView(recipeId) {
 
 export async function search(recipeName, cuisine, diet, intolerance, number) {
   try {
-    const response = await axios.get('http://localhost:80/recipes/search', {
+    const response = await axios.get('https://daniftgalkitchen.cs.bgu.ac.il/recipes/search', {
       params: {
         recipeName: recipeName,
         cuisine: cuisine,
