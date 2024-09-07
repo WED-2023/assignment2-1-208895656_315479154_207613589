@@ -9,7 +9,7 @@
 
       <b-navbar-nav>
         <template v-if="!$root.store.username">
-          <b-nav-text>hello guest</b-nav-text>
+          <b-nav-text>hello guest</b-nav-text> 
           <b-nav-item><router-link :to="{ name: 'register' }">Register</router-link></b-nav-item>
           <b-nav-item><router-link :to="{ name: 'login' }">Login</router-link></b-nav-item>
         </template>

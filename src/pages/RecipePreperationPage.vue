@@ -202,13 +202,14 @@ export default {
 }
 
 .wrapped {
-  flex: 1 1 300px; /* Each block takes at least 300px space */
+  flex: 1 1 300px;
   margin-right: 20px;
   padding: 10px;
   background: #fff;
   border: 1px solid #ddd;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden; /* Ensure content inside doesn't overflow */
 }
 
 .wrapped:last-child {
@@ -295,7 +296,10 @@ input[type='checkbox'] {
 
 .progress {
   margin-top: 20px;
+  padding: 10px 0; /* Add padding to ensure full visibility */
   font-size: 18px;
   font-weight: bold;
+  clear: both;
+  width: 100%; /* Ensure the progress bar takes up full width */
 }
 </style>

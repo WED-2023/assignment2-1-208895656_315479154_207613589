@@ -115,6 +115,7 @@ export default {
     async Login() {
       try {
         const response = await Login(this.form.username, this.form.password);
+        this.$root.store.login(this.form.username);
         this.$router.push("/");
       } catch (err) {
         this.form.submitError = err.response.data.message;
